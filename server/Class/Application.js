@@ -1,5 +1,1 @@
-module.exports = Class.create({
-    initialize: function () {
-
-	}
-});
+var NetConnection = require('./utils/NetConnection.js');

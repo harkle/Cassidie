@@ -1,4 +1,3 @@
-require('./Class/Class.js');
+require('./class/Class.js');
 
-var Application = require('./Class/Application.js');
-var application = new Application();
+var Application = require('./class/Application.js');
