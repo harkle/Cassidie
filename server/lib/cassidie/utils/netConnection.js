@@ -1,5 +1,5 @@
-var Logger		= require('./Logger.js');
-var WebSocket	= require('../../lib/faye/websocket');
+var Logger		= require('./logger.js');
+var WebSocket	= require('../../faye/websocket');
 var http		= require('http');
 var server		= http.createServer();
 
