@@ -1,22 +1,25 @@
 var Logger		= require('./logger.js');
-var WebSocket	= require('../../faye/websocket');
+var Client 		= require('../client.js');
+var io 			= require('socket.io');
 var http		= require('http');
+
 var server		= http.createServer();
-
-server.addListener('upgrade', function(request, socket, head) {
-	var ws = new WebSocket(request, socket, head);
-
-	ws.onmessage = function(event) {
-		Logger.log(event.data);
-		ws.send('I receive your message:' + event.data);
-	};
-
-	ws.onclose = function(event) {
-		Logger.log('close');
-		ws = null;
-	};
-});
+	io		 	= io.listen(server);
 
 server.listen(7000);
 
+io.set('log level', 0);
 
+io.sockets.on('connection', function (socket) {
+	var client = new Client(socket);
+	Cassidie.addClient(client);
+
+	socket.emit('welcome', {
+		clientID: client.getID(),
+		gameName: Cassidie.game.name	
+	});
+
+	socket.on('disconnect', function () {
+		Cassidie.removeClient(client.getID());		
+	});
+});

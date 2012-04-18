@@ -10,6 +10,10 @@
 		console.log(color+emmiter+'\033[0m'+message);
 	};
 
+	this.Logger.userLog = function(emmiter, message) {
+		log('\033[0m',emmiter, message);		
+	};
+
 	this.Logger.systemLog = function(emmiter, message) {
 		log('\033[35m',emmiter, message);		
 	};

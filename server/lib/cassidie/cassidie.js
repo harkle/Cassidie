@@ -7,7 +7,7 @@ require('./utils/logger.js');
 	process.stdin.setEncoding('utf8');
 
 	process.stdin.on('data', function (input) {
-		Logger.systemLog(Cassidie.consoleName, input.trim().toUpperCase());
+		Logger.userLog('user		', input.trim());
 
 		switch (input.trim()) {
 			case 'exit':
@@ -17,12 +17,16 @@ require('./utils/logger.js');
 			case 'status':
 				Cassidie.showStatus();
 				break;
+			case 'clients':
+				Cassidie.showClients();
+				break;
 			case 'reset':
 				Cassidie.reset();
 				break;
 		}
 	});
 
+	//Some declaration
 	this.Cassidie =  {
 		netConnection:	null,
 		gameObject:		null,
@@ -33,7 +37,9 @@ require('./utils/logger.js');
 		isRunning:		false,
 
 		version:		'0.1',
-		consoleName:	'CASSIDIE	'
+		consoleName:	'cassidie	',
+
+		clients:		[]
 	}
 
 	console.log('\033[2J');
@@ -67,9 +73,30 @@ require('./utils/logger.js');
 		var gameUptime = new Date();
 			gameUptime.setTime(new Date().getTime() - this.gameStartTime);
 		
-		Logger.systemLog('version:	'+this.version);
-		Logger.systemLog('uptime: 	'+(uptime.getDate() - 1)+' day '+(uptime.getHours() - 1)+':'+uptime.getMinutes()+':'+uptime.getSeconds());
-		Logger.systemLog('game name: 	'+(gameUptime.getDate() - 1)+' day '+(gameUptime.getHours() - 1)+':'+gameUptime.getMinutes()+':'+gameUptime.getSeconds());
-		Logger.systemLog('game uptime	'+this.game.name);		
+		Logger.systemLog(this.consoleName, 'version:	'+this.version);
+		Logger.systemLog('uptime:		'+(uptime.getDate() - 1)+' day '+(uptime.getHours() - 1)+':'+uptime.getMinutes()+':'+uptime.getSeconds());
+		Logger.systemLog('game uptime: 	'+(gameUptime.getDate() - 1)+' day '+(gameUptime.getHours() - 1)+':'+gameUptime.getMinutes()+':'+gameUptime.getSeconds());
+		Logger.systemLog('game name:	'+this.game.name);		
+		Logger.systemLog('client count:	'+this.clients.length);
+	};
+
+	this.Cassidie.showClients = function() {
+		Logger.systemLog(this.consoleName, 'there is ' + this.clients.length + ' clients');
+
+		for (var i = 0; i < this.clients.length; i++) {
+			Logger.systemLog('ID: '+this.clients[i].getID());
+		}		
+	};
+
+	this.Cassidie.addClient = function(client) {
+		this.clients.push(client);	
+	};
+	
+	this.Cassidie.removeClient = function(id) {
+		for (var i = 0; i < this.clients.length; i++) {
+			if (this.clients[i].getID() == id) {
+				this.clients.splice(i, 1);
+			}
+		}
 	};
 })();
