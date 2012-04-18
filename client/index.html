@@ -2,39 +2,14 @@
 <html>
 	<head>
 		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-		<title></title>
+		<title>Cassidie</title>
+		<script src="/lib/socket.io.js" type="text/javascript"></script>
+		<script src="/lib/cassidie/events.js"	 	type="text/javascript"></script>
+		<script src="/lib/cassidie/cassidie.js" 	type="text/javascript"></script>
+		<script src="scripts.js"				 	type="text/javascript"></script>
 	</head>
 	<body>
 		<h1>Cassidie</h1>
-		<ul></ul>
-	<script type="text/javascript">
-      var logger = document.getElementsByTagName('ul')[0],
-          Socket = window.MozWebSocket || window.WebSocket,
-          protos = ['foo', 'bar', 'xmpp'],
-          socket = new Socket('ws://cassidie.localhost:7000/'),
-          index  = 0;
-      
-      var log = function(text) {
-        logger.innerHTML += '<li>' + text + '</li>';
-      };
-      
-      socket.addEventListener('open', function() {
-        log('OPEN');
-        socket.send('Hello, world');
-      });
-      
-      socket.onerror = function(event) {
-        log('ERROR: ' + event.message);
-      };
-      
-      socket.onmessage = function(event) {
-        log('MESSAGE: ' + event.data);
-        setTimeout(function() { socket.send(++index + ' ' + event.data) }, 2000);
-      };
-      
-      socket.onclose = function(event) {
-        log('CLOSE: ' + event.code + ', ' + event.reason);
-      };
-    </script>
+		<p id="console"></p>
 	</body>
 </html>
