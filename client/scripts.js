@@ -13,4 +13,4 @@ Cassidie.observe(Events.DISCONNECT, function(data) {
 	console.log('Disconnected...');
 });
 
-Cassidie.start();
+Cassidie.start('http://cassidie:7000');
