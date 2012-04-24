@@ -34,26 +34,42 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('login', function(data) {
+		if (socket.client.getAuthenticated()) return;
 		Account.login(data, socket);
 	});
 
 	socket.on('logout', function() {
+		if (!socket.client.getAuthenticated()) return;
 		Account.logout(socket);
 	});
 
 	socket.on('get_character_list', function() {
+		if (!socket.client.getAuthenticated()) return;
 		Account.getCharacterList(socket);
 	});
 
 	socket.on('get_character_structure', function() {
+		if (!socket.client.getAuthenticated()) return;
 		Account.getCharacterStructure(socket);
 	});
 
 	socket.on('create_character', function(data) {
+		if (!socket.client.getAuthenticated()) return;
 		Account.createCharacter(data, socket);
 	});
 
 	socket.on('remove_character', function(data) {
+		if (!socket.client.getAuthenticated()) return;
 		Account.remove_character(data, socket);
+	});
+
+	socket.on('enter_game', function(data) {
+		if (!socket.client.getAuthenticated() || socket.client.getInGame()) return;
+		Cassidie.game.enter(socket, data.characterId);
+	});
+
+	socket.on('leave_game', function(data) {
+		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
+		Cassidie.game.leave(socket);
 	});
 });

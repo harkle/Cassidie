@@ -13,5 +13,9 @@ module.exports = PlayableCharacter.extend({
 			this.attributes.name = data.name;
 			this.attributes.skin = data.skin;
 		}
+	},
+	
+	toString: function() {
+		return this.attributes.name;
 	}
 });

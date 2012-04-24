@@ -5,5 +5,9 @@ module.exports = Class.create({
 
 	initialize: function(type) {
 		this.type = type;
+	},
+	
+	toString: function() {
+		return 'character'
 	}
 });

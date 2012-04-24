@@ -121,6 +121,7 @@ require('./utils/account.js');
 		Logger.systemLog('title:		'+this.game.title);
 		Logger.systemLog('viewport:	'+this.game.viewport.width+'x'+this.game.viewport.height);
 		Logger.systemLog('max char.:	'+this.game.maxCharacters);
+		Logger.systemLog('player:		'+this.game.clients.length);
 	};
 
 	this.Cassidie.addClient = function(client) {
@@ -130,6 +131,7 @@ require('./utils/account.js');
 	this.Cassidie.removeClient = function(id) {
 		for (var i = 0; i < this.clients.length; i++) {
 			if (this.clients[i].getID() == id) {
+				this.game.leave(this.clients[i])
 				this.clients.splice(i, 1);
 			}
 		}

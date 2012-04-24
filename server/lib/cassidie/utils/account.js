@@ -20,7 +20,7 @@
 	this.Account.login = function(_data, socket) {
 		Cassidie.database.find('users', {email: _data.email}, function(data) {
 			if (data.length == 0 ) {
-				socket.emit('login_fail', _data);			
+				socket.emit('login_fail', _data);
 			} else {
 				_data.password = crypto.createHmac('sha1', 'abc').update(_data.password).digest('hex');
 
@@ -31,19 +31,22 @@
 					socket.client.setCharactersData(data[0].characters);
 
 					socket.emit('login_success', _data);
+					Logger.systemLog(Cassidie.consoleName, socket.client.email+' logged in');
 				} else {
 					socket.emit('login_fail', _data);			
+					Logger.systemLog(Cassidie.consoleName, 'login failed for '+socket.client.email);
 				}
 			}
 		});
 	};
 
 	this.Account.logout = function(socket) {
-		socket.client.setAuthenticated(true);
+		socket.client.setAuthenticated(false);
 		socket.client.setEmail('');
 		socket.client.setNickname('');
 
 		socket.emit('logout');
+		Logger.systemLog(Cassidie.consoleName, socket.client.email+' logged out');
 	};
 
 	this.Account.getCharacterList = function(socket) {
