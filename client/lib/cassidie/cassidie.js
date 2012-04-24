@@ -30,5 +30,26 @@
 		this.socket.on('error', function() {
 			alert('An error occured');
 		});
+
+		this.socket.on('game_entered', function(data) {
+			Cassidie.buildGame(data);
+			self.trigger(Events.GAME_ENTERED, data);
+		});
+		
+		this.socket.on('game_left', function(data) {
+			self.trigger(Events.GAME_LEFT, data);
+		});
+	};
+
+	this.Cassidie.enterGame = function(characterId) {
+		this.socket.emit('enter_game', {characterId: characterId});
+	};
+
+	this.Cassidie.leaveGame = function(characterId) {
+		this.socket.emit('leave_game');
+	};
+
+	this.Cassidie.buildGame = function(data) {
+		
 	};
 })();

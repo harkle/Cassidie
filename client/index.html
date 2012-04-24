@@ -48,7 +48,7 @@
 			<div id="actions">
 				<h2 class="page-header">Actions</h2>
 				<div class="row">
-					<div class="span4">
+					<div class="span6">
 						<h3>Register</h3>
 						<div id="register_message" class="alert hidden"></div>
 						<label for="register_email">Email:</label><input type="text" id="register_email" value="" /><br/>
@@ -56,16 +56,12 @@
 						<label for="register_password">Mot de passe:</label><input type="password" id="register_password" value="" /><br/>
 						<button class="btn" id="register_submit">Envoyer</button>				
 					</div>
-					<div class="span4">
+					<div class="span6">
 						<h3>Login</h3>
 						<div id="login_message" class="alert hidden"></div>
 						<label for="login_email">Email:</label><input type="text" id="login_email" value="" /><br/>
 						<label for="login_password">Mot de passe:</label><input type="password" id="login_password" value="" /><br/>
 						<button class="btn" id="login_submit">Envoyer</button>				
-					</div>
-					<div class="span4">
-						<h3>Logout</h3>
-						<button class="btn" id="logout_submit">Envoyer</button>				
 					</div>
 				</div>
 			</div>
@@ -78,12 +74,17 @@
 						<ul id="characterList" class="thumbnails">
 						</ul>
 						<button class="btn" id="new_character">Nouveau</button>
-						<button class="btn" id="delete_character" disabled="disabled">Supprimer</button>
+						<button class="btn btn-danger" id="delete_character" disabled="disabled">Supprimer</button>
+						<button class="btn btn-success" id="start_game" disabled="disabled">Jouer</button>
 					</div>
 					<div class="span4">
 						<h3>Nouveau</h3>
 						<div id="newPlayer">
 						</div>
+					</div>
+					<div class="span4">
+						<h3>Logout</h3>
+						<button class="btn" id="logout_submit">Déconnexion</button>				
 					</div>
 				</div>
 			</div>

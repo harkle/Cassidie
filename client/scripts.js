@@ -48,12 +48,13 @@ Cassidie.observe(Events.CONNECT, function(data) {
 	$('#login_submit').click(function() {
 		Account.login($('#login_email').val(), $('#login_password').val());
 	});
-	Account.login('net@lionel.me', 'Lopi28fg42');
+	//Account.login('net@lionel.me', 'Lopi28fg42');
 
 	//Logout
 	Account.observe(Events.LOGOUT, function(data) {
 		$('#auth').text('false');
 		$('#auth_infos').text('N/A');
+		$('#characters').addClass('hidden');
 	});
 
 	$('#logout_submit').click(function() {
@@ -82,12 +83,14 @@ Cassidie.observe(Events.CONNECT, function(data) {
 			$(this).addClass('alert-info').attr('data-selected', true);
 			
 			$('#delete_character').removeAttr('disabled');
+			$('#start_game').removeAttr('disabled');
 		});
 	});
 
 	Account.observe(Events.CHARACTER_REMOVED, function(data) {
 		Account.getCharacters();		
 		$('#delete_character').attr('disabled', 'disabled');
+		$('#start_game').attr('disabled', 'disabled');
 	});
 
 	$('#delete_character').click(function() {
@@ -108,9 +111,9 @@ Cassidie.observe(Events.CONNECT, function(data) {
 			}
 
 			if (elm == 'skin') {
-				$('#newPlayer').append('<label for="newPlayer_'+elm+'">Apparence</label><input class="hidden"id="newPlayer_'+elm+'" value="1" /><br/>');
+				$('#newPlayer').append('<label for="newPlayer_'+elm+'">Apparence</label><input class="hidden"id="newPlayer_'+elm+'" value="1" /><div class="thumbnails">');
 				for (var i = 1; i <= 14; i++) {
-					$('#newPlayer').append('<img class="head '+((i > 1) ? 'hidden' : '')+'" src="/ressources/images/heads/'+i+'.gif" data-id="'+i+'" />');					
+					$('#newPlayer .thumbnails').append('<div class="thumbnail span2 head '+((i > 1) ? 'hidden' : '')+'" data-id="'+i+'"><img  src="/ressources/images/heads/'+i+'.gif" /></div>');					
 				}
 			}
 		});
@@ -143,7 +146,36 @@ Cassidie.observe(Events.CONNECT, function(data) {
 
 	$('#new_character').click(function() {
 		Account.getCharacterStructure();
-	})
+	});
+	
+	//Démarage du jeu
+	Account.observe(Events.GAME_ENTERED, function(data) {
+		$('#characters').addClass('hidden');
+		
+		$('.container').append('<h2 class="page-header" id="game_title">Jeu</h2><div id="game" style="background:black;width:'+Cassidie.game.viewport.width+'px;height:'+Cassidie.game.viewport.height+'px"></div>');
+		$('.container').append('<br/><button class="btn" id="leave_game">Quitter</button>');
+		
+		$('#leave_game').click(function() {
+			Cassidie.leaveGame();
+		});
+	});
+
+	Account.observe(Events.GAME_LEFT, function(data) {
+		$('#game_title').remove();
+		$('#leave_game').remove();
+		$('#game').remove();
+
+		$('#characters').removeClass('hidden');
+	});
+
+	$('#start_game').click(function() {
+		var characterId = $('#characterList li[data-selected="true"]').attr('data-id');
+
+		$('#delete_character').attr('disabled', 'disabled');
+		$('#start_game').attr('disabled', 'disabled');
+
+		Cassidie.enterGame(characterId);
+	});
 });
 
 Cassidie.observe(Events.DISCONNECT, function(data) {

@@ -27,4 +27,6 @@
 	this.Events.CHARACTER_CREATED		= 9;
 	this.Events.CHARACTER_NOT_CREATED	= 10;
 	this.Events.CHARACTER_REMOVED		= 11;
+	this.Events.GAME_ENTERED			= 12;
+	this.Events.GAME_LEFT				= 13;
 })();
