@@ -1,6 +1,7 @@
 (function() {
-	this.Account			= function() {};
-	this.Account.prototype	= Events.Observable;
+	this.Account						= function() {};
+	this.Account.prototype 				= new Events.Observable();
+	this.Account.prototype.constructor	= this.Account;
 	this.Account 			= new Account();
 
 	this.Account.initialize = function() {

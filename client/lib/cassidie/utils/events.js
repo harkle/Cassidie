@@ -1,21 +1,22 @@
 (function() {
 	this.Events						= {};
-	this.Events.Observable 			= {};
-	this.Events.Observable.events	= [];
-
-	this.Events.Observable.observe = function(event, callback) {
+	this.Events.Observable 			= function() {
+		this.events	= [];
+	};
+	
+	this.Events.Observable.prototype.observe = function(event, callback) {
 		if (!this.events[event]) this.events[event] = [];
 		this.events[event].push(callback);
-	};
+	}
 
-	this.Events.Observable.trigger = function(event, data) {
+	this.Events.Observable.prototype.trigger = function(event, data) {
 		if (!this.events[event]) return;
 		for (var i = 0; i < this.events[event].length; i++) {
 			this.events[event][i].apply(Cassidie, [data]);
 		}
-	};
+	}
 
-	this.Events.Observable.release = function(event) {
+	this.Events.Observable.prototype.release = function(event) {
 		if (!this.events[event]) return;
 
 		this.events[event] = [];

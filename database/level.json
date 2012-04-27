@@ -10,14 +10,6 @@
 		width:	40,
 		height: 30
 	},
-	cellSize: {
-		width:	80,
-		height: 36
-	},
-	isometry: {
-		x: 32,
-		y: 12
-	},
 	charactersData: [],
 	cells:	[
 		{

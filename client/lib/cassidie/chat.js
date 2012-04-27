@@ -18,24 +18,24 @@
 				text = tempValue.join(' ');
 				if (text == '') return;
 
-				if (Cassidie.level.levelData.character.attributes.name.toLowerCase() == player.toLowerCase()) return;
+				if (Game.level.levelData.character.attributes.name.toLowerCase() == player.toLowerCase()) return;
 
 				Cassidie.socket.emit('chat_broadcast', {action: 'player', player: player, message: text});
-				this.trigger(Events.CHAT_RECEIVE, {action: 'player', player: Cassidie.level.levelData.character.attributes.name, message: text});
+				this.trigger(Events.CHAT_RECEIVE, {action: 'player', player: Game.level.levelData.character.attributes.name, message: text});
 			} else if (tempValue[0] == '/l') {
 				tempValue.splice(0,1);
 				text = tempValue.join(' ');
 				if (text == '') return;
 
 				Cassidie.socket.emit('chat_broadcast', {action: 'level', message: text});
-				this.trigger(Events.CHAT_RECEIVE, {action: 'level', level: Cassidie.level.levelData.level.title, player: Cassidie.level.levelData.character.attributes.name, message: text});
+				this.trigger(Events.CHAT_RECEIVE, {action: 'level', level: Game.level.levelData.level.title, player: Game.level.levelData.character.attributes.name, message: text});
 			} else {
 				text = inputValue.trim();
 				if (text == '') return;
 				if (text == '/') return;
 
 				Cassidie.socket.emit('chat_broadcast', {action: 'speak', message: text});
-				this.trigger(Events.CHAT_RECEIVE, {action: 'speak', player: Cassidie.level.levelData.character.attributes.name, message: text});
+				this.trigger(Events.CHAT_RECEIVE, {action: 'speak', player: Game.level.levelData.character.attributes.name, message: text});
 			}
 		};
 
@@ -44,6 +44,7 @@
 		};
 	}
 
-	this.Chat.prototype	= Events.Observable;
-	this.Chat 			= new Chat();
+	this.Chat.prototype				= new Events.Observable();
+	this.Chat.prototype.constructor = this.Chat;
+	this.Chat 						= new Chat();
 })();

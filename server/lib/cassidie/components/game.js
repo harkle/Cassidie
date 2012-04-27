@@ -106,8 +106,6 @@ var Game = Class.create({
 				name:		this.levels[this.defaultLevel].name,
 				title:		this.levels[this.defaultLevel].title,
 				dimensions: this.levels[this.defaultLevel].dimensions,
-				cellSize: 	this.levels[this.defaultLevel].cellSize,
-				isometry: 	this.levels[this.defaultLevel].isometry,
 				viewport:	this.levels[this.defaultLevel].viewport,
 				cells:		this.levels[this.defaultLevel].cells,
 				characters: this.levels[this.defaultLevel].getCharacters(true)/*,

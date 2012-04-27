@@ -12,7 +12,7 @@ Cassidie.observe(Events.NO_SERVER, function(data) {
 
 Cassidie.observe(Events.CONNECT, function(data) {
     $('#clientid').text(this.clientID);
-    $('#gameinfos').text(this.game.title+' ('+this.game.name+'); '+this.game.viewport.width+'x'+this.game.viewport.height+'; max '+this.game.maxCharacters+' characters per player');
+    $('#gameinfos').text(Game.gameData.title+' ('+Game.gameData.name+'); '+Game.gameData.viewport.width+'x'+Game.gameData.viewport.height+'; max '+Game.gameData.maxCharacters+' characters per player');
 
     if(location.hash == '#1') Account.login('net@lionel.me', 'Lopi28fg42');
     if(location.hash == '#2') Account.login('lionel.tardy@me.com', 'Lopi28fg42');
@@ -72,9 +72,9 @@ $('#logout_submit').click(function() {
 
 //Personnages
 Account.observe(Events.CHARACTER_LIST, function(data) {
-    $('#chr_counter').text(data.length+'/'+Cassidie.game.maxCharacters);
+    $('#chr_counter').text(data.length+'/'+Game.gameData.maxCharacters);
 
-    if (data.length == Cassidie.game.maxCharacters) {
+    if (data.length == Game.gameData.maxCharacters) {
     	$('#new_character').attr('disabled', 'disabled');
     } else {
     	$('#new_character').removeAttr('disabled');		
@@ -169,19 +169,20 @@ $('#new_character').click(function() {
 });
 
 //Démarage du jeu
-Account.observe(Events.GAME_ENTERED, function(data) {
+Game.observe(Events.GAME_ENTERED, function(data) {
     $('#characters').addClass('hidden');
     $('#chat').removeClass('hidden');
 
     $('.container').append('<br/><button class="btn" id="leave_game">Quitter</button>');
     $('#leave_game').click(function() {
-    	Cassidie.leaveGame();
+    	Game.leaveGame();
     });
 });
 
-Account.observe(Events.GAME_LEFT, function(data) {
+Game.observe(Events.GAME_LEFT, function(data) {
     $('#game_title').remove();
     $('#leave_game').remove();
+    $('#chat').addClass('hidden');
     $('#game').remove();
 
     $('#characters').removeClass('hidden');
@@ -192,7 +193,7 @@ $('#start_game').click(function() {
 
     $('#delete_character').attr('disabled', 'disabled');
     $('#start_game').attr('disabled', 'disabled');
-    Cassidie.enterGame(characterId);
+    Game.enterGame(characterId);
 });
 
 Cassidie.observe(Events.DISCONNECT, function(data) {
