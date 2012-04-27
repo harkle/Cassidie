@@ -1,9 +1,11 @@
 var Character = require('./character.js');
 
 module.exports = Character.extend({
-	level:	'',
+	client: null,
 
-	initialize: function() {
-		this._super('player');
+	initialize: function(client, data) {
+		this._super('player', data);
+		
+		this.client = client;
 	}
 });

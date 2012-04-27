@@ -38,6 +38,10 @@
 			self.trigger(Events.CHARACTER_CREATED, data);
 		});
 
+		Cassidie.socket.on('character_not_created', function(data) {
+			self.trigger(Events.CHARACTER_NOT_CREATED, data);
+		});
+
 		Cassidie.socket.on('character_removed', function(data) {
 			self.trigger(Events.CHARACTER_REMOVED, data);
 		});

@@ -9,7 +9,6 @@ var server		= http.createServer();
 server.listen(7000);
 
 io.set('log level', 0);
-
 io.sockets.on('connection', function (socket) {
 	var client 		= new Client(socket);
 	socket.client 	= client;
@@ -70,6 +69,22 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('leave_game', function(data) {
 		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
-		Cassidie.game.leave(socket);
+		Cassidie.game.leave(socket, data);
+	});
+
+	socket.on('character_move', function(data) {
+		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
+		socket.client.character.moveTo(data.x, data.y);
+	});
+
+	socket.on('character_set_position', function(data) {
+		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
+		socket.client.character.setPosition(data.x, data.y, data.end);
+	});
+
+	socket.on('chat_broadcast', function(data) {
+		if (!socket.client.getAuthenticated()) return;
+		Cassidie.chat.broadcast(socket.client, data);
 	});
 });
+module.exports = io.sockets;

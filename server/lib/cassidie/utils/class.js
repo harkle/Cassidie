@@ -1,3 +1,6 @@
+var events		= require('events'),
+	util 		= require('util');
+
 /* 
  * Tools and base for javascript class
  *
@@ -11,6 +14,8 @@
         
         //Function to remap "this" on callback
         this.call = function() {
+			events.EventEmitter.call(this);
+
             var self = this;
             var args = $.makeArray(arguments);
             var func = args.shift();
@@ -21,6 +26,8 @@
             }
         }
     };
+
+	util.inherits(this.Class, events.EventEmitter);
 
     //Create a new Class that inherits from this class
     this.Class.create = function(prop1, prop2) {

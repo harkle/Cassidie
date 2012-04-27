@@ -62,15 +62,27 @@
 	};
 
 	this.Account.createCharacter = function(data, socket) {
-		if (socket.client.getCharactersData().length < Cassidie.game.maxCharacters) {
-			socket.client.getCharactersData().push(data);
-
-			Cassidie.database.update('users', {email: socket.client.email}, {characters: socket.client.getCharactersData()}, function() {
-				socket.emit('character_created');			
-			});
-		} else {
-			socket.emit('character_not_created');
+		if (socket.client.getCharactersData().length == Cassidie.game.maxCharacters) {
+			socket.emit('character_not_created', {message: 'too_many_characters'});
+			return;
 		}
+
+		var characterNameQuery = new RegExp(data.name.toLowerCase(), 'i');
+		var characterData		= data;
+		Cassidie.database.find('users', {characters: {$elemMatch : {name: characterNameQuery}}}, function(data) {
+			if (data.length == 0) {
+				var temporaryPlayer = new Cassidie.game.playerClass();
+				temporaryPlayer.attributes = characterData;
+				socket.client.getCharactersData().push(temporaryPlayer.getData());
+				Cassidie.database.update('users', {email: socket.client.email}, {characters: socket.client.getCharactersData()}, function() {
+					socket.emit('character_created');			
+				});
+			} else {
+				socket.emit('character_not_created', {message: 'name_already_used'});
+			}
+		});
+
+
 	};
 
 	this.Account.remove_character = function(data, socket) {

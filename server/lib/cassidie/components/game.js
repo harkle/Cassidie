@@ -1,10 +1,13 @@
 // imports
-module.exports = Class.create({
+var Game = Class.create({
 	name: 				'',
 	title:				'',
 	viewport:			null,
 	maxCharacters:		0,
 	consoleName:		'game		',
+	defaultLevel:		'',
+	levelsList:			[],
+	levels:				[],
 	playerClass:		null,
 	clients:			[],
 
@@ -15,30 +18,114 @@ module.exports = Class.create({
 		this.viewport		= data.viewport;
 		this.maxCharacters	= data.maxCharacters;
 		this.playerClass	= playerClass;
+		this.defaultLevel	= data.defaultLevel;
+		this.chatDistance	= data.chatDistance;
+		this.levelsList		= data.levels;
+
+		this.loadLevels();
 
 		Logger.systemLog(this.consoleName, 'constructor called');
 	},
 
+	loadLevels: function() {
+		var loadings = [];
+
+		var self = this;
+		for (var i = 0; i < this.levelsList.length; i++) {
+			var name = this.levelsList[i];
+			Logger.systemLog(this.consoleName, 'loading level: '+name);
+
+			loadings.push(function(next) {
+				self.loadLevel(self, name, i, next);
+			});
+		}
+
+		Cassidie.wait(loadings, function() {
+			Logger.systemLog(self.consoleName, 'all level loaded');
+			self.emit(Game.READY);
+		});
+	},
+
+	loadLevel: function(context, name, i, next) {
+		Cassidie.database.find('levels', {name: name}, function(data) {
+			var Level = require(process.cwd()+data[0].path);
+			context.levels[name] = new Level(data[0]);
+
+			Logger.systemLog(context.consoleName, 'level: '+name+' loaded');
+			next();
+		});
+	},
+
+	stop: function(callback) {
+		var self		= this;
+		var loadings	= [];
+
+		//Remove every characters
+		function leaveClients(client) {
+			loadings.push(function(next) {
+				self.leave(client.socket, null, function() {
+					next();
+				});
+			});
+		}
+		for (var i = 0; i < this.clients.length; i++) {
+			leaveClients(this.clients[i])	
+		}
+
+		//Save NPCs
+		function saveNpcs (npcs) {
+			loadings.push(function(next) {
+				Cassidie.database.update('levels', {name: level}, {charactersData: npcs}, function() {
+					next();
+				});
+			});
+		}
+		for (level in this.levels) {
+			saveNpcs(this.levels[level].getCharacters(true, 'npc'));
+		}
+
+		Cassidie.wait(loadings, function() {
+			Logger.systemLog(self.consoleName, 'all has been saved');
+			callback();
+		});
+	},
+
 	enter: function(socket, characterId) {
-		socket.client.character = new this.playerClass(socket.client.getCharacterData(characterId));	
+		socket.client.character = new this.playerClass(socket.client, socket.client.getCharacterData(characterId));
 		socket.client.setInGame(true);
 
 		this.clients.push(socket.client);
 
+		this.levels[this.defaultLevel].attachCharacter(socket.client.character);
+
 		////
 		//// SEND A LOT OF INFOS ABOUT GAME, LEVELS, etc.
 		////
-		socket.emit('game_entered');
+		socket.emit('game_entered', {
+			level: {
+				name:		this.levels[this.defaultLevel].name,
+				title:		this.levels[this.defaultLevel].title,
+				dimensions: this.levels[this.defaultLevel].dimensions,
+				cellSize: 	this.levels[this.defaultLevel].cellSize,
+				isometry: 	this.levels[this.defaultLevel].isometry,
+				viewport:	this.levels[this.defaultLevel].viewport,
+				cells:		this.levels[this.defaultLevel].cells,
+				characters: this.levels[this.defaultLevel].getCharacters(true)/*,
+				objects:	[]*/
+			},
+			character: socket.client.character.getData()
+		});
 		Logger.systemLog(this.consoleName, socket.client.email+' entered the game with "'+socket.client.character.toString()+'"');
 	},
 
-	leave: function(socket) {
+	leave: function(socket, data, callback) {
 		if (socket.client == undefined) return;
 		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
 
-		////
-		//// SAVE A LOT OF STUFF
-		////
+		data = (data != undefined) ? data.characterData : null;
+		socket.client.character.save(data, callback);
+
+		socket.client.character.removeFromLevel();
  
 		Logger.systemLog(this.consoleName, socket.client.email+' left the game with "'+socket.client.character.toString()+'"');		
 
@@ -51,3 +138,7 @@ module.exports = Class.create({
 		socket.emit('game_left');
 	}
 });
+
+Game.READY = 0;
+
+module.exports = Game;
