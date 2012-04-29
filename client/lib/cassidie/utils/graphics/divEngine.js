@@ -6,6 +6,7 @@
 		this.container			= null
 		this.skinsCoordinates	= null;
 		this.levelData			= null;
+		this.cursor				= null;
 		this.isometry			= {
 			x: 32,
 			y: 12		
@@ -36,6 +37,15 @@
 			}, false);
 
 			Game.container.addEventListener('mousemove', function(e) {
+				var baseX = e.clientX-Game.container.offsetLeft-parseInt(self.container.style.left);
+				var baseY = e.clientY-Game.container.offsetTop-parseInt(self.container.style.top);
+
+				var overTile = self.getCoordinates(baseX, baseY);
+				var position = self.getTilePosition(overTile.x, overTile.y)
+
+				self.cursor.style.left = position.x+'px';
+				self.cursor.style.top = (position.y-self.isometry.y)+'px';
+
 				if (!drag) return;
 				dragged = true;
 
@@ -48,7 +58,7 @@
 				self.container.style.left	= (cX + x)+'px';
 				self.container.style.top	= (cY + y)+'px';
 				startX = e.clientX;
-				startY = e.clientY;
+				startY = e.clientY;				
 			}, false);
 
 			Game.container.addEventListener('mouseup', function(e) {
@@ -62,8 +72,6 @@
 			}, false);
 
 			document.addEventListener('mouseup', function(e) {
-				//self.moveCharacter(self.levelData.character.id, clickedTile.x, clickedTile.y, true);*/
-
 				dragged = false;
 				drag	= false;
 			}, false);
@@ -87,6 +95,10 @@
 					this.container.appendChild(tile);		
 				}
 			}
+
+			this.cursor = document.createElement('div');
+			this.cursor.setAttribute('style', 'position:absolute;height:36px;width:80px;left:-80px;top:-36px;background:url(/ressources/cursor.png)');
+			this.container.appendChild(this.cursor);		
 
 			this.skinsCoordinates = [
 				[],

@@ -18,7 +18,7 @@
 
 		this.container = document.createElement('div');
 		this.container.setAttribute('id', 'gameContainer');
-		this.container.setAttribute('style', 'display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
+		this.container.setAttribute('style', 'cursor:none;display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
 		this.targetDiv.appendChild(this.container);
 
 		this.engine = new DivEngine();
@@ -33,7 +33,7 @@
 
 			self.trigger(Events.GAME_ENTERED, data);
 		});
-		
+
 		Cassidie.socket.on('game_left', function(data) {
 			Game.container.style.display = 'none';
 
