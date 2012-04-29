@@ -173,15 +173,25 @@ Game.observe(Events.GAME_ENTERED, function(data) {
     $('#characters').addClass('hidden');
     $('#chat').removeClass('hidden');
 
-    $('.container').append('<br/><button class="btn" id="leave_game">Quitter</button>');
+    $('.container').append('<br/><button class="btn" id="leave_game">Quitter</button><button class="btn" id="chr_nothing">Rien faire</button><button class="btn" id="chr_attak">Attaquer</button>');
     $('#leave_game').click(function() {
     	Game.leaveGame();
+    });
+
+    $('#chr_nothing').click(function() {
+    	Game.level.playerCharacter.setParamater('activity', 0, true);
+    });
+
+    $('#chr_attak').click(function() {
+    	Game.level.playerCharacter.setParamater('activity', 1, true);
     });
 });
 
 Game.observe(Events.GAME_LEFT, function(data) {
     $('#game_title').remove();
     $('#leave_game').remove();
+    $('#chr_attak').remove();
+    $('#chr_nothing').remove();
     $('#chat').addClass('hidden');
     $('#game').remove();
 

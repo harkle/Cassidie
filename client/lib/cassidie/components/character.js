@@ -27,6 +27,12 @@
 			}		
 		}
 
+		this.setParamater = function(parameter, value) {
+			eval('this.'+parameter+'=value');
+
+			Cassidie.socket.emit('character_set_parameter', {id: this.id, parameter: parameter, value: value});
+		};
+
 		this.move = function(x, y, notiyOthers) {
 			if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return;
 

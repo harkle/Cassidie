@@ -44,6 +44,13 @@
 				if (data.isVisible)  character.show();
 				if (!data.isVisible) character.hide();
 			});
+			
+			Cassidie.socket.removeAllListeners('character_parameter_changed');
+			Cassidie.socket.on('character_parameter_changed', function(data) {
+				var character = self.getCharacter(data.id);
+
+				character.setParameter(data.parameter, data.value, false);
+			});
 		};
 
 		this.addCharacter = function(data, isPlayer) {

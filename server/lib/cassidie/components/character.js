@@ -37,6 +37,12 @@ module.exports = Class.create({
 		this.level = null;	
 	},
 
+	setParameter: function(parameter, value, notifyOther) {
+		eval('this.'+parameter+'=value');
+
+		if (notifyOther) this.sendData('character_parameter_changed', {parameter: parameter, value:value});
+	},
+
 	setData: function(data, internal) {
 		for (attribute in this) {
 			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute, internal)) {
