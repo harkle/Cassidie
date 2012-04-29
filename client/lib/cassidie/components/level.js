@@ -33,11 +33,16 @@
 
 			Cassidie.socket.removeAllListeners('character_moved');
 			Cassidie.socket.on('character_moved', function(data) {
-				for (var i = 0; i < self.characters.length; i++) {
-					if (self.characters[i].id == data.id) {
-						self.characters[i].move(data.x, data.y, false);
-					}
-				}
+				var character = self.getCharacter(data.id);
+				character.move(data.x, data.y, false);
+			});
+
+			Cassidie.socket.removeAllListeners('character_visibility');
+			Cassidie.socket.on('character_visibility', function(data) {
+				var character = self.getCharacter(data.id);
+
+				if (data.isVisible)  character.show();
+				if (!data.isVisible) character.hide();
 			});
 		};
 

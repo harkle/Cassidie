@@ -155,12 +155,27 @@
 			this.container.appendChild(character);
 
 			this.setCharacterBackground(characterData.id, characterData.attributes.skin, characterData.action, characterData.direction);
+			
+			if (characterData.isVisible) this.showCharacter(characterData.id);
+			if (!characterData.isVisible) this.hideCharacter(characterData.id);
 		};
 
 		this.removeCharacter = function(id) {
 			var character = document.getElementById('character_'+id);
 
 			this.container.removeChild(character)			
+		};
+
+		this.showCharacter = function(id) {
+			var character = document.getElementById('character_'+id);
+	
+			character.style.display = 'bloc';
+		};
+
+		this.hideCharacter = function(id) {
+			var character = document.getElementById('character_'+id);
+
+			character.style.display = 'none';
 		};
 
 		this.setCharacterBackground = function(id, skin, action, direction) {

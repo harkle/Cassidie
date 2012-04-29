@@ -4,6 +4,7 @@
 		this.x					= null;
 		this.y					= null;
 		this.attributes			= null;
+		this.isVisible			= null;
 		this.engineRessource	= null;
 		this.level				= null;
 		this.direction			= 'se';
@@ -143,7 +144,7 @@
 				step++;
 			}, 40);			
 		};
-		
+
 		this.getData = function() {
 			var returnObject = {};
 
@@ -152,6 +153,18 @@
 			}
 			
 			return returnObject;
+		};
+
+		this.show = function() {
+			this.isVisible = true;
+
+			Game.engine.showCharacter(this.id);
+		};
+
+		this.hide = function() {
+			this.isVisible = false;			
+
+			Game.engine.hideCharacter(this.id);
 		};
 
 		this.destroy = function() {

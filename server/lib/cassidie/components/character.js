@@ -8,6 +8,7 @@ module.exports = Class.create({
 	isMoving:		null,
 	destinationX:	null,
 	destinationY:	null,
+	isVisible:		null,
 
 	initialize: function(type, data) {
 		if (data != undefined) {
@@ -23,6 +24,7 @@ module.exports = Class.create({
 			this.isMoving		= false;
 			this.destinationX	= 0;
 			this.destinationY	= 0;
+			this.isVisible		= true;
 		}
 	},
 
@@ -63,7 +65,7 @@ module.exports = Class.create({
 
 		return true;
 	},
-	
+
 	setPosition: function(x, y, end) {
 		this.x = x;
 		this.y = y;	
@@ -72,12 +74,13 @@ module.exports = Class.create({
 	},
 
 	moveTo: function(x, y) {
+		if (!this.isVisible) return;
+
 		this.destinationX	= x;
 		this.destinationY	= y;
 		this.isMoving		= true;
 
-		var emitter = (this.client == undefined) ? Cassidie.netConnection : this.client.socket.broadcast;
-		emitter.to(this.level.name).emit('character_moved', {id: this.id, x: this.destinationX, y: this.destinationY});	
+		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY});	
 	},
 
 	save: function(data, callback) {
@@ -101,8 +104,29 @@ module.exports = Class.create({
 			});
 		}
 	},
-	
+
+	sendData: function(key, data) {
+		var emitter = (this.client == undefined) ? Cassidie.netConnection : this.client.socket.broadcast;
+		
+		data. id = this.id;
+		emitter.to(this.level.name).emit(key, data);			
+	},
+
+	show: function() {
+		this.isVisible = true;
+
+		this.sendData('character_visibility', {isVisible: true});
+	},
+
+	hide: function() {
+		this.isVisible = false;
+
+		this.sendData('character_visibility', {isVisible: false});
+	},
+
 	speak: function(message) {
+		if (!this.isVisible) return;
+
 		Cassidie.chat.broadcast(this, {
 			action: 'speak',
 			message: message		
