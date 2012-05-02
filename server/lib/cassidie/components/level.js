@@ -7,6 +7,7 @@ module.exports = Class.create({
 	viewport:		{},
 	cells:			[],
 	charactersData: [],
+	objectsData: 	[],
 	characters: 	[],
 	objects:		[],
 
@@ -19,6 +20,7 @@ module.exports = Class.create({
 		this.viewport		= data.viewport;
 		this.cells			= data.cells;
 		this.charactersData = data.charactersData;	
+		this.objectsData 	= data.objectsData;	
 	},
 
 	getCharacters: function(onlyData, filter) {
@@ -61,6 +63,16 @@ module.exports = Class.create({
 
 		for (var i = 0; i < this.charactersData.length; i++) {
 			if (this.charactersData[i].attributes.name == name) return this.charactersData[i];
+		}
+
+		return null;
+	},
+
+	getObjectData: function(name) {
+		if (this.objectsData == undefined) return null;
+
+		for (var i = 0; i < this.charactersData.length; i++) {
+			if (this.objectsData[i].name == name) return this.objectsData[i];
 		}
 
 		return null;

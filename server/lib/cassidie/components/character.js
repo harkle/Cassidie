@@ -53,6 +53,13 @@ module.exports = GameObject.extend({
 		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY});	
 	},
 
+	setPosition: function(x, y, end) {
+		this.x = x;
+		this.y = y;
+		
+		if (end) this.isMoving = false;
+	},
+
 	save: function(data, callback) {
 		var self = this;
 

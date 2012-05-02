@@ -62,10 +62,13 @@ module.exports = Class.create({
 		return true;
 	},
 
-	setPosition: function(x, y, end) {
+	setPosition: function(x, y) {
 		this.x = x;
-		this.y = y;	
+		this.y = y;
+		
+		this.sendData('object_moved', {x: this.x, y: this.y});	
 	},
+
 
 	sendData: function(key, data) {
 		var emitter = (this.client == undefined) ? Cassidie.netConnection : this.client.socket.broadcast;

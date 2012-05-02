@@ -7,7 +7,6 @@
 		this.pathfinder 		= null;
 
 		this.initialize = function(data) {
-			console.log(data);
 			var self = this;
 
 			this.levelData = data;
@@ -44,6 +43,12 @@
 				character.move(data.x, data.y, false);
 			});
 
+			Cassidie.socket.removeAllListeners('object_moved');
+			Cassidie.socket.on('object_moved', function(data) {
+				var object = self.getObject(data.id);
+				object.move(data.x, data.y, false);
+			});
+
 			Cassidie.socket.removeAllListeners('character_visibility');
 			Cassidie.socket.on('character_visibility', function(data) {
 				var character = self.getCharacter(data.id);
@@ -52,12 +57,28 @@
 				if (!data.isVisible) character.hide();
 			});
 
+			Cassidie.socket.removeAllListeners('object_visibility');
+			Cassidie.socket.on('object_visibility', function(data) {
+				var object = self.getObject(data.id);
+
+				if (data.isVisible)  object.show();
+				if (!data.isVisible) object.hide();
+			});
+
 			Cassidie.socket.removeAllListeners('character_parameter_changed');
 			Cassidie.socket.on('character_parameter_changed', function(data) {
 				var character = self.getCharacter(data.id);
 
 				character.setParameter(data.parameter, data.value, false);
 				Game.trigger(Events.CHARACTER_PARAMETER_CHANGED, data);
+			});
+
+			Cassidie.socket.removeAllListeners('object_parameter_changed');
+			Cassidie.socket.on('object_parameter_changed', function(data) {
+				var object = self.getObject(data.id);
+
+				object.setParameter(data.parameter, data.value, false);
+				Game.trigger(Events.OBJECT_PARAMETER_CHANGED, data);
 			});
 		};
 

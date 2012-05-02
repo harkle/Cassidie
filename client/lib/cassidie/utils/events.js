@@ -38,4 +38,5 @@
 	this.Events.GAME_ENTERED				= 13;
 	this.Events.GAME_LEFT					= 14;
 	this.Events.CHARACTER_PARAMETER_CHANGED = 15;
+	this.Events.OBJECT_PARAMETER_CHANGED	= 16;
 })();

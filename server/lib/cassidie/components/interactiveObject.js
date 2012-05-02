@@ -6,8 +6,10 @@ module.exports = GameObject.extend({
 	initialize: function(skin, x, y, data) {
 		this._super('interactiveObject', data);
 		
-		this.skin	= skin;
-		this.x		= x;
-		this.y		= y;
+		if (data == undefined) {
+			this.skin	= skin;
+			this.x		= x;
+			this.y		= y;
+		}
 	}
 });

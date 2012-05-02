@@ -118,7 +118,7 @@
 				[11, 51, 25, 61],
 				[11, 38, 26, 43],
 			];
-			
+
 			this.objectsCoordinates = {
 				camera: [20, 65, 38, 73]
 			}		
@@ -189,7 +189,6 @@
 			
 			if (objectData.isVisible) this.showObject(objectData.id);
 			if (!objectData.isVisible) this.hideObject(objectData.id);
-			console.log(object);
 		};
 
 		this.characterSpeech = function(id, text) {
@@ -223,13 +222,13 @@
 		this.showCharacter = function(id) {
 			var character = document.getElementById('character_'+id);
 	
-			character.style.display = 'bloc';
+			character.style.display = '';
 		};
 
 		this.showObject = function(id) {
 			var object = document.getElementById('object_'+id);
 	
-			object.style.display = 'bloc';
+			object.style.display = '';
 		};
 
 		this.hideCharacter = function(id) {
@@ -258,6 +257,16 @@
 
 			character.style.left	= (position.x+skinsCoordinates[0]+dx)+'px';			
 			character.style.top	= (position.y-skinsCoordinates[1]+dy)+'px';
+		};
+		
+		this.setObjectPosition = function(id, skin, x, y) {
+			var object = document.getElementById('object_'+id);
+
+			var position			= this.getTilePosition(x, y);
+			var objectsCoordinates	= this.objectsCoordinates[skin];
+
+			object.style.left	= (position.x+objectsCoordinates[0])+'px';			
+			object.style.top	= (position.y-objectsCoordinates[1])+'px';			
 		};
 	};
 })();

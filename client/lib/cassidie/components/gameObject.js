@@ -18,7 +18,7 @@
 
 		}
 
-		this.setParamater = function(parameter, value, notifyOther) {
+		this.setParameter = function(parameter, value, notifyOther) {
 			eval('this.'+parameter+'=value');
 
 			if (notifyOther) {
@@ -36,6 +36,13 @@
 			
 			return returnObject;
 		};
+
+		this.move = function(x, y, notiyOthers) {
+			this.x = x;
+			this.y = y;
+
+			Game.engine.setObjectPosition(this.id, this.skin, this.x, this.y);
+		}
 
 		this.show = function() {
 			this.isVisible = true;

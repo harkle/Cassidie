@@ -56,6 +56,9 @@
 				}
 				cells.push(row);
 			}
+			for (var i = 0; i < this.level.objects.length; i++) {
+				cells[this.level.objects[i].x][this.level.objects[i].y] = 1;
+			}
 			if(cells[x][y] == 1) return;
 
 			var graph = new Graph(cells);
