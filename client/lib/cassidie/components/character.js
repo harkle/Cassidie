@@ -112,7 +112,7 @@
 			}
 
 			this.action = 'walking';
-			Game.engine.setCharacterBackground(this.id, this.attributes.skin, this.action, this.direction);
+			Game.engine.setCharacterSkin(this.id, this.attributes.skin, this.action, this.direction);
 
 			var speed = 20;
 			dx /= speed;
@@ -146,7 +146,7 @@
 						if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: false});
 					} else {
 						self.action = 'standing';
-						Game.engine.setCharacterBackground(self.id, self.attributes.skin, self.action, self.direction);
+						Game.engine.setCharacterSkin(self.id, self.attributes.skin, self.action, self.direction);
 						if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: true});
 					}
 				}

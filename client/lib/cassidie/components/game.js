@@ -48,7 +48,6 @@
 	this.Game.leaveGame = function() {
 
 		var character = this.level.playerCharacter.getData();
-		console.log(character);
 
 		this.level.destroy();
 

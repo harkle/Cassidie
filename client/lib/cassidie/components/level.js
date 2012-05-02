@@ -3,9 +3,11 @@
 		this.levelData			= null;
 		this.playerCharacter	= null;
 		this.characters 		= [];
+		this.objects			= [];
 		this.pathfinder 		= null;
 
 		this.initialize = function(data) {
+			console.log(data);
 			var self = this;
 
 			this.levelData = data;
@@ -18,6 +20,11 @@
 			// Other players and NPCs
 			for (var i = 0; i < this.levelData.level.characters.length; i++) {
 				if (this.levelData.character.id != this.levelData.level.characters[i].id) this.addCharacter(this.levelData.level.characters[i], false);
+			}
+
+			//Objects
+			for (var i = 0; i < this.levelData.level.objects.length; i++) {
+				this.addObject(this.levelData.level.objects[i]);
 			}
 
 			// Event listeners
@@ -58,8 +65,16 @@
 			var character = new Character(data, this, isPlayer);
 
 			this.characters.push(character);
-			
+
 			return character;
+		};
+
+		this.addObject = function(data) {
+			var object = new GameObject(data, this);
+
+			this.objects.push(object);
+			
+			return object;
 		};
 
 		this.removeCharacter = function(id) {
@@ -68,13 +83,28 @@
 					this.characters[i].destroy();
 					this.characters.splice(i, 1);
 				}
-			}	
+			}
+		};
+
+		this.removeObject = function(id) {
+			for (var i = this.objects.length-1; i >= 0; i--) {
+				if (this.objects[i].id == id) {
+					this.objects[i].destroy();
+					this.objects.splice(i, 1);
+				}
+			}
 		};
 
 		this.getCharacter = function(id) {
 			for (var i = 0; i < this.characters.length; i++)	{
 				if (this.characters[i].id == id) return this.characters[i];
-			}		
+			}
+		};
+
+		this.getObject = function(id) {
+			for (var i = 0; i < this.objects.length; i++)	{
+				if (this.objects[i].id == id) return this.objects[i];
+			}
 		};
 
 		this.destroy = function() {

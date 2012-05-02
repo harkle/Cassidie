@@ -5,6 +5,7 @@
 	this.DivEngine = function() {
 		this.container			= null
 		this.skinsCoordinates	= null;
+		this.objectsCoordinates	= null;
 		this.levelData			= null;
 		this.cursor				= null;
 		this.isometry			= {
@@ -116,7 +117,11 @@
 				[6, 54, 35, 66],
 				[11, 51, 25, 61],
 				[11, 38, 26, 43],
-			];			
+			];
+			
+			this.objectsCoordinates = {
+				camera: [20, 65, 38, 73]
+			}		
 		};
 
 		this.destroy = function() {
@@ -163,20 +168,28 @@
 			characterTitle.innerHTML = characterData.attributes.name;
 			character.appendChild(characterTitle);
 
-			var characterTitle		= document.createElement('div');
-			characterTitle.setAttribute('style', 'color:'+color+';text-align:center;position:absolute;width:'+(skinsCoordinates[2]*2)+'px;height:15px;left:'+(-skinsCoordinates[2]/2)+'px;top:-15px;');
-			characterTitle.innerHTML = characterData.attributes.name;
-			character.appendChild(characterTitle);
-
 			var speachTile		= document.createElement('div');
 			speachTile.setAttribute('style', 'color:#ffffff;text-align:center;position:absolute;width:'+(skinsCoordinates[2]*2)+'px;left:'+(-skinsCoordinates[2]/2)+'px;top:-30px;');
 			speachTile.setAttribute('id', 'speach_'+characterData.id);
 			character.appendChild(speachTile);
 
-			this.setCharacterBackground(characterData.id, characterData.attributes.skin, characterData.action, characterData.direction);
+			this.setCharacterSkin(characterData.id, characterData.attributes.skin, characterData.action, characterData.direction);
 			
 			if (characterData.isVisible) this.showCharacter(characterData.id);
 			if (!characterData.isVisible) this.hideCharacter(characterData.id);
+		};
+
+		this.addObject = function(objectData) {
+			var position 			= this.getTilePosition(objectData.x, objectData.y);
+			var objectsCoordinates	= this.objectsCoordinates[objectData.skin];
+			var object				= document.createElement('div');
+			object.setAttribute('style', 'background:url(/ressources/objects/'+objectData.skin+'.png);position:absolute;width:'+objectsCoordinates[2]+'px;height:'+objectsCoordinates[3]+'px;left:'+(position.x+objectsCoordinates[0])+'px;top:'+(position.y-objectsCoordinates[1])+'px;');
+			object.setAttribute('id', 'object_'+objectData.id);
+			this.container.appendChild(object);
+			
+			if (objectData.isVisible) this.showObject(objectData.id);
+			if (!objectData.isVisible) this.hideObject(objectData.id);
+			console.log(object);
 		};
 
 		this.characterSpeech = function(id, text) {
@@ -201,10 +214,22 @@
 			this.container.removeChild(character)			
 		};
 
+		this.removeObject = function(id) {
+			var object = document.getElementById('object_'+id);
+
+			this.container.removeChild(object)			
+		};
+
 		this.showCharacter = function(id) {
 			var character = document.getElementById('character_'+id);
 	
 			character.style.display = 'bloc';
+		};
+
+		this.showObject = function(id) {
+			var object = document.getElementById('object_'+id);
+	
+			object.style.display = 'bloc';
 		};
 
 		this.hideCharacter = function(id) {
@@ -213,7 +238,13 @@
 			character.style.display = 'none';
 		};
 
-		this.setCharacterBackground = function(id, skin, action, direction) {
+		this.hideObject = function(id) {
+			var object = document.getElementById('object_'+id);
+
+			object.style.display = 'none';
+		};
+
+		this.setCharacterSkin = function(id, skin, action, direction) {
 			var character = document.getElementById('character_'+id);
 
 			character.style.background = 'url(/ressources/characters/'+skin+'/'+action+'/'+direction+'.gif)';			

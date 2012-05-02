@@ -1,19 +1,15 @@
-module.exports = Class.create({
+var GameObject = require('./gameObject.js');
+
+module.exports = GameObject.extend({
 	attributes: 	null,
-	id:				null,
-	type:			null,
-	level:			null,
-	x:				null,
-	y:				null,
 	isMoving:		null,
 	destinationX:	null,
 	destinationY:	null,
-	isVisible:		null,
 
 	initialize: function(type, data) {
-		if (data != undefined) {
-			this.setData(data, true);
-		} else {
+		this._super(type, data);
+
+		if (data == undefined) {
 			this.attributes	= {
 				name: ''
 			};
@@ -37,31 +33,6 @@ module.exports = Class.create({
 		this.level = null;	
 	},
 
-	setParameter: function(parameter, value, notifyOther) {
-		eval('this.'+parameter+'=value');
-
-		if (notifyOther) this.sendData('character_parameter_changed', {parameter: parameter, value:value});
-	},
-
-	setData: function(data, internal) {
-		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute, internal)) {
-				eval('this.'+attribute+'=data[attribute]');
-			}
-		}		
-	},
-
-	getData: function() {
-		var returnObject = {};
-
-		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'level' && attribute != '_super') {
-				eval('returnObject.'+attribute+'=this[attribute]');
-			}
-		}
-		return returnObject;
-	},
-
 	checkFieldValidity: function(attribute, internal) {
 		if (internal) return true;
 
@@ -70,13 +41,6 @@ module.exports = Class.create({
 		if (attribute == 'isMoving') 		return false;
 
 		return true;
-	},
-
-	setPosition: function(x, y, end) {
-		this.x = x;
-		this.y = y;	
-
-		if (end) this.isMoving = false;	
 	},
 
 	moveTo: function(x, y) {
@@ -109,25 +73,6 @@ module.exports = Class.create({
 				Cassidie.database.update('users', {email: self.client.email}, {characters: data[0].characters}, callback);
 			});
 		}
-	},
-
-	sendData: function(key, data) {
-		var emitter = (this.client == undefined) ? Cassidie.netConnection : this.client.socket.broadcast;
-		
-		data. id = this.id;
-		emitter.to(this.level.name).emit(key, data);			
-	},
-
-	show: function() {
-		this.isVisible = true;
-
-		this.sendData('character_visibility', {isVisible: true});
-	},
-
-	hide: function() {
-		this.isVisible = false;
-
-		this.sendData('character_visibility', {isVisible: false});
 	},
 
 	speak: function(message) {
