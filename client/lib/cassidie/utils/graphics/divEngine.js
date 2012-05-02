@@ -154,10 +154,45 @@
 			character.setAttribute('id', 'character_'+characterData.id);
 			this.container.appendChild(character);
 
+			var color = '#ffffff';
+			if (characterData.type == 'player') color = '#0000ff';
+			if (characterData.type == 'npc_ennemy') color = '#ff0000';
+
+			var characterTitle		= document.createElement('div');
+			characterTitle.setAttribute('style', 'color:'+color+';text-align:center;position:absolute;width:'+(skinsCoordinates[2]*2)+'px;height:15px;left:'+(-skinsCoordinates[2]/2)+'px;top:-15px;');
+			characterTitle.innerHTML = characterData.attributes.name;
+			character.appendChild(characterTitle);
+
+			var characterTitle		= document.createElement('div');
+			characterTitle.setAttribute('style', 'color:'+color+';text-align:center;position:absolute;width:'+(skinsCoordinates[2]*2)+'px;height:15px;left:'+(-skinsCoordinates[2]/2)+'px;top:-15px;');
+			characterTitle.innerHTML = characterData.attributes.name;
+			character.appendChild(characterTitle);
+
+			var speachTile		= document.createElement('div');
+			speachTile.setAttribute('style', 'color:#ffffff;text-align:center;position:absolute;width:'+(skinsCoordinates[2]*2)+'px;left:'+(-skinsCoordinates[2]/2)+'px;top:-30px;');
+			speachTile.setAttribute('id', 'speach_'+characterData.id);
+			character.appendChild(speachTile);
+
 			this.setCharacterBackground(characterData.id, characterData.attributes.skin, characterData.action, characterData.direction);
 			
 			if (characterData.isVisible) this.showCharacter(characterData.id);
 			if (!characterData.isVisible) this.hideCharacter(characterData.id);
+		};
+
+		this.characterSpeech = function(id, text) {
+			var speach = document.getElementById('speach_'+id);
+
+			speach.innerHTML = text;
+			speach.style.top = (-20 - speach.offsetHeight)+'px';
+
+			var oldTimeout = speach.getAttribute('data-timeout');
+			clearTimeout(oldTimeout);
+
+			var timeout = setTimeout(function() {
+				speach.innerHTML = '';
+			}, 2000 + text.length * 100);
+
+			speach.setAttribute('data-timeout', timeout)
 		};
 
 		this.removeCharacter = function(id) {

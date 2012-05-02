@@ -20,14 +20,16 @@ var Chat = function() {
 			if (client.character == undefined) {
 				characters	= level.getCharactersByRang(client, Cassidie.game.chatDistance);
 				player		= client.attributes.name;
+				id			= client.id;
 			} else {
 				characters	= client.character.level.getCharactersByRang(client.character, Cassidie.game.chatDistance);
 				player		= client.character.attributes.name;
+				id			= client.character.id;
 			}
 
 			for (var i = 0; i < characters.length; i++) {
 				if (characters[i].attributes.name != data.player && characters[i].client != undefined) {
-					characters[i].client.socket.emit('chat_receive', {action: 'speak', player: player, message: data.message});
+					characters[i].client.socket.emit('chat_receive', {action: 'speak', characterId: id, player: player, message: data.message});
 				}
 			}
 		}

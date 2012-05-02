@@ -27,10 +27,13 @@
 			}		
 		}
 
-		this.setParamater = function(parameter, value) {
+		this.setParamater = function(parameter, value, notifyOther) {
 			eval('this.'+parameter+'=value');
 
-			Cassidie.socket.emit('character_set_parameter', {id: this.id, parameter: parameter, value: value});
+			if (notifyOther) {
+				Cassidie.socket.emit('character_set_parameter', {id: this.id, parameter: parameter, value: value});
+				Game.trigger(Events.CHARACTER_PARAMETER_CHANGED, {id: this.id, parameter: parameter, value: value});
+			}
 		};
 
 		this.move = function(x, y, notiyOthers) {
@@ -171,6 +174,10 @@
 			this.isVisible = false;			
 
 			Game.engine.hideCharacter(this.id);
+		};
+
+		this.speak = function(message) {
+			Game.engine.characterSpeech(this.id, message);			
 		};
 
 		this.destroy = function() {

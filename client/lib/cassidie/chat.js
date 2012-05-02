@@ -35,11 +35,15 @@
 				if (text == '/') return;
 
 				Cassidie.socket.emit('chat_broadcast', {action: 'speak', message: text});
+				Game.level.playerCharacter.speak(text);
 				this.trigger(Events.CHAT_RECEIVE, {action: 'speak', player: Game.level.levelData.character.attributes.name, message: text});
 			}
 		};
 
 		this.receive = function(data) {
+			var character = Game.level.getCharacter(data.characterId);
+			character.speak(data.message);
+
 			this.trigger(Events.CHAT_RECEIVE, data);
 		};
 	}

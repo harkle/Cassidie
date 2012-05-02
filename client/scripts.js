@@ -214,6 +214,10 @@ Cassidie.observe(Events.DISCONNECT, function(data) {
     $('#chat').addClass('hidden');
 });
 
+Game.observe(Events.CHARACTER_PARAMETER_CHANGED, function(data) {
+	console.log(data);
+});
+
 //Chat
 function addToChat(from, message, color) {
     $('#chatWindow').html($('#chatWindow').html()+'<span style="color:'+color+'">'+from+': '+message+'</span><br/>');

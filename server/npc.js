@@ -3,7 +3,7 @@ var Character = require('./lib/cassidie/components/character.js');
 module.exports = Character.extend({
 
 	initialize: function(data) {
-		this._super('npc', data);
+		this._super('npc_ennemy', data);
 
 		this.attributes.name	= 'The terrible NPC'
 		this.attributes.skin 	= 7;
