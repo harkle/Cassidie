@@ -44,6 +44,12 @@
 		destroy: function() {
 		},
 
+		setSkin: function(action) {
+			this.action = action;
+
+			Game.engine.setObjectSkin(this.id, this.skin, this.action);
+		},
+
 		triggerAction: function() {
 			Cassidie.socket.emit('action_triggered', {targetId: this.id});
 			Game.trigger(Events.ACTION_TRIGGERED, this);

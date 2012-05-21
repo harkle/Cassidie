@@ -2,11 +2,12 @@ module.exports = Class.create({
 	id:				null,
 	name:			null,
 	type:			null,
+	appearance:		null,
 	level:			null,
 	x:				null,
 	y:				null,
 	isVisible:		null,
-	action:			null,
+	objectType:		null,
 
 	initialize: function(type, data) {
 		if (data != undefined) {
@@ -19,8 +20,8 @@ module.exports = Class.create({
 			this.y				= 0;
 			this.isVisible		= true;
 		}
-
-		this.actions = [];
+		
+		this.type = type;
 	},
 
 	toString: function() {
@@ -32,10 +33,11 @@ module.exports = Class.create({
 		this.level = null;	
 	},
 
-	setParameter: function(parameter, value, notifyOther) {
+	setParameter: function(parameter, value, notifyOther, notify) {
+		if (notify == undefined) notify = false;
 		eval('this.'+parameter+'=value');
 
-		if (notifyOther) this.sendData('object_parameter_changed', {parameter: parameter, value:value});
+		if (notifyOther) this.sendData('object_parameter_changed', {parameter: parameter, value:value}, notify);
 	},
 
 	setData: function(data, internal) {
@@ -68,48 +70,65 @@ module.exports = Class.create({
 	setPosition: function(x, y) {
 		this.x = x;
 		this.y = y;
-		
-		this.sendData('object_moved', {x: this.x, y: this.y});	
+
+		this.proximityCheck();
+
+		this.sendData('object_moved', {x: this.x, y: this.y}, true);	
 	},
 
+	sendData: function(key, data, notifyEverbody) {
+		if (notifyEverbody == undefined) notifyEverbody = false;
 
-	sendData: function(key, data) {
-		var emitter = (this.client == undefined) ? Cassidie.netConnection : this.client.socket.broadcast;
+		var emitter = (this.client == undefined || notifyEverbody) ? Cassidie.netConnection : this.client.socket.broadcast;
 		
 		data. id = this.id;
 		emitter.to(this.level.name).emit(key, data);			
 	},
 
-	show: function() {
+	show: function(notify) {
+		if (notify == undefined) notify = false;
 		this.isVisible = true;
 
-		this.sendData('object_visibility', {isVisible: true});
+		this.sendData('object_visibility', {isVisible: true}, notify);
 	},
 
-	hide: function() {
+	hide: function(notify) {
+		if (notify == undefined) notify = false;
 		this.isVisible = false;
 
-		this.sendData('object_visibility', {isVisible: false});
-	},
-
-	addAction: function(name, callback) {
-		this.actions[name] = callback;
-	},
-
-	removeAction: function(name) {
-		this.actions[name] = null;		
+		this.sendData('object_visibility', {isVisible: false}, notify);
 	},
 
 	getDistanceFrom: function(object) {
 		return Math.sqrt(Math.pow(object.x-this.x, 2) + Math.pow(object.y-this.y, 2));		
 	},
 
-	action: function(emiter, result) {
+	setAppearance: function(name) {
+		this.appearance = name;
+		this.sendData('skin_change', {objectType: this.objectType, name: name}, true);
+	},
+
+	action: function(target, result) {
 		if (result.success) {
-			emiter.client.socket.broadcast.emit('action_performed', {action: result.name, emiterId: emiter.id, targetId: this.id});		
-			emiter.client.socket.emit('action_success', {action: result.name, emiterId: emiter.id, targetId: this.id});		
+			this.sendData('action_performed', {action: result.name, emiterId: this.id, targetId: target.id});		
+			if (this.client != undefined) this.client.socket.emit('action_success', {action: result.name, emiterId: this.id, targetId: target.id});		
 		} else {
-			emiter.client.socket.emit('action_fail', {action: result.name, emiterId: emiter.id, targetId: this.id});				
+			if (this.client != undefined) this.client.socket.emit('action_fail', {action: result.name, emiterId: this.id, targetId: target.id});				
 		}
+	},
+
+	proximityCheck: function() {
+		var elements	= this.level.getObjects().concat(this.level.getCharacters());
+
+		for (var i = 0; i < elements.length; i++) {
+			var distance = this.getDistanceFrom(elements[i]);
+			if (distance <  Cassidie.game.proximity && this.id != elements[i].id) {
+				this.proximity(elements[i], distance);
+				elements[i].proximity(this, distance);
+			}
+		}
+	},
+
+	proximity: function(target, distance) {
 	}
 });

@@ -43,6 +43,13 @@
 				character.move(data.x, data.y, false);
 			});
 
+			Cassidie.socket.removeAllListeners('character_positioned');
+			Cassidie.socket.on('character_positioned', function(data) {
+				console.log('a');
+				var character = self.getCharacter(data.id);
+				character.move(data.x, data.y, false, true);
+			});
+
 			Cassidie.socket.removeAllListeners('object_moved');
 			Cassidie.socket.on('object_moved', function(data) {
 				var object = self.getObject(data.id);
@@ -83,7 +90,6 @@
 
 			Cassidie.socket.removeAllListeners('action_success');
 			Cassidie.socket.on('action_success', function(data) {
-				console.log('a');
 				Game.trigger(Events.CHARACTER_ACTION_SUCCESS, data);
 			});
 
@@ -94,10 +100,20 @@
 
 			Cassidie.socket.removeAllListeners('action_performed');
 			Cassidie.socket.on('action_performed', function(data) {
-				/*var object = self.getObject(data.id);
+				Game.trigger(Events.CHARACTER_ACTION_PERFORMED, data);
+			});
 
-				if (data.isVisible)  object.show();
-				if (!data.isVisible) object.hide();*/
+			Cassidie.socket.removeAllListeners('skin_change');
+			Cassidie.socket.on('skin_change', function(data) {
+				var object = null;
+
+				if (data.objectType == 'object') {
+					object = self.getObject(data.id);
+				} else {
+					object= self.getCharacter(data.id);
+				}
+
+				object.setSkin(data.name);
 			});
 		};
 

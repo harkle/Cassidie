@@ -9,7 +9,7 @@ var Chat = function() {
 			var targetClient = Cassidie.getClientsFromCharacterName(data.player);
 
 			if (targetClient != undefined) {
-				targetClient.socket.emit('chat_receive', {action: 'player', player: client.character.attributes.name, message: data.message});
+				targetClient.socket.emit('chat_receive', {action: 'player', characterId: client.character.id, player: client.character.attributes.name, message: data.message});
 			}
 		}
 
@@ -35,7 +35,7 @@ var Chat = function() {
 		}
 
 		if (data.action == 'level') {
-			client.socket.broadcast.to(client.character.level.name).emit('chat_receive', {action: 'level', level: client.character.level.title, player: client.character.attributes.name, message: data.message});
+			client.socket.broadcast.to(client.character.level.name).emit('chat_receive', {action: 'level', level: client.character.level.title, characterId: client.character.id, player: client.character.attributes.name, message: data.message});
 		}
 	};
 

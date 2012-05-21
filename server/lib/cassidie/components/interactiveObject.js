@@ -7,9 +7,12 @@ module.exports = GameObject.extend({
 		this._super('interactiveObject', data);
 
 		if (data == undefined) {
-			this.skin	= skin;
-			this.x		= x;
-			this.y		= y;
+			this.skin			= skin;
+			this.x				= x;
+			this.y				= y;
+			this.appearance		= 'default';
 		}
+
+		this.objectType = 'object';
 	}
 });

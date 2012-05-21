@@ -28,10 +28,21 @@
 			}
 		},
 
-		move: function(x, y, notiyOthers) {
+		move: function(x, y, notiyOthers, noPath) {
 			if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return;
 
 			var position	= Game.engine.getTilePosition(x, y);
+
+			if (noPath) {
+				this.x = x;
+				this.y = y;
+
+				clearInterval(this.intervalID);
+
+				Game.engine.setCharacterPosition(this.id, this.attributes.skin, this.x, this.y, 0, 0);
+
+				return;
+			}
 
 			var cells = [];
 			for (var j = 0; j < this.level.levelData.level.dimensions.height; j++) {
@@ -107,7 +118,7 @@
 			}
 
 			this.action = 'walking';
-			Game.engine.setCharacterSkin(this.id, this.attributes.skin, this.action, this.direction);
+			this.setSkin(this.action);
 
 			var speed = 20;
 			dx /= speed;
@@ -141,7 +152,7 @@
 						if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: false});
 					} else {
 						self.action = 'standing';
-						Game.engine.setCharacterSkin(self.id, self.attributes.skin, self.action, self.direction);
+						self.setSkin(self.action);
 						if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: true});
 					}
 				}
@@ -165,11 +176,15 @@
 			Game.engine.characterSpeech(this.id, message);			
 		},
 
+		setSkin: function(action) {
+			Game.engine.setCharacterSkin(this.id, this.attributes.skin, action, this.direction);			
+		},
+
 		destroy: function() {
 			this._super();
 
 			clearInterval(this.intervalID);
-			
+
 			delete this.intervalID;
 			delete this.cellX;
 			delete this.cellY;

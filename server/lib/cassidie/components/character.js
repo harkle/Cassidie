@@ -21,7 +21,10 @@ module.exports = GameObject.extend({
 			this.destinationX	= 0;
 			this.destinationY	= 0;
 			this.isVisible		= true;
+			this.appearance		= 'standing';
 		}
+
+		this.objectType = 'character';
 	},
 
 	toString: function() {
@@ -43,21 +46,32 @@ module.exports = GameObject.extend({
 		return true;
 	},
 
-	moveTo: function(x, y) {
+	moveTo: function(x, y, notify) {
 		if (!this.isVisible) return;
+		if (notify == undefined) notify = false;
 
 		this.destinationX	= x;
 		this.destinationY	= y;
 		this.isMoving		= true;
+		this.setAppearance('walking');
 
-		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY});	
+		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY}, notify);	
 	},
 
-	setPosition: function(x, y, end) {
+	setPosition: function(x, y, end, notify) {
+		if (notify == undefined) notify = false;
+
 		this.x = x;
 		this.y = y;
-		
-		if (end) this.isMoving = false;
+
+		this.proximityCheck();
+
+		if (end) {
+			this.isMoving	= false;
+			this.setAppearance('standing');
+		}
+
+		if (notify) this.sendData('character_positioned', {x: this.x, y: this.y}, true);	
 	},
 
 	save: function(data, callback) {
@@ -75,7 +89,7 @@ module.exports = GameObject.extend({
 				}
 
 				self.client.setCharactersData(data[0].characters);
-				
+
 				callback = (callback == undefined) ? function() { } : callback;
 				Cassidie.database.update('users', {email: self.client.email}, {characters: data[0].characters}, callback);
 			});

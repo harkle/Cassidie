@@ -174,7 +174,7 @@
 			speachTile.setAttribute('id', 'speach_'+characterData.id);
 			character.appendChild(speachTile);
 
-			this.setCharacterSkin(characterData.id, characterData.attributes.skin, characterData.action, characterData.direction);
+			this.setCharacterSkin(characterData.id, characterData.attributes.skin, characterData.appearance, characterData.direction);
 			
 			if (characterData.isVisible) this.showCharacter(characterData.id);
 			if (!characterData.isVisible) this.hideCharacter(characterData.id);
@@ -184,10 +184,12 @@
 			var position 			= this.getTilePosition(objectData.x, objectData.y);
 			var objectsCoordinates	= this.objectsCoordinates[objectData.skin];
 			var object				= document.createElement('div');
-			object.setAttribute('style', 'background:url(/ressources/objects/'+objectData.skin+'.png);position:absolute;width:'+objectsCoordinates[2]+'px;height:'+objectsCoordinates[3]+'px;left:'+(position.x+objectsCoordinates[0])+'px;top:'+(position.y-objectsCoordinates[1])+'px;');
+			object.setAttribute('style', 'position:absolute;width:'+objectsCoordinates[2]+'px;height:'+objectsCoordinates[3]+'px;left:'+(position.x+objectsCoordinates[0])+'px;top:'+(position.y-objectsCoordinates[1])+'px;');
 			object.setAttribute('id', 'object_'+objectData.id);
 			this.container.appendChild(object);
-			
+
+			this.setObjectSkin(objectData.id, objectData.skin, objectData.appearance);
+
 			if (objectData.isVisible) this.showObject(objectData.id);
 			if (!objectData.isVisible) this.hideObject(objectData.id);
 		};
@@ -228,7 +230,7 @@
 
 		this.showObject = function(id) {
 			var object = document.getElementById('object_'+id);
-	
+
 			object.style.display = '';
 		};
 
@@ -247,7 +249,19 @@
 		this.setCharacterSkin = function(id, skin, action, direction) {
 			var character = document.getElementById('character_'+id);
 
-			character.style.background = 'url(/ressources/characters/'+skin+'/'+action+'/'+direction+'.gif)';			
+			var date = new Date();
+			var time = date.getTime();
+
+			character.style.background = 'url(/ressources/characters/'+skin+'/'+action+'/'+direction+'.gif?t='+time+')';			
+		};
+
+		this.setObjectSkin = function(id, skin, action) {
+			var object = document.getElementById('object_'+id);
+
+			var date = new Date();
+			var time = date.getTime();
+
+			object.style.background = 'url(/ressources/objects/'+skin+'/'+action+'.gif?t='+time+')';			
 		};
 
 		this.setCharacterPosition = function(id, skin, cellX, cellY, dx, dy) {

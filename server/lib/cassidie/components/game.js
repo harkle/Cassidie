@@ -21,6 +21,7 @@ var Game = Class.create({
 		this.defaultLevel	= data.defaultLevel;
 		this.chatDistance	= data.chatDistance;
 		this.levelsList		= data.levels;
+		this.proximity		= data.proximity;
 
 		this.loadLevels();
 

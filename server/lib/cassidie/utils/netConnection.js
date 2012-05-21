@@ -97,19 +97,14 @@ io.sockets.on('connection', function (socket) {
 
 		var target = null;
 
-		for (var i = 0; i < socket.client.character.level.characters.length; i++) {
-			if (socket.client.character.level.characters[i].id == data.targetId && socket.client.character.level.characters[i].isVisible) {
-				target = socket.client.character.level.characters[i];
+		var elements	= socket.client.character.level.getObjects().concat(socket.client.character.level.getCharacters());		
+		for (var i = 0; i < elements.length; i++) {
+			if (elements[i].id == data.targetId && elements[i].isVisible) {
+				target = elements[i];
 			}
 		}
 
-		for (var i = 0; i < socket.client.character.level.objects.length; i++) {
-			if (socket.client.character.level.objects[i].id == data.targetId && socket.client.character.level.objects[i].isVisible) {
-				target = socket.client.character.level.objects[i];
-			}
-		}
-
-		if (target != null) target.action(socket.client.character);
+		if (target != null) socket.client.character.action(target);
 	});
 });
 module.exports = io.sockets;
