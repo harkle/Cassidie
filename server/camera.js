@@ -16,7 +16,7 @@ module.exports = InteractiveObject.extend({
 				self.show()			
 			}*/
 			
-			self.setParameter('life', 100, true);
+			//self.setParameter('life', 100, true);
 			//self.setPosition(Math.floor(Math.random() * 10), Math.floor(Math.random() * 10));
 		}, 1000);
 	},
