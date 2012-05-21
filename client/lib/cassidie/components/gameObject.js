@@ -1,68 +1,52 @@
 (function() {
-	this.GameObject = function(data, level) {
-		this.id				 	= null;
-		this.x					= null;
-		this.y					= null;
-		this.isVisible			= null;
-		this.engineRessource	= null;
-		this.level				= null;
+	this.GameObject = Events.Observable.extend({
+		id:			null,
+		x:			null,
+		y:			null,
+		isVisible:	null,
+		level:		null,
 
-		this.initialize = function(data, level, isPlayer) {
+		initialize: function(data, level) {
 			for (attribute in data) {
 				eval('this.'+attribute+'=data[attribute]');
 			}
 
-			this.level = level;
+			this.level = level;			
+		},
 
-			Game.engine.addObject(this);
-
-		}
-
-		this.setParameter = function(parameter, value, notifyOther) {
+		setParameter: function(parameter, value, notifyOther) {
 			eval('this.'+parameter+'=value');
-
-			if (notifyOther) {
-				Cassidie.socket.emit('object_set_parameter', {id: this.id, parameter: parameter, value: value});
-				Game.trigger(Events.OBJECT_PARAMETER_CHANGED, {id: this.id, parameter: parameter, value: value});
-			}
-		};
-
-		this.getData = function() {
+		},
+		
+		getData: function() {
 			var returnObject = {};
 
 			for (attribute in this) {
 				if (typeof this[attribute] != 'function' && attribute != 'level' && attribute != 'intervalID' && attribute != 'cellX' && attribute!= 'cellY') eval('returnObject.'+attribute+'=this[attribute]');
 			}
-			
-			return returnObject;
-		};
 
-		this.move = function(x, y, notiyOthers) {
+			return returnObject;
+		},
+
+		move: function(x, y) {
 			this.x = x;
 			this.y = y;
+		},
 
-			Game.engine.setObjectPosition(this.id, this.skin, this.x, this.y);
-		}
-
-		this.show = function() {
+		show: function() {
 			this.isVisible = true;
+		},
 
-			Game.engine.showObject(this.id);
-		};
+		hide:function() {
+			this.isVisible = false;
+		},
 
-		this.hide = function() {
-			this.isVisible = false;			
+		destroy: function() {
+		},
 
-			Game.engine.hideObject(this.id);
-		};
-
-		this.destroy = function() {
-
-			Game.engine.removeObject(this.id);
-		};
-
-		this.initialize(data, level);
-	};
-
-	this.Object.prototype	= Events.Observable;
+		triggerAction: function() {
+			Cassidie.socket.emit('action_triggered', {targetId: this.id});
+			Game.trigger(Events.ACTION_TRIGGERED, this);
+		}
+	});
 })();

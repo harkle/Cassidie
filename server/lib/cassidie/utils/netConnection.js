@@ -91,5 +91,25 @@ io.sockets.on('connection', function (socket) {
 		if (!socket.client.getAuthenticated()) return;
 		socket.client.character.setParameter(data.parameter, data.value);
 	});
+
+	socket.on('action_triggered', function(data) {
+		if (!socket.client.getAuthenticated()) return;
+
+		var target = null;
+
+		for (var i = 0; i < socket.client.character.level.characters.length; i++) {
+			if (socket.client.character.level.characters[i].id == data.targetId && socket.client.character.level.characters[i].isVisible) {
+				target = socket.client.character.level.characters[i];
+			}
+		}
+
+		for (var i = 0; i < socket.client.character.level.objects.length; i++) {
+			if (socket.client.character.level.objects[i].id == data.targetId && socket.client.character.level.objects[i].isVisible) {
+				target = socket.client.character.level.objects[i];
+			}
+		}
+
+		if (target != null) target.action(socket.client.character);
+	});
 });
 module.exports = io.sockets;

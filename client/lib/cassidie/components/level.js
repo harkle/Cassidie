@@ -80,6 +80,25 @@
 				object.setParameter(data.parameter, data.value, false);
 				Game.trigger(Events.OBJECT_PARAMETER_CHANGED, data);
 			});
+
+			Cassidie.socket.removeAllListeners('action_success');
+			Cassidie.socket.on('action_success', function(data) {
+				console.log('a');
+				Game.trigger(Events.CHARACTER_ACTION_SUCCESS, data);
+			});
+
+			Cassidie.socket.removeAllListeners('action_fail');
+			Cassidie.socket.on('action_fail', function(data) {
+				Game.trigger(Events.CHARACTER_ACTION_FAIL, data);
+			});
+
+			Cassidie.socket.removeAllListeners('action_performed');
+			Cassidie.socket.on('action_performed', function(data) {
+				/*var object = self.getObject(data.id);
+
+				if (data.isVisible)  object.show();
+				if (!data.isVisible) object.hide();*/
+			});
 		};
 
 		this.addCharacter = function(data, isPlayer) {
@@ -91,7 +110,7 @@
 		};
 
 		this.addObject = function(data) {
-			var object = new GameObject(data, this);
+			var object = new InteractiveObject(data, this);
 
 			this.objects.push(object);
 			
@@ -134,6 +153,20 @@
 			}
 
 			Game.engine.destroy();
+		};
+
+		this.checkCoordinates = function(x, y) {
+			for (var i = 0; i < this.characters.length; i++) {			
+				if (this.characters[i].id != this.playerCharacter.id && this.characters[i].x == x && this.characters[i].y == y) {
+					this.characters[i].triggerAction();
+				}
+			}
+
+			for (var i = 0; i < this.objects.length; i++) {			
+				if (this.objects[i].x == x && this.objects[i].y == y) {
+					this.objects[i].triggerAction();
+				}
+			}
 		};
 
 		this.initialize(data);

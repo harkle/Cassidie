@@ -6,6 +6,7 @@ module.exports = Class.create({
 	x:				null,
 	y:				null,
 	isVisible:		null,
+	action:			null,
 
 	initialize: function(type, data) {
 		if (data != undefined) {
@@ -18,6 +19,8 @@ module.exports = Class.create({
 			this.y				= 0;
 			this.isVisible		= true;
 		}
+
+		this.actions = [];
 	},
 
 	toString: function() {
@@ -37,17 +40,17 @@ module.exports = Class.create({
 
 	setData: function(data, internal) {
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute, internal)) {
+			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute, internal)) {
 				eval('this.'+attribute+'=data[attribute]');
 			}
-		}		
+		}
 	},
 
 	getData: function() {
 		var returnObject = {};
 
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'level' && attribute != '_super') {
+			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super') {
 				eval('returnObject.'+attribute+'=this[attribute]');
 			}
 		}
@@ -88,4 +91,25 @@ module.exports = Class.create({
 
 		this.sendData('object_visibility', {isVisible: false});
 	},
+
+	addAction: function(name, callback) {
+		this.actions[name] = callback;
+	},
+
+	removeAction: function(name) {
+		this.actions[name] = null;		
+	},
+
+	getDistanceFrom: function(object) {
+		return Math.sqrt(Math.pow(object.x-this.x, 2) + Math.pow(object.y-this.y, 2));		
+	},
+
+	action: function(emiter, result) {
+		if (result.success) {
+			emiter.client.socket.broadcast.emit('action_performed', {action: result.name, emiterId: emiter.id, targetId: this.id});		
+			emiter.client.socket.emit('action_success', {action: result.name, emiterId: emiter.id, targetId: this.id});		
+		} else {
+			emiter.client.socket.emit('action_fail', {action: result.name, emiterId: emiter.id, targetId: this.id});				
+		}
+	}
 });

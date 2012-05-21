@@ -68,6 +68,7 @@
 					var baseY = e.clientY-Game.container.offsetTop-parseInt(self.container.style.top);
 					
 					var clickedTile = self.getCoordinates(baseX, baseY);
+					Game.level.checkCoordinates(clickedTile.x, clickedTile.y);
 					Game.level.playerCharacter.move(clickedTile.x, clickedTile.y, true);
 				}
 			}, false);

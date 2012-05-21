@@ -21,7 +21,49 @@ module.exports = InteractiveObject.extend({
 		}, 1000);
 	},
 
+	action: function(emiter) {
+		var result = {
+			success: false,
+			name:	 ''
+		};
+
+		if (emiter.activity == 0) result = this.actionNormal(emiter);
+		if (emiter.activity == 1) result = this.actionAttack(emiter);		
+
+		this._super(emiter, result);
+	},
+
+	actionNormal: function(emiter) {
+		return {
+			success: true,
+			name:	 'normal'		
+		};		
+	},
+
+	actionAttack: function(emiter) {
+		var distance = this.getDistanceFrom(emiter);
+		
+		if (distance > 1) {
+			return {
+				success: false,
+				name:	 'attack'
+			};		
+		} else {
+			this.hide();
+			
+			self = this;
+			setTimeout(function() {
+				self.show();
+			}, 10000);
+
+			return {
+				success: true,
+				name:	 'attack'
+			};
+		}
+	},
+
 	toString: function() {
-		return this.attributes.name;
+		return this.name;
 	}
 });

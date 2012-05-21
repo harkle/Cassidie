@@ -1,26 +1,30 @@
 (function() {
 	this.Events						= {};
-	this.Events.Observable 			= function() {
-		this.events	= [];
-	};
-	
-	this.Events.Observable.prototype.observe = function(event, callback) {
-		if (!this.events[event]) this.events[event] = [];
-		this.events[event].push(callback);
-	}
+	this.Events.Observable 			= Class.create({
+		events: [],
 
-	this.Events.Observable.prototype.trigger = function(event, data) {
-		if (!this.events[event]) return;
-		for (var i = 0; i < this.events[event].length; i++) {
-			this.events[event][i].apply(Cassidie, [data]);
+		initialize: function() {
+			
+		},
+
+		observe: function(event, callback) {
+			if (!this.events[event]) this.events[event] = [];
+			this.events[event].push(callback);
+		}, 
+
+		trigger:function(event, data) {
+			if (!this.events[event]) return;
+			for (var i = 0; i < this.events[event].length; i++) {
+				this.events[event][i].apply(Cassidie, [data]);
+			}
+		},
+
+		release: function(event) {
+			if (!this.events[event]) return;
+
+			this.events[event] = [];
 		}
-	}
-
-	this.Events.Observable.prototype.release = function(event) {
-		if (!this.events[event]) return;
-
-		this.events[event] = [];
-	}
+	});
 
 	this.Events.NO_SERVER					= 0;
 	this.Events.CONNECT 					= 1;
@@ -39,4 +43,8 @@
 	this.Events.GAME_LEFT					= 14;
 	this.Events.CHARACTER_PARAMETER_CHANGED = 15;
 	this.Events.OBJECT_PARAMETER_CHANGED	= 16;
+	this.Events.ACTION_TRIGGERED			= 17;
+	this.Events.CHARACTER_ACTION_SUCCESS	= 18;
+	this.Events.CHARACTER_ACTION_FAIL		= 19;
+	this.Events.CHARACTER_ACTION_PERFORMED	= 20;
 })();

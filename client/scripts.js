@@ -179,11 +179,11 @@ Game.observe(Events.GAME_ENTERED, function(data) {
     });
 
     $('#chr_nothing').click(function() {
-    	Game.level.playerCharacter.setParamater('activity', 0, true);
+    	Game.level.playerCharacter.setParameter('activity', 0, true);
     });
 
     $('#chr_attak').click(function() {
-    	Game.level.playerCharacter.setParamater('activity', 1, true);
+    	Game.level.playerCharacter.setParameter('activity', 1, true);
     });
 });
 
@@ -215,19 +215,33 @@ Cassidie.observe(Events.DISCONNECT, function(data) {
 });
 
 Game.observe(Events.CHARACTER_PARAMETER_CHANGED, function(data) {
-	console.log(data);
+	console.log('CHARACTER_PARAMETER_CHANGED', data);
 });
 
 Game.observe(Events.OBJECT_PARAMETER_CHANGED, function(data) {
-	console.log(data);
+	console.log('OBJECT_PARAMETER_CHANGED', data);
 });
 
+Game.observe(Events.ACTION_TRIGGERED, function(data) {
+	console.log('ACTION_TRIGGERED', data);
+});
+
+Game.observe(Events.CHARACTER_ACTION_SUCCESS, function(data) {
+	console.log('CHARACTER_ACTION_SUCCESS', data);
+});
+
+Game.observe(Events.CHARACTER_ACTION_FAIL, function(data) {
+	console.log('CHARACTER_ACTION_FAIL', data);
+});
+
+Game.observe(Events.CHARACTER_ACTION_PERFORMED, function(data) {
+	console.log('CHARACTER_ACTION_PERFORMED', data);
+});
 
 //Chat
 function addToChat(from, message, color) {
     $('#chatWindow').html($('#chatWindow').html()+'<span style="color:'+color+'">'+from+': '+message+'</span><br/>');
     $("#chatWindow")[0].scrollTop = $("#chatWindow")[0].scrollHeight;
-
 }
 Chat.observe(Event.CHAT_RECEIVE, function(data) {
     if (data.action == 'player') color = '#9f11c3';

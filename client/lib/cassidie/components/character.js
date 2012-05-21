@@ -1,42 +1,34 @@
 (function() {
-	this.Character = function(data, level, isPlayer) {
-		this.id				 	= null;
-		this.x					= null;
-		this.y					= null;
-		this.attributes			= null;
-		this.isVisible			= null;
-		this.engineRessource	= null;
-		this.level				= null;
-		this.direction			= 'se';
-		this.action				= 'standing';
-		this.cellX 				= 0;
-		this.cellY 				= 0;
-		this.intervalID			= 0;
+	this.Character = GameObject.extend({
+		attributes:	null,
+		direction:	'se',
+		action:		'standing',
+		cellX:		0,
+		cellY:		0,
+		intervalID:	0,
 
-		this.initialize = function(data, level, isPlayer) {
-			for (attribute in data) {
-				eval('this.'+attribute+'=data[attribute]');
-			}
-
-			this.level = level;
+		initialize: function(data, level, isPlayer) {			
+			this._super(data, level);
 
 			Game.engine.addCharacter(this);
 
 			if (data.isMoving) {
 				this.move(data.destinationX, data.destinationY, isPlayer);
-			}		
-		}
+			}
+			
+			this.setParameter();	
+		},
 
-		this.setParamater = function(parameter, value, notifyOther) {
-			eval('this.'+parameter+'=value');
+		setParameter: function(parameter, value, notifyOther) {
+			this._super(parameter, value);
 
 			if (notifyOther) {
 				Cassidie.socket.emit('character_set_parameter', {id: this.id, parameter: parameter, value: value});
 				Game.trigger(Events.CHARACTER_PARAMETER_CHANGED, {id: this.id, parameter: parameter, value: value});
 			}
-		};
+		},
 
-		this.move = function(x, y, notiyOthers) {
+		move: function(x, y, notiyOthers) {
 			if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return;
 
 			var position	= Game.engine.getTilePosition(x, y);
@@ -72,9 +64,9 @@
 			if (notiyOthers) Cassidie.socket.emit('character_move', {x: x, y: y});		
 
 			this.moveCharacterCell(path, notiyOthers);
-		};
+		},
 
-		this.moveCharacterCell = function(path, notiyOthers) {
+		moveCharacterCell: function(path, notiyOthers) {
 			clearInterval(this.intervalID);
 
 			var currentCell = 0;
@@ -122,9 +114,9 @@
 			dy /= speed;
 
 			this.moveCharacterStep(path, dx, dy, speed, notiyOthers);
-		};
+		},
 
-		this.moveCharacterStep = function(path, dx, dy, speed, notiyOthers) {
+		moveCharacterStep: function(path, dx, dy, speed, notiyOthers) {
 			var step = 0;
 			var self = this;
 			this.intervalID = setInterval(function() {
@@ -155,35 +147,27 @@
 				}
 				step++;
 			}, 40);			
-		};
+		},
 
-		this.getData = function() {
-			var returnObject = {};
-
-			for (attribute in this) {
-				if (typeof this[attribute] != 'function' && attribute != 'level' && attribute != 'intervalID' && attribute != 'cellX' && attribute!= 'cellY') eval('returnObject.'+attribute+'=this[attribute]');
-			}
-			
-			return returnObject;
-		};
-
-		this.show = function() {
-			this.isVisible = true;
+		show: function() {
+			this._super();
 
 			Game.engine.showCharacter(this.id);
-		};
+		},
 
-		this.hide = function() {
-			this.isVisible = false;			
+		hide: function() {
+			this._super();
 
 			Game.engine.hideCharacter(this.id);
-		};
+		},
 
-		this.speak = function(message) {
+		speak: function(message) {
 			Game.engine.characterSpeech(this.id, message);			
-		};
+		},
 
-		this.destroy = function() {
+		destroy: function() {
+			this._super();
+
 			clearInterval(this.intervalID);
 			
 			delete this.intervalID;
@@ -191,10 +175,6 @@
 			delete this.cellY;
 
 			Game.engine.removeCharacter(this.id);
-		};
-
-		this.initialize(data, level, isPlayer);
-	};
-
-	this.Character.prototype	= Events.Observable;
+		}
+	});
 })();

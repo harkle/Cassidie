@@ -51,7 +51,7 @@ module.exports = Class.create({
 		var characters = [];
 
 		for(var i = 0; i < this.characters.length; i++) {
-			var distance = Math.sqrt(Math.pow(this.characters[i].x-character.x, 2) + Math.pow(this.characters[i].y-character.y, 2));
+			var distance = character.getDistanceFrom(this.characters[i]);
 			if (distance <= range && character.attributes.name != this.characters[i].attributes.name) characters.push(this.characters[i]);
 		}
 

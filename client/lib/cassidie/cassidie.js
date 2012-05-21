@@ -47,7 +47,7 @@
 		}
 
 		domready(function() {
-			load(['/lib/cassidie/utils/events.js', server+'/socket.io/socket.io.js']).then(['/lib/cassidie/utils/graphics/divEngine.js', '/lib/cassidie/account.js', '/lib/cassidie/chat.js', '/lib/cassidie/components/game.js', '/lib/cassidie/components/level.js', '/lib/cassidie/components/gameObject.js', '/lib/cassidie/components/character.js', '/lib/cassidie/utils/pathfinding/graph.js', '/lib/cassidie/utils/pathfinding/astar.js']).thenRun(function () {
+			load(['/lib/cassidie/utils/class.js']).then(['/lib/cassidie/utils/events.js', server+'/socket.io/socket.io.js']).then(['/lib/cassidie/utils/graphics/divEngine.js', '/lib/cassidie/account.js', '/lib/cassidie/chat.js', '/lib/cassidie/components/game.js', '/lib/cassidie/components/level.js', '/lib/cassidie/components/gameObject.js', '/lib/cassidie/components/interactiveObject.js', '/lib/cassidie/components/character.js', '/lib/cassidie/utils/pathfinding/graph.js', '/lib/cassidie/utils/pathfinding/astar.js']).thenRun(function () {
 
 				setupCassidie();			
 
