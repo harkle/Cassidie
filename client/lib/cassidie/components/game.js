@@ -39,6 +39,12 @@
 
 			self.trigger(Events.GAME_LEFT, data);
 		});
+		
+		Cassidie.socket.on('level_change', function(data) {
+			self.level.destroy();
+			
+			self.level = new Level(data);
+		});
 	};
 
 	this.Game.enterGame = function(characterID) {

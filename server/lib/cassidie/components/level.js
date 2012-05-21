@@ -1,26 +1,27 @@
 module.exports = Class.create({
-	name:			'',
-	title:			'',
-	dimensions: 	{},
-	cellSize: 		{},
-	isometry:		{},
-	viewport:		{},
-	cells:			[],
-	charactersData: [],
-	objectsData: 	[],
-	characters: 	[],
-	objects:		[],
+	name:			null,
+	title:			null,
+	dimensions: 	null,
+	cellSize: 		null,
+	isometry:		null,
+	viewport:		null,
+	cells:			null,
+	charactersData: null,
+	objectsData: 	null,
+	characters: 	null,
+	objects:		null,
 
 	initialize: function(data) {
-		this.name			= data.name;
-		this.title			= data.title;
-		this.dimensions		= data.dimensions;
-		this.cellSize		= data.cellSize;
-		this.isometry		= data.isometry;
-		this.viewport		= data.viewport;
-		this.cells			= data.cells;
-		this.charactersData = data.charactersData;	
-		this.objectsData 	= data.objectsData;	
+		this.name				= data.name;
+		this.title				= data.title;
+		this.dimensions			= data.dimensions;
+		this.viewport			= data.viewport;
+		this.cells				= data.cells;
+		this.charactersData 	= data.charactersData;	
+		this.objectsData 		= data.objectsData;	
+		this.initialPositions	= data.initialPositions;	
+		this.characters 		= [];
+		this.objects			= [];
 	},
 
 	getCharacters: function(onlyData, filter) {
@@ -80,7 +81,9 @@ module.exports = Class.create({
 
 	attachCharacter: function(character) {
 
-		character.level = this;
+		character.level 		= this;
+		character.currentLevel 	= this.name; 
+
 		this.characters.push(character);
 
 		if (character.client != undefined) {
@@ -99,8 +102,8 @@ module.exports = Class.create({
 				character = this.characters[i];
 				this.characters.splice(i, 1);
 			}
-		}		
-
+		}
+		
 		character.client.socket.leave(this.name);
 		character.client.socket.broadcast.to(this.name).emit('level_character_leave', {id: character.id});
 
@@ -122,5 +125,9 @@ module.exports = Class.create({
 				this.objects.splice(i, 1);
 			}
 		}
+	},
+	
+	getCell: function(x, y) {
+		return (this.cells[y * this.dimensions.width + x] != undefined) ? this.cells[y * this.dimensions.width + x] : this.cells[0];
 	}
 });

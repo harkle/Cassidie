@@ -31,8 +31,6 @@
 		move: function(x, y, notiyOthers, noPath) {
 			if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return;
 
-			var position	= Game.engine.getTilePosition(x, y);
-
 			if (noPath) {
 				this.x = x;
 				this.y = y;

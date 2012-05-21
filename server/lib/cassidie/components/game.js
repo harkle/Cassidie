@@ -104,20 +104,28 @@ var Game = Class.create({
 
 		this.clients.push(socket.client);
 
-		this.levels[this.defaultLevel].attachCharacter(socket.client.character);
+		//First time
+		if (socket.client.character.currentLevel == undefined) {
+			socket.client.character.currentLevel = Cassidie.game.defaultLevel;
+			var position = this.levels[socket.client.character.currentLevel].initialPositions.default;
+			socket.client.character.x = position[0];
+			socket.client.character.y = position[1];
+		}
+
+		this.levels[socket.client.character.currentLevel].attachCharacter(socket.client.character);
 
 		////
 		//// SEND A LOT OF INFOS ABOUT GAME, LEVELS, etc.
 		////
 		socket.emit('game_entered', {
 			level: {
-				name:		this.levels[this.defaultLevel].name,
-				title:		this.levels[this.defaultLevel].title,
-				dimensions: this.levels[this.defaultLevel].dimensions,
-				viewport:	this.levels[this.defaultLevel].viewport,
-				cells:		this.levels[this.defaultLevel].cells,
-				characters: this.levels[this.defaultLevel].getCharacters(true),
-				objects:	this.levels[this.defaultLevel].getObjects(true)
+				name:		this.levels[socket.client.character.currentLevel].name,
+				title:		this.levels[socket.client.character.currentLevel].title,
+				dimensions: this.levels[socket.client.character.currentLevel].dimensions,
+				viewport:	this.levels[socket.client.character.currentLevel].viewport,
+				cells:		this.levels[socket.client.character.currentLevel].cells,
+				characters: this.levels[socket.client.character.currentLevel].getCharacters(true),
+				objects:	this.levels[socket.client.character.currentLevel].getObjects(true)
 			},
 			character: socket.client.character.getData()
 		});
@@ -142,6 +150,32 @@ var Game = Class.create({
 		socket.client.character = null;
 
 		socket.emit('game_left');
+	},
+	
+	changeLevel: function(character, level) {
+		var oldLevel = character.currentLevel;
+		character.removeFromLevel();
+
+		eval('var position = this.levels[level].initialPositions.'+oldLevel);
+		console.log(oldLevel, level);
+		character.x = position[0];
+		character.y = position[1];
+
+		Cassidie.game.levels[level].attachCharacter(character);
+
+		character.client.socket.emit('level_change', {
+			level: {
+				name:		this.levels[level].name,
+				title:		this.levels[level].title,
+				dimensions: this.levels[level].dimensions,
+				viewport:	this.levels[level].viewport,
+				cells:		this.levels[level].cells,
+				characters: this.levels[level].getCharacters(true),
+				objects:	this.levels[level].getObjects(true)
+			},
+			character: character.getData()
+		});
+		
 	}
 });
 

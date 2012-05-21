@@ -168,6 +168,10 @@
 				this.characters[i].destroy();
 			}
 
+			for (var i = 0; i < this.objects.length; i++)	{
+				this.objects[i].destroy();
+			}
+
 			Game.engine.destroy();
 		};
 

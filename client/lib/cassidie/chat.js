@@ -42,7 +42,7 @@
 
 		this.receive = function(data) {
 			var character = Game.level.getCharacter(data.characterId);
-			character.speak(data.message);
+			if (character != null) character.speak(data.message);
 
 			this.trigger(Events.CHAT_RECEIVE, data);
 		};
