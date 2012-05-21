@@ -36,9 +36,7 @@ var Game = Class.create({
 			var name = this.levelsList[i];
 			Logger.systemLog(this.consoleName, 'loading level: '+name);
 
-			loadings.push(function(next) {
-				self.loadLevel(self, name, i, next);
-			});
+			loadings.push(this.loadLevel(name, i));
 		}
 
 		Cassidie.wait(loadings, function() {
@@ -47,7 +45,16 @@ var Game = Class.create({
 		});
 	},
 
-	loadLevel: function(context, name, i, next) {
+	loadLevel: function(name, i) {
+		var self = this;
+		var fnc = function(next) {
+			self.loadLevelCallback(self, name, i, next);			
+		}	
+
+		return fnc;
+	},
+	
+	loadLevelCallback: function(context, name, i, next) {
 		Cassidie.database.find('levels', {name: name}, function(data) {
 			var Level = require(process.cwd()+data[0].path);
 			context.levels[name] = new Level(data[0]);
