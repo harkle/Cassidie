@@ -156,7 +156,6 @@ var Game = Class.create({
 		character.removeFromLevel();
 
 		eval('var position = this.levels[level].initialPositions.'+oldLevel);
-		console.log(oldLevel, level);
 		character.x = position[0];
 		character.y = position[1];
 

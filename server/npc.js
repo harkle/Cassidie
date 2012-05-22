@@ -25,7 +25,6 @@ module.exports = NonPlayableCharacter.extend({
 				self.goRight();
 			}, 1000);
 		});	
-
 	},
 
 	goRight: function() {
