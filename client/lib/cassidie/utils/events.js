@@ -47,4 +47,6 @@
 	this.Events.CHARACTER_ACTION_SUCCESS	= 18;
 	this.Events.CHARACTER_ACTION_FAIL		= 19;
 	this.Events.CHARACTER_ACTION_PERFORMED	= 20;
+	this.Events.LEVEL_LEAVE					= 21;
+	this.Events.LEVEL_ENTER					= 22;
 })();

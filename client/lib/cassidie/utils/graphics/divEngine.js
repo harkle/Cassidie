@@ -23,7 +23,7 @@
 			this.container = document.createElement('div');
 			var width	= this.levelData.dimensions.width * this.isometry.x;
 			var height	= this.levelData.dimensions.height * this.isometry.y;
-			this.container.setAttribute('style', 'position:absolute;height:'+height+'px;width:'+width+'px;left:'+this.levelData.viewport.x+'px;top:'+this.levelData.viewport.y+'px;');
+			this.container.setAttribute('style', 'position:absolute;height:'+height+'px;width:'+width+'px;left:0px;top:0px;');
 			Game.container.appendChild(this.container);		
 
 			var self 	= this;
@@ -282,6 +282,14 @@
 
 			object.style.left	= (position.x+objectsCoordinates[0])+'px';			
 			object.style.top	= (position.y-objectsCoordinates[1])+'px';			
+		};
+		
+		this.setCenter = function(x, y) {
+			var position = this.getTilePosition(x, y);
+			
+			this.container.style.left	= (Game.gameData.viewport.width / 2 - position.x - this.cellSize.width / 2) +'px';
+			this.container.style.top	= (Game.gameData.viewport.height / 2 - position.y - this.cellSize.height / 2) +'px';
+			console.log();
 		};
 	};
 })();

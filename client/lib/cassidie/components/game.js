@@ -16,7 +16,7 @@
 		this.gameData	= gameData;
 		this.targetDiv	= Cassidie.targetDiv;
 
-		this.container = document.createElement('div');
+		this.container	= document.createElement('div');
 		this.container.setAttribute('id', 'gameContainer');
 		this.container.setAttribute('style', 'cursor:none;display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
 		this.targetDiv.appendChild(this.container);
@@ -39,11 +39,15 @@
 
 			self.trigger(Events.GAME_LEFT, data);
 		});
-		
+
 		Cassidie.socket.on('level_change', function(data) {
+			self.trigger(Events.LEVEL_LEAVE, data);
+
 			self.level.destroy();
-			
+
 			self.level = new Level(data);
+
+			self.trigger(Events.LEVEL_ENTER, data);
 		});
 	};
 

@@ -119,13 +119,12 @@ var Game = Class.create({
 		////
 		socket.emit('game_entered', {
 			level: {
-				name:		this.levels[socket.client.character.currentLevel].name,
-				title:		this.levels[socket.client.character.currentLevel].title,
-				dimensions: this.levels[socket.client.character.currentLevel].dimensions,
-				viewport:	this.levels[socket.client.character.currentLevel].viewport,
-				cells:		this.levels[socket.client.character.currentLevel].cells,
-				characters: this.levels[socket.client.character.currentLevel].getCharacters(true),
-				objects:	this.levels[socket.client.character.currentLevel].getObjects(true)
+				name:				this.levels[socket.client.character.currentLevel].name,
+				title:				this.levels[socket.client.character.currentLevel].title,
+				dimensions: 		this.levels[socket.client.character.currentLevel].dimensions,
+				cells:				this.levels[socket.client.character.currentLevel].cells,
+				characters: 		this.levels[socket.client.character.currentLevel].getCharacters(true),
+				objects:			this.levels[socket.client.character.currentLevel].getObjects(true)
 			},
 			character: socket.client.character.getData()
 		});
@@ -165,13 +164,12 @@ var Game = Class.create({
 
 		character.client.socket.emit('level_change', {
 			level: {
-				name:		this.levels[level].name,
-				title:		this.levels[level].title,
-				dimensions: this.levels[level].dimensions,
-				viewport:	this.levels[level].viewport,
-				cells:		this.levels[level].cells,
-				characters: this.levels[level].getCharacters(true),
-				objects:	this.levels[level].getObjects(true)
+				name:				this.levels[level].name,
+				title:				this.levels[level].title,
+				dimensions: 		this.levels[level].dimensions,
+				cells:				this.levels[level].cells,
+				characters: 		this.levels[level].getCharacters(true),
+				objects:			this.levels[level].getObjects(true)
 			},
 			character: character.getData()
 		});

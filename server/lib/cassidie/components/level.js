@@ -4,7 +4,6 @@ module.exports = Class.create({
 	dimensions: 	null,
 	cellSize: 		null,
 	isometry:		null,
-	viewport:		null,
 	cells:			null,
 	charactersData: null,
 	objectsData: 	null,
@@ -15,7 +14,6 @@ module.exports = Class.create({
 		this.name				= data.name;
 		this.title				= data.title;
 		this.dimensions			= data.dimensions;
-		this.viewport			= data.viewport;
 		this.cells				= data.cells;
 		this.charactersData 	= data.charactersData;	
 		this.objectsData 		= data.objectsData;	

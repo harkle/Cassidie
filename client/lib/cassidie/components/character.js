@@ -32,8 +32,10 @@
 			if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return;
 
 			if (noPath) {
-				this.x = x;
-				this.y = y;
+				this.x		= x;
+				this.y		= y;
+				this.cellX	= 0;
+				this.cellY	= 0;
 
 				clearInterval(this.intervalID);
 

@@ -238,6 +238,14 @@ Game.observe(Events.CHARACTER_ACTION_PERFORMED, function(data) {
 	console.log('CHARACTER_ACTION_PERFORMED', data);
 });
 
+Game.observe(Events.LEVEL_LEAVE, function(data) {
+	console.log('LEVEL_LEAVE', data);
+});
+
+Game.observe(Events.LEVEL_ENTER, function(data) {
+	console.log('LEVEL_ENTER', data);
+});
+
 //Chat
 function addToChat(from, message, color) {
     $('#chatWindow').html($('#chatWindow').html()+'<span style="color:'+color+'">'+from+': '+message+'</span><br/>');

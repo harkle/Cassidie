@@ -13,26 +13,26 @@ module.exports = Character.extend({
 		var self = this;
 		setTimeout(function() {
 			self.goLeft();
-		}, 6000);
+		}, 1000);
 	},
 
 	goLeft: function() {
-		this.moveTo(10, 5);		
-
 		var self = this;
-		setTimeout(function() {
-			self.goRight();
-		}, 6000);
-		this.speak('Grrr! je suis méchant');
+		this.walkTo(10, 5, function() {
+			self.speak('Grrr! je suis méchant');
+			setTimeout(function() {
+				self.goRight();
+			}, 1000);
+		});	
+
 	},
 
 	goRight: function() {
-		this.moveTo(5, 5);
-
 		var self = this;
-		setTimeout(function() {
-			self.goLeft();
-		}, 6000);		
+
+		this.walkTo(5, 5, function() {
+			self.goLeft();			
+		});
 	},
 
 	toString: function() {

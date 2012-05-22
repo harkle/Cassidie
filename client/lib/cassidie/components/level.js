@@ -15,6 +15,7 @@
 
 			// Player
 			this.playerCharacter = this.addCharacter(this.levelData.character, true);
+			Game.engine.setCenter(this.playerCharacter.x, this.playerCharacter.y)
 
 			// Other players and NPCs
 			for (var i = 0; i < this.levelData.level.characters.length; i++) {
