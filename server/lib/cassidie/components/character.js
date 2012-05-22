@@ -1,5 +1,4 @@
 var GameObject = require('./gameObject.js');
-var PathFinder = require('../utils/pathfinding/pathfinder.js');
 
 module.exports = GameObject.extend({
 	attributes: 	null,
@@ -57,15 +56,6 @@ module.exports = GameObject.extend({
 		this.setAppearance('walking');
 
 		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY}, notify);	
-	},
-
-	walkTo: function(x, y, callback) {
-		if (!this.isVisible) return;
-		
-		this.moveTo(x, y, false);
-		
-		var pathFinder = new PathFinder(this.level, this.x, this.y, this.destinationX, this.destinationY);
-		pathFinder.start(this, callback);
 	},
 
 	setPosition: function(x, y, end, notify) {

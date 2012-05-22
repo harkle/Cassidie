@@ -1,14 +1,15 @@
-var Character = require('./lib/cassidie/components/character.js');
+var NonPlayableCharacter = require('./lib/cassidie/components/nonPlayableCharacter.js');
 
-module.exports = Character.extend({
+module.exports = NonPlayableCharacter.extend({
 
 	initialize: function(data) {
-		this._super('npc_ennemy', data);
+		this._super(data);
 
 		this.attributes.name	= 'The terrible NPC'
 		this.attributes.skin 	= 7;
-		this.x = 5;
-		this.y = 5;
+		this.x					= 5;
+		this.y					= 5;
+		this.isEnnemy 			= true;
 
 		var self = this;
 		setTimeout(function() {
@@ -18,7 +19,7 @@ module.exports = Character.extend({
 
 	goLeft: function() {
 		var self = this;
-		this.walkTo(10, 5, function() {
+		this.moveTo(10, 5, function() {
 			self.speak('Grrr! je suis méchant');
 			setTimeout(function() {
 				self.goRight();
@@ -30,7 +31,7 @@ module.exports = Character.extend({
 	goRight: function() {
 		var self = this;
 
-		this.walkTo(5, 5, function() {
+		this.moveTo(5, 5, function() {
 			self.goLeft();			
 		});
 	},

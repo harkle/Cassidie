@@ -161,8 +161,8 @@
 			this.container.appendChild(character);
 
 			var color = '#ffffff';
-			if (characterData.type == 'player') color = '#0000ff';
-			if (characterData.type == 'npc_ennemy') color = '#ff0000';
+			if (!characterData.isEnnemy) color = '#0000ff';
+			if (characterData.isEnnemy) color = '#ff0000';
 
 			var characterTitle		= document.createElement('div');
 			characterTitle.setAttribute('style', 'color:'+color+';text-align:center;position:absolute;width:'+(skinsCoordinates[2]*2)+'px;height:15px;left:'+(-skinsCoordinates[2]/2)+'px;top:-15px;');
