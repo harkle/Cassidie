@@ -88,7 +88,7 @@
 					var top		= position.y-this.isometry.y;
 					var width	= this.cellSize.width;
 					var height	= this.cellSize.height;
-					var image	= './ressources/levels/'+this.levelData.name+'/tiles/'+tiletData.background+'.png';
+					var image	= './ressources/levels/tiles/'+tiletData.background+'.png';
 
 					var tile = document.createElement('div');
 					tile.setAttribute('style', 'position:absolute;height:'+height+'px;width:'+width+'px;left:'+left+'px;top:'+top+'px;background:url('+image+');');	
