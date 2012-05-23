@@ -99,7 +99,7 @@
 			}
 
 			this.cursor = document.createElement('div');
-			this.cursor.setAttribute('style', 'position:absolute;height:36px;width:80px;left:-80px;top:-36px;background:url(/ressources/cursor.png)');
+			this.cursor.setAttribute('style', 'position:absolute;height:36px;width:80px;left:-80px;top:-36px;background:url(./ressources/cursor.png)');
 			this.container.appendChild(this.cursor);		
 
 			this.skinsCoordinates = [
