@@ -14,6 +14,13 @@ var Database = function(server, port, name) {
 
 	database.open(function(err, database) {
 		self.db = database;
+
+		if (err != undefined) {
+			Logger.error(Cassidie.consoleName, err);
+			process.exit(1);			
+			return;
+		}
+
 		self.emit(Database.IS_READY);
 	});
 
