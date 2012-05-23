@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Cassidie - Level Creator</title>
+		
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap-responsive.min.css" />
+
+		<script src="../../lib/jquery/jquery.js" 				type="text/javascript"></script>
+		<script src="./jquery.json-2.3.min.js" 					type="text/javascript"></script>
+
+		<script src="../../lib/bootstrap/js/bootstrap.min.js" 	type="text/javascript"></script>
+
+		<script src="../../lib/cassidie/utils/graphics/divEngine.js"	type="text/javascript"></script>
+		<script src="scripts.js"										type="text/javascript"></script>
+		<style type="text/css">
+			#gameContainer {
+				position:relative;
+				width:800px;
+				height:600px;
+				background:black;
+				overflow:hidden;
+			}
+
+			#tiles {
+				margin-top: 5px;
+				margin-bottom: 5px;
+				border: 1px solid gray;
+				overflow-y: scroll; 
+			}
+
+			#tiles img {
+				border: 1px solid gray;
+				margin: 2px;
+			}
+
+			#tiles img.selected {
+				border: 1px solid red;
+			}			
+		</style>
+	</head>
+	<body>
+		<div class="container" id="container">
+			<h1>Cassidie</h1>
+			<h3 style="margin-top:0px;" class="page-header">level creator</h3>
+			<textarea id="levelCode">
+{
+	"initialPositions" : {
+		"default": [5, 5],
+    	"level2": [7, 0]
+    },
+  	"cells" : [ 
+    	{
+			"background" : 1,
+			"sprite" : 0,
+			"accessible" : true
+		}
+	],
+	"dimensions" : {
+		"width" : 40,
+		"height" : 30
+	},
+  	"name" : "level1",
+  	"path" : "/levels/level1.js",
+  	"title" : "The Den"
+}			
+			</textarea>
+			<input type="button" value="render" class="btn" id="render" />
+			<div id="tiles">
+				<img src="./ressources/levels/tiles/1.png" alt="" />
+				<img src="./ressources/levels/tiles/2.png" alt="" />
+				<img src="./ressources/levels/tiles/3.png" alt="" />
+				<img src="./ressources/levels/tiles/4.png" alt="" />
+			</div>
+		</div>
+	</body>
+</html>
