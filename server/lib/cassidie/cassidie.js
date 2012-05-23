@@ -70,7 +70,7 @@ var Game = require('./components/game.js');
 			var Chat = require('./chat.js');
 			self.chat = new Chat();
 
-			Logger.systemLog(self.consoleName, 'loading game infos');			
+			Logger.systemLog(self.consoleName, 'loading game infos');
 			self.database.find('games', {name: gameName}, function(data) {
 				if (data.length == 0) {
 					Logger.error(self.consoleName, 'unable to find game in database');

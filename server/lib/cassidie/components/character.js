@@ -1,6 +1,6 @@
-var GameObject = require('./gameObject.js');
+var Entity = require('./entity.js');
 
-module.exports = GameObject.extend({
+module.exports = Entity.extend({
 	attributes: 	null,
 	isMoving:		null,
 	destinationX:	null,

@@ -8,5 +8,9 @@ module.exports = Character.extend({
 		this._super('player', data);
 		
 		this.client = client;
+	},
+	
+	action: function() {
+		
 	}
 });
