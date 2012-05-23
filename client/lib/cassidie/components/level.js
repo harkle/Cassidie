@@ -127,7 +127,7 @@
 		};
 
 		this.addObject = function(data) {
-			var object = new InteractiveObject(data, this);
+			var object = new Item(data, this);
 
 			this.objects.push(object);
 			

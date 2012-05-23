@@ -1,6 +1,6 @@
-var NonPlayableCharacter = require('./lib/cassidie/components/nonPlayableCharacter.js');
+var NPC = require('../../../lib/cassidie/components/NPC.js');
 
-module.exports = NonPlayableCharacter.extend({
+module.exports = NPC.extend({
 
 	initialize: function(data) {
 		this._super(data);

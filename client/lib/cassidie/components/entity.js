@@ -1,5 +1,5 @@
 (function() {
-	this.GameObject = Events.Observable.extend({
+	this.Entity = Events.Observable.extend({
 		id:			null,
 		x:			null,
 		y:			null,

@@ -88,7 +88,7 @@
 					var top		= position.y-this.isometry.y;
 					var width	= this.cellSize.width;
 					var height	= this.cellSize.height;
-					var image	= '/ressources/levels/'+this.levelData.name+'/tiles/'+tiletData.background+'.png';
+					var image	= './ressources/levels/'+this.levelData.name+'/tiles/'+tiletData.background+'.png';
 
 					var tile = document.createElement('div');
 					tile.setAttribute('style', 'position:absolute;height:'+height+'px;width:'+width+'px;left:'+left+'px;top:'+top+'px;background:url('+image+');');	
@@ -252,7 +252,7 @@
 			var date = new Date();
 			var time = date.getTime();
 
-			character.style.background = 'url(/ressources/characters/'+skin+'/'+action+'/'+direction+'.gif?t='+time+')';			
+			character.style.background = 'url(./ressources/characters/'+skin+'/'+action+'/'+direction+'.gif?t='+time+')';			
 		};
 
 		this.setObjectSkin = function(id, skin, action) {
@@ -261,7 +261,7 @@
 			var date = new Date();
 			var time = date.getTime();
 
-			object.style.background = 'url(/ressources/objects/'+skin+'/'+action+'.gif?t='+time+')';			
+			object.style.background = 'url(./ressources/objects/'+skin+'/'+action+'.gif?t='+time+')';			
 		};
 
 		this.setCharacterPosition = function(id, skin, cellX, cellY, dx, dy) {

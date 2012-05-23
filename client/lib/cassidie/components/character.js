@@ -1,5 +1,5 @@
 (function() {
-	this.Character = GameObject.extend({
+	this.Character = Entity.extend({
 		attributes:	null,
 		direction:	'se',
 		action:		'standing',

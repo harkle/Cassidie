@@ -1,5 +1,5 @@
 (function() {
-	this.InteractiveObject = GameObject.extend({
+	this.Item = Entity.extend({
 
 		initialize: function(data, level, isPlayer) {
 			this._super(data, level);

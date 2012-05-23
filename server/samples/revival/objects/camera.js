@@ -1,6 +1,6 @@
-var InteractiveObject = require('./lib/cassidie/components/interactiveObject.js');
+var Item = require('../../../lib/cassidie/components/item.js');
 
-module.exports = InteractiveObject.extend({
+module.exports = Item.extend({
 	initialize: function(x, y, data) {
 		this._super('camera', x, y, data);
 

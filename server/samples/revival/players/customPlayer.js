@@ -1,6 +1,6 @@
-var PlayableCharacter = require('./lib/cassidie/components/playableCharacter.js');
+var Player = require('../../../lib/cassidie/components/Player.js');
 
-module.exports = PlayableCharacter.extend({
+module.exports = Player.extend({
 	activity: null,
 
 	initialize: function(client, data) {
