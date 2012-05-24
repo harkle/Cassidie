@@ -5,7 +5,7 @@ module.exports = Character.extend({
 	isEnnemy: null,
 
 	initialize: function(data) {
-		this._super('nonPlayableCharacter', data);
+		this._super('npc', data);
 		
 	},
 	

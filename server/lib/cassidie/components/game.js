@@ -81,7 +81,7 @@ var Game = Class.create({
 		}
 
 		//Save NPCs
-		function saveNpcsObjects (npcs, objects) {
+		function saveNpcsObjects (level, npcs, objects) {
 			loadings.push(function(next) {
 				Cassidie.database.update('levels', {name: level}, {objectsData: objects, charactersData: npcs}, function() {
 					next();
@@ -89,7 +89,7 @@ var Game = Class.create({
 			});
 		}
 		for (level in this.levels) {
-			saveNpcsObjects(this.levels[level].getCharacters(true, 'npc'), this.levels[level].getObjects(true));
+			saveNpcsObjects(level, this.levels[level].getCharacters(true, 'npc'), this.levels[level].getObjects(true));
 		}
 
 		Cassidie.wait(loadings, function() {

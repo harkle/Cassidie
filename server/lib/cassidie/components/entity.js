@@ -24,9 +24,7 @@ module.exports = Class.create({
 			this.y				= 0;
 			this.isVisible		= true;
 		}
-		
-		console.log(this.id);
-		
+
 		this.type = type;
 	},
 
