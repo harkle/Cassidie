@@ -24,6 +24,8 @@
 			var width	= this.levelData.dimensions.width * this.isometry.x;
 			var height	= this.levelData.dimensions.height * this.isometry.y;
 			this.container.setAttribute('style', 'position:absolute;height:'+height+'px;width:'+width+'px;left:0px;top:0px;');
+			
+			Game.container.style.background = 'url(./ressources/levels/background/'+this.levelData.name+'.png)';
 			Game.container.appendChild(this.container);		
 
 			var self 	= this;
