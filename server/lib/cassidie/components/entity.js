@@ -1,3 +1,5 @@
+var gid = require('../utils/genid.js');
+
 module.exports = Class.create({
 	id:				null,
 	name:			null,
@@ -13,13 +15,17 @@ module.exports = Class.create({
 		if (data != undefined) {
 			this.setData(data, true);
 		} else {
-			this.id				= new Date().getTime();
+			var genid = new gid.genid;
+
+			this.id				= genid.gen();
 			this.name			= '';
 			this.type			= type;
 			this.x				= 0;
 			this.y				= 0;
 			this.isVisible		= true;
 		}
+		
+		console.log(this.id);
 		
 		this.type = type;
 	},
