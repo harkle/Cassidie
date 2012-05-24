@@ -67,9 +67,9 @@ io.sockets.on('connection', function (socket) {
 		Cassidie.game.enter(socket, data.characterId);
 	});
 
-	socket.on('leave_game', function(data) {
+	socket.on('leave_game', function() {
 		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
-		Cassidie.game.leave(socket, data);
+		Cassidie.game.leave(socket);
 	});
 
 	socket.on('character_move', function(data) {

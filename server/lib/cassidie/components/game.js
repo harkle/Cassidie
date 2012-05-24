@@ -71,7 +71,7 @@ var Game = Class.create({
 		//Remove every characters
 		function leaveClients(client) {
 			loadings.push(function(next) {
-				self.leave(client.socket, null, function() {
+				self.leave(client.socket, function() {
 					next();
 				});
 			});
@@ -114,9 +114,6 @@ var Game = Class.create({
 
 		this.levels[socket.client.character.currentLevel].attachCharacter(socket.client.character);
 
-		////
-		//// SEND A LOT OF INFOS ABOUT GAME, LEVELS, etc.
-		////
 		socket.emit('game_entered', {
 			level: {
 				name:				this.levels[socket.client.character.currentLevel].name,
@@ -131,12 +128,11 @@ var Game = Class.create({
 		Logger.systemLog(this.consoleName, socket.client.email+' entered the game with "'+socket.client.character.toString()+'"');
 	},
 
-	leave: function(socket, data, callback) {
+	leave: function(socket, callback) {
 		if (socket.client == undefined) return;
 		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
 
-		data = (data != undefined) ? data.characterData : null;
-		socket.client.character.save(data, callback);
+		socket.client.character.save(callback);
 
 		socket.client.character.removeFromLevel();
  

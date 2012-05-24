@@ -61,7 +61,7 @@
 
 		this.level.destroy();
 
-		Cassidie.socket.emit('leave_game', {characterData: character});
+		Cassidie.socket.emit('leave_game');
 		this.level = null;
 	};
 

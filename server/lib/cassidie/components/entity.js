@@ -10,10 +10,13 @@ module.exports = Class.create({
 	y:				null,
 	isVisible:		null,
 	objectType:		null,
+	exclusionList:	['exclusionList'],
 
 	initialize: function(type, data) {
+		this.type			= type;
+
 		if (data != undefined) {
-			this.setData(data, true);
+			this.setData(data);
 		} else {
 			var genid = new gid.genid;
 
@@ -24,8 +27,6 @@ module.exports = Class.create({
 			this.y				= 0;
 			this.isVisible		= true;
 		}
-
-		this.type = type;
 	},
 
 	toString: function() {
@@ -44,9 +45,9 @@ module.exports = Class.create({
 		if (notifyOther) this.sendData('object_parameter_changed', {parameter: parameter, value:value}, notify);
 	},
 
-	setData: function(data, internal) {
+	setData: function(data) {
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute, internal)) {
+			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute)) {
 				eval('this.'+attribute+'=data[attribute]');
 			}
 		}
@@ -56,17 +57,19 @@ module.exports = Class.create({
 		var returnObject = {};
 
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super') {
+			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute)) {
 				eval('returnObject.'+attribute+'=this[attribute]');
 			}
 		}
 		return returnObject;
 	},
 
-	checkFieldValidity: function(attribute, internal) {
-		if (internal) return true;
-
-		/*if (attribute == 'destinationX')	return false;*/
+	checkFieldValidity: function(attribute) {
+		for (var i = 0; i < this.exclusionList.length; i++) {
+			if (attribute == this.exclusionList[i]) {
+				return false;
+			}
+		}
 
 		return true;
 	},

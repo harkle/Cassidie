@@ -13,7 +13,6 @@ module.exports = Entity.extend({
 			this.attributes	= {
 				name: ''
 			};
-			this.id				= new Date().getTime();
 			this.type			= type;
 			this.x				= 0;
 			this.y				= 0;
@@ -34,16 +33,6 @@ module.exports = Entity.extend({
 	removeFromLevel: function() {
 		this.level.detachCharacter(this.id);
 		this.level = null;	
-	},
-
-	checkFieldValidity: function(attribute, internal) {
-		if (internal) return true;
-
-		if (attribute == 'destinationX')	return false;
-		if (attribute == 'destinationY')	return false;
-		if (attribute == 'isMoving') 		return false;
-
-		return true;
 	},
 
 	moveTo: function(x, y, notify) {
@@ -78,28 +67,6 @@ module.exports = Entity.extend({
 		}
 
 		if (notify) this.sendData('character_positioned', {x: this.x, y: this.y}, true);	
-	},
-
-	save: function(data, callback) {
-		var self = this;
-
-		if (data != undefined) this.setData(data, false);
-
-		if (this.client != undefined) {
-			Cassidie.database.find('users', {email: this.client.email}, function(data) {
-				var characters = null;
-				for (var i = 0; i < data[0].characters.length; i++) {
-					if (data[0].characters[i].id == self.id) {
-						data[0].characters[i] = self.getData();
-					}
-				}
-
-				self.client.setCharactersData(data[0].characters);
-
-				callback = (callback == undefined) ? function() { } : callback;
-				Cassidie.database.update('users', {email: self.client.email}, {characters: data[0].characters}, callback);
-			});
-		}
 	},
 
 	speak: function(message) {

@@ -5,8 +5,7 @@ module.exports = Character.extend({
 	isEnnemy: null,
 
 	initialize: function(data) {
-		this._super('npc', data);
-		
+		this._super('npc', data);	
 	},
 	
 	moveTo: function(x, y, callback) {

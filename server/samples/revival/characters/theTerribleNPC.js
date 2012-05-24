@@ -1,13 +1,17 @@
 var NPC = require('../../../lib/cassidie/components/NPC.js');
 
 module.exports = NPC.extend({
-
+	internalSecretParamater: null,
+	
 	initialize: function(data) {
+		this.exclusionList.push('internalSecretParamater');
+
 		this._super(data);
 
-		this.attributes.name	= 'The terrible NPC'
-		this.attributes.skin 	= 7;
-		this.isEnnemy 			= true;
+		this.attributes.name			= 'The terrible NPC'
+		this.attributes.skin 			= 7;
+		this.isEnnemy 					= true;
+		this.internalSecretParamater	= 'ahah!';
 
 		var self = this;
 		setTimeout(function() {
