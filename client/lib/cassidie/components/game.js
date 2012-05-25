@@ -18,10 +18,10 @@
 
 		this.container	= document.createElement('div');
 		this.container.setAttribute('id', 'gameContainer');
-		this.container.setAttribute('style', 'cursor:none;display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
+		this.container.setAttribute('style', 'cursor:non;display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
 		this.targetDiv.appendChild(this.container);
 
-		this.engine = new DivEngine();
+		this.engine = new ThreeEngine(); //new DivEngine();
 
 		var self = this;
 		Cassidie.socket.on('game_entered', function(data) {

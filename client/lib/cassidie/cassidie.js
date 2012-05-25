@@ -1,7 +1,7 @@
 (function() {
 	this.Cassidie 		= function() {};
 
-	this.Cassidie.load 	= function(scripts, server, targetDiv) {
+	this.Cassidie.load 	= function(scripts, path, server, targetDiv) {
 		function setupCassidie() {
 			this.Cassidie.prototype 			= new Events.Observable();
 			this.Cassidie.prototype.constructor	= this.Cassidie;
@@ -47,7 +47,7 @@
 		}
 
 		domready(function() {
-			load(['/lib/cassidie/utils/class.js']).then(['/lib/cassidie/utils/events.js', server+'/socket.io/socket.io.js']).then(['/lib/cassidie/utils/graphics/divEngine.js', '/lib/cassidie/account.js', '/lib/cassidie/chat.js', '/lib/cassidie/components/game.js', '/lib/cassidie/components/level.js', '/lib/cassidie/components/entity.js', '/lib/cassidie/components/item.js', '/lib/cassidie/components/character.js', '/lib/cassidie/utils/pathfinding/graph.js', '/lib/cassidie/utils/pathfinding/astar.js']).thenRun(function () {
+			load([path+'utils/class.js']).then([path+'utils/md5.js', path+'utils/graphics/three.js', path+'utils/graphics/stat.js', path+'utils/events.js', server+'/socket.io/socket.io.js']).then([path+'utils/graphics/threeEngine.js', path+'utils/graphics/divEngine.js', path+'account.js', path+'chat.js', path+'components/game.js', path+'components/level.js']).then([path+'components/entity.js']).then([path+'components/item.js', path+'components/character.js']).then([path+'utils/pathfinding/graph.js', path+'utils/pathfinding/astar.js']).thenRun(function () {
 
 				setupCassidie();			
 

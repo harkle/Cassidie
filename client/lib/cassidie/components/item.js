@@ -4,7 +4,7 @@
 		initialize: function(data, level, isPlayer) {
 			this._super(data, level);
 
-			Game.engine.addObject(this);
+			Game.engine.addEntity(this);
 		},
 
 		setParameter: function(parameter, value, notifyOther) {
@@ -19,25 +19,25 @@
 		move: function(x, y, notiyOthers) {
 			this._super();
 
-			Game.engine.setObjectPosition(this.id, this.skin, this.x, this.y);
+			Game.engine.setEntityPosition(this.id, this.skin, this.x, this.y);
 		},
 
 		show: function() {
 			this._super();
 
-			Game.engine.showObject(this.id);
+			Game.engine.showEntity(this.id);
 		},
 
 		hide: function() {
 			this._super();
 
-			Game.engine.hideObject(this.id);
+			Game.engine.hideEntity(this.id);
 		},
 
 		destroy: function() {
 			this._super();
 
-			Game.engine.removeObject(this.id);
+			Game.engine.removeEntity(this.id);
 		}
 	});
 })();

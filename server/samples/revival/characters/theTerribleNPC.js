@@ -8,6 +8,7 @@ module.exports = NPC.extend({
 
 		this._super(data);
 
+		this.skinCoordinates 			= [0, 60, 80, 80];
 		this.attributes.name			= 'The terrible NPC'
 		this.attributes.skin 			= 7;
 		this.isEnnemy 					= true;
@@ -20,7 +21,7 @@ module.exports = NPC.extend({
 					self.goRight();
 				})
 			} else {
-				if (self.x = 30 && self.y = 30) {
+				if (self.x == 30 && self.y == 30) {
 					self.goRight();
 				} else {
 					self.x					= 5;

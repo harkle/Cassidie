@@ -39,7 +39,7 @@
 
 				clearInterval(this.intervalID);
 
-				Game.engine.setCharacterPosition(this.id, this.attributes.skin, this.x, this.y, 0, 0);
+				Game.engine.setEntityPosition(this.id, this.attributes.skin, this.x, this.y, 0, 0);
 
 				return;
 			}
@@ -134,7 +134,7 @@
 				self.cellX += dx;
 				self.cellY += dy;
 
-				Game.engine.setCharacterPosition(self.id, self.attributes.skin, self.x, self.y, self.cellX, self.cellY);
+				Game.engine.setEntityPosition(self.id, self.attributes.skin, self.x, self.y, self.cellX, self.cellY);
 
 				if (step == speed-1) {
 					self.x = path[0].x;
@@ -142,7 +142,7 @@
 					self.cellX = 0;
 					self.cellY = 0;
 
-					Game.engine.setCharacterPosition(self.id, self.attributes.skin, self.x, self.y, self.cellX, self.cellY);
+					Game.engine.setEntityPosition(self.id, self.attributes.skin, self.x, self.y, self.cellX, self.cellY);
 
 					clearInterval(self.intervalID);
 					path.splice(0,1);
@@ -163,13 +163,13 @@
 		show: function() {
 			this._super();
 
-			Game.engine.showCharacter(this.id);
+			Game.engine.showEntity(this.id);
 		},
 
 		hide: function() {
 			this._super();
 
-			Game.engine.hideCharacter(this.id);
+			Game.engine.hideEntity(this.id);
 		},
 
 		speak: function(message) {
@@ -177,7 +177,7 @@
 		},
 
 		setSkin: function(action) {
-			Game.engine.setCharacterSkin(this.id, this.attributes.skin, action, this.direction);			
+			Game.engine.setEntitySkin(this.id, './ressources/characters/'+this.attributes.skin+'/'+this.appearance+'/'+this.direction, '.gif');
 		},
 
 		destroy: function() {
@@ -189,7 +189,7 @@
 			delete this.cellX;
 			delete this.cellY;
 
-			Game.engine.removeCharacter(this.id);
+			Game.engine.removeEntity(this.id);
 		}
 	});
 })();

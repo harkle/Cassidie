@@ -1,16 +1,17 @@
 var gid = require('../utils/genid.js');
 
 module.exports = Class.create({
-	id:				null,
-	name:			null,
-	type:			null,
-	appearance:		null,
-	level:			null,
-	x:				null,
-	y:				null,
-	isVisible:		null,
-	objectType:		null,
-	exclusionList:	['exclusionList'],
+	id:					null,
+	name:				null,
+	type:				null,
+	appearance:			null,
+	level:				null,
+	x:					null,
+	y:					null,
+	isVisible:			null,
+	objectType:			null,
+	skinCoordinates:	null,
+	exclusionList:		['_super', 'client', 'actions', 'level', 'exclusionList'],
 
 	initialize: function(type, data) {
 		this.type			= type;
@@ -47,7 +48,7 @@ module.exports = Class.create({
 
 	setData: function(data) {
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute)) {
+			if(typeof this[attribute] != 'function' && attribute != 'skinCoordinates' && this.checkFieldValidity(attribute)) {
 				eval('this.'+attribute+'=data[attribute]');
 			}
 		}
@@ -57,7 +58,7 @@ module.exports = Class.create({
 		var returnObject = {};
 
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'client' && attribute != 'actions' && attribute != 'level' && attribute != '_super' && this.checkFieldValidity(attribute)) {
+			if(typeof this[attribute] != 'function' && this.checkFieldValidity(attribute)) {
 				eval('returnObject.'+attribute+'=this[attribute]');
 			}
 		}

@@ -31,6 +31,7 @@
 		move: function(x, y) {
 			this.x = x;
 			this.y = y;
+
 		},
 
 		show: function() {
@@ -47,7 +48,7 @@
 		setSkin: function(action) {
 			this.action = action;
 
-			Game.engine.setObjectSkin(this.id, this.skin, this.action);
+			Game.engine.setEntitySkin(this.id, './ressources/objects/'+this.skin+'/'+this.action, '.gif');
 		},
 
 		triggerAction: function() {

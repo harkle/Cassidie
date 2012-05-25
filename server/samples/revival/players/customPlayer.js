@@ -6,6 +6,8 @@ module.exports = Player.extend({
 	initialize: function(client, data) {
 		this._super(client, data);
 
+		this.skinCoordinates 			= [0, 60, 80, 80];
+
 		if (data == undefined) {
 			this.attributes.skin = '';
 			this.activity		 = 0;
