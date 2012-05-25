@@ -135,7 +135,7 @@ Account.observe(Events.CHARACTER_STRUCTURE, function(data) {
     	if (elm == 'skin') {
     		$('#newPlayer').append('<label for="newPlayer_'+elm+'">Apparence</label><input class="hidden"id="newPlayer_'+elm+'" value="1" /><div class="thumbnails">');
     		for (var i = 1; i <= 14; i++) {
-    			$('#newPlayer .thumbnails').append('<div class="thumbnail span2 head '+((i > 1) ? 'hidden' : '')+'" data-id="'+i+'"><img  src="/ressources/images/heads/'+i+'.gif" /></div>');					
+    			$('#newPlayer .thumbnails').append('<div class="thumbnail span2 head '+((i > 1) ? 'hidden' : '')+'" data-id="'+i+'"><img  src="./ressources/images/heads/'+i+'.gif" /></div>');					
     		}
     	}
     });
