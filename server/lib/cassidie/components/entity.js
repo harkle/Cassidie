@@ -11,6 +11,7 @@ module.exports = Class.create({
 	isVisible:			null,
 	objectType:			null,
 	skinCoordinates:	null,
+	animationList:		null,
 	exclusionList:		['_super', 'client', 'actions', 'level', 'exclusionList'],
 
 	initialize: function(type, data) {
@@ -28,6 +29,9 @@ module.exports = Class.create({
 			this.y				= 0;
 			this.isVisible		= true;
 		}
+
+		this.skinCoordinates	= [];
+		this.animationList		= {};
 	},
 
 	toString: function() {
@@ -48,7 +52,7 @@ module.exports = Class.create({
 
 	setData: function(data) {
 		for (attribute in this) {
-			if(typeof this[attribute] != 'function' && attribute != 'skinCoordinates' && this.checkFieldValidity(attribute)) {
+			if(typeof this[attribute] != 'function' && attribute != 'skinCoordinates' && attribute != 'animationList' && this.checkFieldValidity(attribute)) {
 				eval('this.'+attribute+'=data[attribute]');
 			}
 		}

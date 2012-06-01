@@ -114,7 +114,8 @@
 					object= self.getCharacter(data.id);
 				}
 
-				object.setSkin(data.name);
+				var isAnimated = (object.animationList[data.name] != undefined) ? true : false;
+				object.setSkin(data.name, isAnimated);
 			});
 		};
 

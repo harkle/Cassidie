@@ -3,8 +3,11 @@ var Item = require('../../../lib/cassidie/components/item.js');
 module.exports = Item.extend({
 	initialize: function(x, y, data) {
 		this._super('camera', x, y, data);
-		
+
 		this.skinCoordinates = [20, 65, 38, 73];
+		this.animationList				= {
+			'hit':  {numFrame: 9, looping: false}
+		};
 
 		if (data == undefined) {
 			this.name				= 'Camera';

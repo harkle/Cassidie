@@ -11,13 +11,13 @@
 				eval('this.'+attribute+'=data[attribute]');
 			}
 
-			this.level = level;			
+			this.level = level;	
 		},
 
 		setParameter: function(parameter, value, notifyOther) {
 			eval('this.'+parameter+'=value');
 		},
-		
+
 		getData: function() {
 			var returnObject = {};
 
@@ -45,10 +45,11 @@
 		destroy: function() {
 		},
 
-		setSkin: function(action) {
-			this.action = action;
+		setSkin: function(appearance, isAnimated) {
+			this.appearance = appearance;
 
-			Game.engine.setEntitySkin(this.id, './ressources/objects/'+this.skin+'/'+this.action, '.gif');
+			var animationParameters = (this.animationList[appearance] != undefined) ? this.animationList[appearance] : {numFrame: 1, looping: false};
+			Game.engine.setEntitySkin(this.id, './ressources/objects/'+this.skin+'/'+this.appearance, isAnimated, animationParameters);
 		},
 
 		triggerAction: function() {

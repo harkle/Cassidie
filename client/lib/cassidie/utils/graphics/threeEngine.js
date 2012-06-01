@@ -14,6 +14,8 @@
 		this.cursor				= null;
 		this.entities			= null;
 		this.geometry			= null;
+		this.animations			= null;
+		this.animationInterval	= null;
 
 		this.isometry			= {
 			x: 32,
@@ -47,6 +49,7 @@
 			this.skinsCoordinates	= {};
 			this.materials			= {};
 			this.entities			= {};
+			this.animations			= {};
 
 			this.geometry = new THREE.Geometry();
 			
@@ -55,7 +58,7 @@
 			//Material
 			for (var i = 0; i < this.levelData.cells.length; i++) {
 				var id = this.levelData.cells[i].background;
-				if (materials[id] == undefined) materials[id] = this.getMaterial('./ressources/levels/tiles/'+id, '.png')
+				if (materials[id] == undefined) materials[id] = this.getMaterial('./ressources/levels/tiles/'+id)
 			}
 
 			//Objects
@@ -141,11 +144,14 @@
 				drag	= false;
 			}, false);
 
-			this.cursor = this.createPlane(this.cellSize.width, this.cellSize.height, [this.getMaterial('./ressources/cursor', '.png')]);
+			this.cursor = this.createPlane(this.cellSize.width, this.cellSize.height, [this.getMaterial('./ressources/cursor')]);
 			this.cursor.position.z = 100;
 			this.scene.add(this.cursor);
 
 			this.render();
+			this.animationInterval = setInterval(function() {
+				self.doAnimation();	
+			}, 100);
 		};
 
 		this.createPlane = function(width, height, material, materialID) {
@@ -171,6 +177,20 @@
 			return new THREE.Mesh(geometry, new THREE.MeshFaceMaterial());
 		};
 
+		this.doAnimation = function() {
+			for (anim in this.animations) {
+				if (this.animations[anim].running) {
+					this.entities[anim].material = this.getMaterial(this.animations[anim].file, this.animations[anim].id % this.animations[anim].numFrame);
+
+					this.animations[anim].id += 1;
+
+					if (this.animations[anim].id % this.animations[anim].numFrame == 0 && !this.animations[anim].looping) {
+						this.animations[anim].running = false;
+					}
+				}
+			}
+		};
+
 		this.render = function() {
 			this.renderer.render(this.scene, this.camera);  		
 
@@ -183,15 +203,20 @@
 		};
 
 		this.destroy = function() {
+			clearInterval(this.animationInterval);
 			Game.container.removeChild(this.renderer.domElement);
 		};
 
-		this.getMaterial = function(file, extension) {
+		this.getMaterial = function(file, animationID) {
+			if (animationID == undefined) animationID = '';
+			
+			file = file + animationID;
+
 			var material = this.materials['r_'+file];
 
 			if (material == undefined) {
 				material = new THREE.MeshBasicMaterial({
-					map: THREE.ImageUtils.loadTexture(file+extension),
+					map: THREE.ImageUtils.loadTexture(file+'.png'),
 					transparent:true,
 				});
 
@@ -267,13 +292,20 @@
 			var object				= this.createPlane(this.skinsCoordinates[objectData.id][2], this.skinsCoordinates[objectData.id][3]);
 
 			this.scene.add(object);
-			this.entities[objectData.id] = object;
+			this.entities[objectData.id]	= object;
+			this.animations[objectData.id]	= {
+				id: 		0,
+				running:	false,
+				file: 		'',
+				numFrame:	0,
+				looping:	false
+			};
 
 			this.setEntityPosition(objectData.id, this.skinsCoordinates[objectData.id], objectData.x, objectData.y);
-
-			if (objectData.objectType == 'object')		this.setEntitySkin(objectData.id, './ressources/objects/'+objectData.skin+'/'+objectData.appearance, '.gif');
-			if (objectData.objectType == 'character')	this.setEntitySkin(objectData.id, './ressources/characters/'+objectData.attributes.skin+'/'+objectData.appearance+'/'+objectData.direction, '.gif');
-
+console.log(objectData.animationList);
+			var isAnimated = (objectData.animationList[objectData.appearance] != undefined) ? true : false;
+			objectData.setSkin(objectData.appearance, isAnimated);
+			
 			if (objectData.isVisible) this.showEntity(objectData.id);
 			if (!objectData.isVisible) this.hideEntity(objectData.id);
 		};
@@ -286,8 +318,6 @@
 
 			this.entities[id].add(speach);
 
-			/*var oldTimeout = speach.getAttribute('data-timeout');
-			clearTimeout(oldTimeout);*/
 			self = this;
 
 			speach.name = 'speach';
@@ -308,14 +338,23 @@
 			THREE.SceneUtils.traverseHierarchy(this.entities[id], function ( object ) { object.visible = false; });
 		};
 
-		this.setEntitySkin = function(id, file, extension) {
-			this.entities[id].material = this.getMaterial(file, extension);
+		this.setEntitySkin = function(id, file, isAnimated, animationParameters) {
+			if (isAnimated) {
+				this.animations[id].id			= 0;
+				this.animations[id].running		= true;
+				this.animations[id].file		= file;
+				this.animations[id].numFrame	= animationParameters.numFrame;
+				this.animations[id].looping		= animationParameters.looping;
+			} else {
+				this.animations[id].running		= false;
+				this.entities[id].material = this.getMaterial(file);
+			}			
 		};
 
 		this.setEntityPosition = function(id, skin, x, y, dx, dy) {
 			if (dx == undefined) dx = 0;
 			if (dy == undefined) dy = 0;
-	
+
 			var object				= this.entities[id];
 			var position			= this.getTilePosition(x, y);
 
@@ -323,12 +362,12 @@
 			object.position.y = position.y-this.skinsCoordinates[id][1]+dy;
 
 			var z = this.levelData.dimensions.width - x + y;
-			object.position.z = z;		
+			object.position.z = z;
 		};
-		
+
 		this.setCenter = function(x, y) {
 			var position = this.getTilePosition(x, y);
-			
+
 			this.camera.position.x	= position.x + this.cellSize.width / 2 - Game.gameData.viewport.width /2;
 			this.camera.position.y	= position.y + this.cellSize.height / 2 - Game.gameData.viewport.height /2;
 		};

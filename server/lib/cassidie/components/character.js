@@ -23,6 +23,10 @@ module.exports = Entity.extend({
 			this.appearance		= 'standing';
 		}
 
+		this.animationList				= {
+			'walking':  {numFrame: 1, looping: true},
+		};
+
 		this.objectType = 'character';
 	},
 

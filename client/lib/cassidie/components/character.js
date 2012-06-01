@@ -2,7 +2,7 @@
 	this.Character = Entity.extend({
 		attributes:	null,
 		direction:	'se',
-		action:		'standing',
+		appearance:	'standing',
 		cellX:		0,
 		cellY:		0,
 		intervalID:	0,
@@ -117,8 +117,7 @@
 			    this.direction = 'ne';
 			}
 
-			this.action = 'walking';
-			this.setSkin(this.action);
+			this.setSkin('walking', true);
 
 			var speed = 20;
 			dx /= speed;
@@ -151,13 +150,12 @@
 						self.moveCharacterCell(path, notiyOthers);
 						if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: false});
 					} else {
-						self.action = 'standing';
-						self.setSkin(self.action);
+						self.setSkin('standing', false);
 						if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: true});
 					}
 				}
 				step++;
-			}, 40);			
+			}, 40);		
 		},
 
 		show: function() {
@@ -176,8 +174,11 @@
 			Game.engine.characterSpeech(this.id, message);			
 		},
 
-		setSkin: function(action) {
-			Game.engine.setEntitySkin(this.id, './ressources/characters/'+this.attributes.skin+'/'+this.appearance+'/'+this.direction, '.gif');
+		setSkin: function(appearance, isAnimated) {
+			this.appearance = appearance;
+
+			var animationParameters = (this.animationList[appearance] != undefined) ? this.animationList[appearance] : {numFrame: 1, looping: false};
+			Game.engine.setEntitySkin(this.id, './ressources/characters/'+this.attributes.skin+'/'+appearance+'/'+this.direction, isAnimated, animationParameters);
 		},
 
 		destroy: function() {
