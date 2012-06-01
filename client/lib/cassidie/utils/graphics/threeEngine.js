@@ -1,8 +1,6 @@
 /*
-- textes
 - anims gifs
 - background
-- bug creation perso
 - decors
 */
 (function() {
@@ -286,7 +284,6 @@
 
 			var speach	= this.createText(text, '#ffffff', this.skinsCoordinates[id][2] / 2, -30);
 
-			
 			this.entities[id].add(speach);
 
 			/*var oldTimeout = speach.getAttribute('data-timeout');
@@ -325,7 +322,7 @@
 			object.position.x = position.x+this.skinsCoordinates[id][0]+dx;
 			object.position.y = position.y-this.skinsCoordinates[id][1]+dy;
 
-			var z = this.levelData.dimensions.width - x + y * this.levelData.dimensions.width;
+			var z = this.levelData.dimensions.width - x + y;
 			object.position.z = z;		
 		};
 		
