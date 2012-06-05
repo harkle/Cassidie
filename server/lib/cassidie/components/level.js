@@ -17,7 +17,8 @@ module.exports = Class.create({
 		this.cells				= data.cells;
 		this.charactersData 	= data.charactersData;	
 		this.objectsData 		= data.objectsData;	
-		this.initialPositions	= data.initialPositions;	
+		this.initialPositions	= data.initialPositions;
+		this.sprites			= data.sprites;	
 		this.characters 		= [];
 		this.objects			= [];
 	},

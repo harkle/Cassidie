@@ -92,6 +92,7 @@
 					var height	= this.cellSize.height;
 					var image	= './ressources/levels/tiles/'+tiletData.background+'.png';
 
+					if (tiletData.sprite != '') console.log('a');
 					var tile = document.createElement('div');
 					tile.setAttribute('style', 'position:absolute;height:'+height+'px;width:'+width+'px;left:'+left+'px;top:'+top+'px;background:url('+image+');');	
 					tile.setAttribute('id', 'cell_'+x+'_'+y);	

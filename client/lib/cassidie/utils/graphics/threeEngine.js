@@ -13,7 +13,8 @@
 		this.materials			= null;
 		this.cursor				= null;
 		this.entities			= null;
-		this.geometry			= null;
+		this.ground				= null;
+		this.sprites			= null;		
 		this.animations			= null;
 		this.animationInterval	= null;
 
@@ -51,14 +52,24 @@
 			this.entities			= {};
 			this.animations			= {};
 
-			this.geometry = new THREE.Geometry();
+			this.ground		= new THREE.Geometry();
+			this.sprites	= new THREE.Geometry();
 			
-			var materials = [];
-
+			var materialsGround		= [];
+			var materialsSprites	= [];
 			//Material
 			for (var i = 0; i < this.levelData.cells.length; i++) {
 				var id = this.levelData.cells[i].background;
-				if (materials[id] == undefined) materials[id] = this.getMaterial('./ressources/levels/tiles/'+id)
+				if (materialsGround[id] == undefined) materialsGround[id] = this.getMaterial('./ressources/levels/tiles/'+id)
+			}
+
+			//Sprites
+			for (var i = 0; i < this.levelData.cells.length; i++) {
+				var id = this.levelData.cells[i].sprite;
+				if (id != '') {
+					id = parseInt(id);
+					if (materialsSprites[id] == undefined) materialsSprites[id] = this.getMaterial('./ressources/levels/sprites/'+id)
+				}
 			}
 
 			//Objects
@@ -73,21 +84,40 @@
 					var width		= this.cellSize.width;
 					var height		= this.cellSize.height;
 
-					var tile = this.createPlane(width, height, materials, tiletData.background);
+					var tile = this.createPlane(width, height, materialsGround, tiletData.background);
 
 					tile.position.x = left;
 					tile.position.y = top;
-					tile.position.z = 0
+					tile.position.z = 0;
 
 					tile.matrixAutoUpdate = false;
 					tile.updateMatrix();
-					
-					THREE.GeometryUtils.merge(this.geometry, tile);
+
+					THREE.GeometryUtils.merge(this.ground, tile);
+
+					if (tiletData.sprite != '') {
+						var id			= tiletData.sprite;
+						var spriteData	= this.levelData.sprites['s_'+id];
+						
+						var sprite = this.createPlane(spriteData.width, spriteData.height, materialsSprites, parseInt(tiletData.sprite));
+						sprite.position.x = left -spriteData.x;
+						sprite.position.y = top - spriteData.y;
+						sprite.position.z = this.levelData.dimensions.width - x + y + 0.2;
+
+						sprite.matrixAutoUpdate = false;
+						sprite.updateMatrix();
+
+						//THREE.GeometryUtils.merge(this.sprites, sprite);
+						this.scene.add(sprite);
+					}
 				}
 			}
 
-			var mesh = new THREE.Mesh(this.geometry, new THREE.MeshFaceMaterial());
-			this.scene.add(mesh);
+			var meshGround = new THREE.Mesh(this.ground, new THREE.MeshFaceMaterial());
+			this.scene.add(meshGround);
+
+			/*var meshSprites = new THREE.Mesh(this.sprites, new THREE.MeshFaceMaterial());
+			this.scene.add(meshSprites);*/
 
 			stats = new Stats();
 			stats.domElement.style.position = 'absolute';
@@ -302,7 +332,7 @@
 			};
 
 			this.setEntityPosition(objectData.id, this.skinsCoordinates[objectData.id], objectData.x, objectData.y);
-console.log(objectData.animationList);
+//console.log(objectData.animationList);
 			var isAnimated = (objectData.animationList[objectData.appearance] != undefined) ? true : false;
 			objectData.setSkin(objectData.appearance, isAnimated);
 			
@@ -362,7 +392,7 @@ console.log(objectData.animationList);
 			object.position.y = position.y-this.skinsCoordinates[id][1]+dy;
 
 			var z = this.levelData.dimensions.width - x + y;
-			object.position.z = z;
+			object.position.z = z + 0.4;
 		};
 
 		this.setCenter = function(x, y) {

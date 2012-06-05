@@ -121,7 +121,8 @@ var Game = Class.create({
 				dimensions: 		this.levels[socket.client.character.currentLevel].dimensions,
 				cells:				this.levels[socket.client.character.currentLevel].cells,
 				characters: 		this.levels[socket.client.character.currentLevel].getCharacters(true),
-				objects:			this.levels[socket.client.character.currentLevel].getObjects(true)
+				objects:			this.levels[socket.client.character.currentLevel].getObjects(true),
+				sprites:			this.levels[socket.client.character.currentLevel].sprites
 			},
 			character: socket.client.character.getData()
 		});
