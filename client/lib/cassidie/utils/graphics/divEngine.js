@@ -81,7 +81,7 @@
 			}, false);
 
 			for (var y = 0; y < this.levelData.dimensions.height; y++) {
-				for (var x = 0; x < this.levelData.dimensions.width; x++) {
+				for (var x = this.levelData.dimensions.width-1; x >= 0; x--) {
 					var tileID   = y * this.levelData.dimensions.width + x;
 					var tiletData = (this.levelData.cells[tileID] != undefined) ? this.levelData.cells[tileID] : this.levelData.cells[0];
 

@@ -6,8 +6,10 @@ Game.level.playerCharacter.move	= function() {};
 
 var position;
 var currentTile;
+var currentSprite;
 var level;
 var Engine;
+var mode;
 
 $(function() {
 	$('#mapper').append('<div id="gameContainer"></div>');
@@ -32,7 +34,25 @@ $(function() {
 		$('#levelLink').val(levels);
 
 		Engine.initialize(level);
+		
+		//cells
+		for (var i = 0; i < level.cells.length; i++) {
+			if (level.cells[i].sprite != '') {
+				var y = Math.floor(i / level.dimensions.width);
+				var x = i - y * level.dimensions.width;
 
+				mode = 'sprite';
+				currentSprite = {
+					image:	level.cells[i].sprite,
+					x:		level.sprites['s_'+level.cells[i].sprite].x,
+					y:		level.sprites['s_'+level.cells[i].sprite].y
+				}
+				changeCell(x, y);				
+			}
+		}
+		
+		mode = '';
+				
 		var ctrl	= false;
 		var alt		= false;
 		var shift	= false;
@@ -115,8 +135,38 @@ $(function() {
 		
 	});
 
+	$('#sprites img').click(function() {
+		currentSprite = {
+			image: $(this).attr('src').replace('.png', '').replace('./ressources/levels/sprites/', ''),
+			x: $(this).attr('data-x'),
+			y: $(this).attr('data-y')
+		};
+
+		$('#sprites img').removeClass('selected');
+		$(this).addClass('selected');
+		
+	});
+
 	$('#update').click(function() {
 		createCode();
+	});
+	
+	$('#mode a').first().click(function(e) {
+		e.preventDefault();
+
+		$('#sprites').hide();
+		$('#tiles').show();
+		
+		mode = "tile";
+	});
+
+	$('#mode a').last().click(function(e) {
+		e.preventDefault();
+
+		$('#sprites').show();
+		$('#tiles').hide();
+		
+		mode = "sprite";
 	});
 
 	function addLevelLinks() {
@@ -150,26 +200,52 @@ $(function() {
 		}
 	}
 
-	function changeCell(x, y, e) {		
-		if (currentTile != undefined) {
+	function changeCell(x, y, e) {	
+		if (currentTile != undefined && mode == 'tile') {
 		    $('#cell_'+x+'_'+y).css('background', 'url(./ressources/levels/tiles/'+currentTile+'.png)');
+		}
+
+		if (currentSprite != undefined && mode == 'sprite') {
+			var img = $('<img src="./ressources/levels/sprites/'+currentSprite.image+'.png" />');
+			img.css({
+				position: 'absolute',
+				left: -currentSprite.x,
+				top: -currentSprite.y
+			})
+		    $('#cell_'+x+'_'+y).empty().append(img);
 		}
 	}
 
 	function createCode() {
 		level			= jQuery.parseJSON($('#levelCode').val());
 		level.cells 	= [];
+		level.sprites	= {};
 
-		$('#gameContainer').children('div').children().each(function() {
-			var id = $(this).attr('id');
+		//$('#gameContainer').children('div').children().each(function() {
+		function processCell(elm) {
+			var id = $(elm).attr('id');
 
 			if (id != undefined) {
-				var tileId = $(this).css('background-image').replace('.png)', '').replace('url('+window.location+'ressources/levels/tiles/', '');
+				var tileId = $(elm).css('background-image').replace('.png)', '').replace('url('+window.location+'ressources/levels/tiles/', '');
 		
+				var img = $(elm).find('img');
+				var sprite = '';
+				
+				if (img.length > 0) {
+					sprite = img.attr('src').replace('.png', '').replace('./ressources/levels/sprites/', '');
+					console.log(sprite);
+					level.sprites['s_'+sprite] = {
+						width: 	img.width(),
+						height: img.height(),
+						x: 		-parseInt(img.css('left')),
+						y:		-parseInt(img.css('top'))
+					}
+				}
+
 				level.cells.push({
 					background: tileId,
-					sprite:		'',
-					accessible: ($(this).css('opacity') == 1) ? true : false
+					sprite:		sprite,
+					accessible: ($(elm).css('opacity') == 1) ? true : false
 				});
 
 				id = id.replace('cell_', '').split('_');
@@ -178,11 +254,18 @@ $(function() {
 				if (cell == undefined) cell = level.cells[0];
 
 				if (!cell.accessible) {
-					$(this).css('opacity', '0.3');	
+					$(elm).css('opacity', '0.3');	
 				}
 			}
-		});
-
+		};
+		
+		for (var y = 0; y < level.dimensions.height; y++) {
+			for (var x = 0; x < level.dimensions.width; x++) {
+				var element = $('#cell_'+x+'_'+y);
+				processCell(element);				
+			}
+		}
+		
 		addLevelLinks();
 		
 		var encoded = $.toJSON( level );

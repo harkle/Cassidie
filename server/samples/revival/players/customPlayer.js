@@ -2,7 +2,8 @@ var Player = require('../../../lib/cassidie/components/Player.js');
 
 module.exports = Player.extend({
 	activity: null,
-
+	wanttofart: false,
+	
 	initialize: function(client, data) {
 		this._super(client, data);
 
