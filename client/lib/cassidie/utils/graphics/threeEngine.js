@@ -321,6 +321,8 @@
 			var position 			= this.getTilePosition();
 			var object				= this.createPlane(this.skinsCoordinates[objectData.id][2], this.skinsCoordinates[objectData.id][3]);
 
+
+console.log(this.skinsCoordinates[objectData.id][2], this.skinsCoordinates[objectData.id][3]);
 			this.scene.add(object);
 			this.entities[objectData.id]	= object;
 			this.animations[objectData.id]	= {
@@ -332,8 +334,9 @@
 			};
 
 			this.setEntityPosition(objectData.id, this.skinsCoordinates[objectData.id], objectData.x, objectData.y);
-//console.log(objectData.animationList);
+
 			var isAnimated = (objectData.animationList[objectData.appearance] != undefined) ? true : false;
+console.log(objectData.appearance, isAnimated);
 			objectData.setSkin(objectData.appearance, isAnimated);
 			
 			if (objectData.isVisible) this.showEntity(objectData.id);
@@ -375,6 +378,8 @@
 				this.animations[id].file		= file;
 				this.animations[id].numFrame	= animationParameters.numFrame;
 				this.animations[id].looping		= animationParameters.looping;
+				this.entities[id].material = this.getMaterial(file+'0');
+console.log(file);
 			} else {
 				this.animations[id].running		= false;
 				this.entities[id].material = this.getMaterial(file);

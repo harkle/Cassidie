@@ -23,6 +23,10 @@ module.exports = NPC.extend({
 		var self = this;
 		setTimeout(function() {
 			if (self.isMoving) {
+				if (self.destinationX == self.x && self.destinationY == self.y) {
+					//todo
+				}
+
 				self.moveTo(self.destinationX, self.destinationY, function() {
 					self.goRight();
 				})
