@@ -19,7 +19,7 @@
 		move: function(x, y, notiyOthers) {
 			this._super();
 
-			Game.engine.setEntityPosition(this.id, this.skin, this.x, this.y);
+			Game.engine.setEntityPosition(this.id, this.x, this.y);
 		},
 
 		show: function() {

@@ -39,7 +39,7 @@
 
 				clearInterval(this.intervalID);
 
-				Game.engine.setEntityPosition(this.id, this.attributes.skin, this.x, this.y, 0, 0);
+				Game.engine.setEntityPosition(this.id, this.x, this.y, 0, 0);
 
 				return;
 			}
@@ -133,7 +133,7 @@
 				self.cellX += dx;
 				self.cellY += dy;
 
-				Game.engine.setEntityPosition(self.id, self.attributes.skin, self.x, self.y, self.cellX, self.cellY);
+				Game.engine.setEntityPosition(self.id, self.x, self.y, self.cellX, self.cellY);
 
 				if (step == speed-1) {
 					self.x = path[0].x;
@@ -141,7 +141,7 @@
 					self.cellX = 0;
 					self.cellY = 0;
 
-					Game.engine.setEntityPosition(self.id, self.attributes.skin, self.x, self.y, self.cellX, self.cellY);
+					Game.engine.setEntityPosition(self.id, self.x, self.y, self.cellX, self.cellY);
 
 					clearInterval(self.intervalID);
 					path.splice(0,1);

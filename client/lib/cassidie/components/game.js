@@ -21,7 +21,22 @@
 		this.container.setAttribute('style', 'cursor:non;display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
 		this.targetDiv.appendChild(this.container);
 
-		this.engine = new ThreeEngine(); //new DivEngine();
+		//Test
+		if (Cassidie.useCustomeEngine) {
+			this.engine = new CustomEngine();
+			console.log('start CUSTOM ENGINE');
+		} else {
+			if (Detector.webgl) {
+				console.log('start WEBGL ENGINE');
+				this.engine = new ThreeEngine(true);
+			} else if (Detector.canvas) {
+				this.engine = new ThreeEngine(false);
+				console.log('start CANVAS ENGINE');				
+			} else {
+				this.engine = new DivEngine();
+				console.log('start DIV ENGINE');				
+			}
+		}
 
 		var self = this;
 		Cassidie.socket.on('game_entered', function(data) {

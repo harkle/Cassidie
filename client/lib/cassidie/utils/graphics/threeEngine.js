@@ -4,7 +4,7 @@
 - decors
 */
 (function() {
-	this.ThreeEngine = function() {
+	this.ThreeEngine = function(useWebGL) {
 		this.renderer			= null;
 		this.camera				= null;
 		this.scene				= null;
@@ -33,7 +33,11 @@
 			var width	= Game.gameData.viewport.width;
 			var height	= Game.gameData.viewport.height;
 
-			this.renderer = new THREE.WebGLRenderer({antialias: false});
+			if (useWebGL) {
+				this.renderer = new THREE.WebGLRenderer({antialias: false});
+			} else {
+				this.renderer = new THREE.CanvasRenderer({antialias: false});			
+			}
 			this.renderer.setSize(width, height);
 
 			Game.container.appendChild(this.renderer.domElement);
@@ -57,6 +61,7 @@
 			
 			var materialsGround		= [];
 			var materialsSprites	= [];
+
 			//Material
 			for (var i = 0; i < this.levelData.cells.length; i++) {
 				var id = this.levelData.cells[i].background;
@@ -321,8 +326,6 @@
 			var position 			= this.getTilePosition();
 			var object				= this.createPlane(this.skinsCoordinates[objectData.id][2], this.skinsCoordinates[objectData.id][3]);
 
-
-console.log(this.skinsCoordinates[objectData.id][2], this.skinsCoordinates[objectData.id][3]);
 			this.scene.add(object);
 			this.entities[objectData.id]	= object;
 			this.animations[objectData.id]	= {
@@ -333,10 +336,10 @@ console.log(this.skinsCoordinates[objectData.id][2], this.skinsCoordinates[objec
 				looping:	false
 			};
 
-			this.setEntityPosition(objectData.id, this.skinsCoordinates[objectData.id], objectData.x, objectData.y);
+			this.setEntityPosition(objectData.id, objectData.x, objectData.y);
 
 			var isAnimated = (objectData.animationList[objectData.appearance] != undefined) ? true : false;
-console.log(objectData.appearance, isAnimated);
+
 			objectData.setSkin(objectData.appearance, isAnimated);
 			
 			if (objectData.isVisible) this.showEntity(objectData.id);
@@ -378,15 +381,15 @@ console.log(objectData.appearance, isAnimated);
 				this.animations[id].file		= file;
 				this.animations[id].numFrame	= animationParameters.numFrame;
 				this.animations[id].looping		= animationParameters.looping;
-				this.entities[id].material = this.getMaterial(file+'0');
-console.log(file);
+				this.entities[id].material 		= this.getMaterial(file+'0');
+
 			} else {
 				this.animations[id].running		= false;
-				this.entities[id].material = this.getMaterial(file);
+				this.entities[id].material		= this.getMaterial(file);
 			}			
 		};
 
-		this.setEntityPosition = function(id, skin, x, y, dx, dy) {
+		this.setEntityPosition = function(id, x, y, dx, dy) {
 			if (dx == undefined) dx = 0;
 			if (dy == undefined) dy = 0;
 
