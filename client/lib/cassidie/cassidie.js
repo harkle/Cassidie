@@ -51,7 +51,7 @@
 			var customEngineFilesList	= (customEngineFiles instanceof Array) ? customEngineFiles : [customEngineFiles];
 			var engineFiles 			= (useCustomeEngine) ? customEngineFilesList: [path+'utils/graphics/three.js', path+'utils/graphics/stat.js', path+'utils/graphics/threeEngine.js', path+'utils/graphics/divEngine.js'];
 
-			load([path+'utils/class.js', path+'utils/graphics/detector.js']).then([path+'utils/events.js', server+'/socket.io/socket.io.js']).then(engineFiles).then([path+'account.js', path+'chat.js', path+'components/game.js', path+'components/level.js']).then([path+'components/entity.js']).then([path+'components/item.js', path+'components/character.js']).then([path+'utils/pathfinding/graph.js', path+'utils/pathfinding/astar.js']).thenRun(function () {
+			load([path+'utils/class.js', path+'utils/graphics/detector.js', path+'utils/crossBrowser.js']).then([path+'utils/events.js', server+'/socket.io/socket.io.js']).then(engineFiles).then([path+'account.js', path+'chat.js', path+'components/game.js', path+'components/level.js']).then([path+'components/entity.js']).then([path+'components/item.js', path+'components/character.js']).then([path+'utils/pathfinding/graph.js', path+'utils/pathfinding/astar.js']).thenRun(function () {
 
 				setupCassidie();			
 

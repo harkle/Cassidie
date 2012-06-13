@@ -75,15 +75,19 @@
 			var dragged = false;
 			var startX;
 			var startY;
-			Game.container.addEventListener('mousedown', function(e) {
-				drag	= true;
-				startX	= e.clientX;
-				startY	= e.clientY;
-			}, false);
+			CrossBrowser.addEventListener(Game.container, 'mousedown', function(e) {
+				var mousePosition = CrossBrowser.getMousePosition(e);
 
-			Game.container.addEventListener('mousemove', function(e) {
-				var baseX = e.clientX-Game.container.offsetLeft-parseInt(self.scene.style.left);
-				var baseY = e.clientY-Game.container.offsetTop-parseInt(self.scene.style.top);
+				startX	= mousePosition.left;
+				startY	= mousePosition.top;
+				drag	= true;
+			});
+
+			CrossBrowser.addEventListener(Game.container, 'mousemove', function(e) {
+				var mousePosition = CrossBrowser.getMousePosition(e);
+
+				var baseX = mousePosition.left - Game.container.offsetLeft - parseInt(self.scene.style.left);
+				var baseY = mousePosition.top - Game.container.offsetTop - parseInt(self.scene.style.top);
 
 				var overTile = self.getCoordinates(baseX, baseY);
 				var position = self.getTilePosition(overTile.x, overTile.y)
@@ -94,22 +98,24 @@
 				if (!drag) return;
 				dragged = true;
 
-				var x = e.clientX - startX;
-				var y = e.clientY - startY;
+				var x = mousePosition.left - startX;
+				var y = mousePosition.top - startY;
 
 				var cX = parseInt(self.scene.style.left);
 				var cY = parseInt(self.scene.style.top);
 
 				self.scene.style.left	= (cX + x)+'px';
 				self.scene.style.top	= (cY + y)+'px';
-				startX = e.clientX;
-				startY = e.clientY;				
+				startX = mousePosition.left;
+				startY = mousePosition.top;
 			}, false);
 
-			Game.container.addEventListener('mouseup', function(e) {
+			CrossBrowser.addEventListener(Game.container, 'mouseup', function(e) {
 				if (!dragged) {
-					var baseX = e.clientX-Game.container.offsetLeft-parseInt(self.scene.style.left);
-					var baseY = e.clientY-Game.container.offsetTop-parseInt(self.scene.style.top);
+					var mousePosition = CrossBrowser.getMousePosition(e);
+
+					var baseX = mousePosition.left - Game.container.offsetLeft - parseInt(self.scene.style.left);
+					var baseY = mousePosition.top - Game.container.offsetTop - parseInt(self.scene.style.top);
 					
 					var clickedTile = self.getCoordinates(baseX, baseY);
 					Game.level.checkCoordinates(clickedTile.x, clickedTile.y);
@@ -117,10 +123,10 @@
 				}
 			}, false);
 
-			document.addEventListener('mouseup', function(e) {
+			CrossBrowser.addEventListener(document, 'mouseup', function(e) {
 				dragged = false;
 				drag	= false;
-			}, false);
+			});
 
 			this.animationInterval = setInterval(function() {
 				self.doAnimation();	

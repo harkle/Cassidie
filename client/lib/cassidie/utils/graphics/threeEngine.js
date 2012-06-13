@@ -135,15 +135,20 @@
 			var dragged = false;
 			var startX;
 			var startY;
-			Game.container.addEventListener('mousedown', function(e) {
-				drag	= true;
-				startX	= e.clientX;
-				startY	= e.clientY;
-			}, false);
 
-			Game.container.addEventListener('mousemove', function(e) {
-				var baseX = e.clientX-Game.container.offsetLeft+self.camera.position.x;
-				var baseY = e.clientY-Game.container.offsetTop+self.camera.position.y;
+			CrossBrowser.addEventListener(Game.container, 'mousedown', function(e) {
+				var mousePosition = CrossBrowser.getMousePosition(e);
+
+				startX	= mousePosition.left;
+				startY	= mousePosition.top;
+				drag	= true;
+			});
+
+			CrossBrowser.addEventListener(Game.container, 'mousemove', function(e) {
+				var mousePosition = CrossBrowser.getMousePosition(e);
+
+				var baseX = mousePosition.left - Game.container.offsetLeft + self.camera.position.x;
+				var baseY = mousePosition.top - Game.container.offsetTop + self.camera.position.y;
 
 				var overTile = self.getCoordinates(baseX, baseY);
 				var position = self.getTilePosition(overTile.x, overTile.y)
@@ -154,30 +159,32 @@
 				if (!drag) return;
 				dragged = true;
 
-				var x = e.clientX - startX;
-				var y = e.clientY - startY;
+				var x = mousePosition.left - startX;
+				var y = mousePosition.top - startY;
 
 				self.camera.position.x -= x;
 				self.camera.position.y -= y;
-				startX = e.clientX;
-				startY = e.clientY;				
-			}, false);
+				startX = mousePosition.left;
+				startY = mousePosition.top;
+			});
 
-			Game.container.addEventListener('mouseup', function(e) {
+			CrossBrowser.addEventListener(Game.container, 'mouseup', function(e) {
 				if (!dragged) {
-					var baseX = e.clientX-Game.container.offsetLeft+self.camera.position.x;
-					var baseY = e.clientY-Game.container.offsetTop+self.camera.position.y;
+					var mousePosition = CrossBrowser.getMousePosition(e);
+
+					var baseX = mousePosition.left - Game.container.offsetLeft + self.camera.position.x;
+					var baseY = mousePosition.top - Game.container.offsetTop + self.camera.position.y;
 
 					var clickedTile = self.getCoordinates(baseX, baseY);
 					Game.level.checkCoordinates(clickedTile.x, clickedTile.y);
 					Game.level.playerCharacter.move(clickedTile.x, clickedTile.y, true);
 				}
-			}, false);
+			});
 
-			document.addEventListener('mouseup', function(e) {
+			CrossBrowser.addEventListener(document, 'mouseup', function(e) {
 				dragged = false;
 				drag	= false;
-			}, false);
+			});
 
 			this.cursor = this.createPlane(this.cellSize.width, this.cellSize.height, [this.getMaterial('./ressources/cursor')]);
 			this.cursor.position.z = 100;

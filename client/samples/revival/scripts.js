@@ -1,11 +1,3 @@
-if (!window.console) {
-	console = {};
-	console.log = function(message) {
-		alert(message)	
-	};
-}
-
-
 Cassidie.observe(Events.NO_SERVER, function(data) {
     alert('Impossible de trouver le serveur: '+data.server);
 });
