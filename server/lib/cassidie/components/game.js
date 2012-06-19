@@ -1,16 +1,103 @@
-// imports
-var Game = Class.create({
+var Game = Class.create(
+/** @lends Game.prototype */
+{
+	/** 
+	 * @field
+	 * @type String
+	 * @description game name
+	 */
 	name: 				'',
+
+	/** 
+	 * @field
+	 * @type String
+	 * @description game title
+	 */
 	title:				'',
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description game size in browser
+	 */
 	viewport:			null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Integer
+	 * @description maximum amount of character per player
+	 */
 	maxCharacters:		0,
+
+	/** 
+	 * @field
+	 * @type String
+	 * @description name for node console
+	 */
 	consoleName:		'game		',
+
+	/** 
+	 * @field
+	 * @private
+	 * @type String
+	 * @description default level name
+	 */
 	defaultLevel:		'',
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Array
+	 * @description list of all game levels
+	 */
 	levelsList:			[],
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Array
+	 * @description list of all game level instances
+	 */
 	levels:				[],
+
+	/** 
+	 * @field
+	 * @private
+	 * @type String
+	 * @description class used for default player
+	 */
 	playerClass:		null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Array
+	 * @description list of clients connected to the game
+	 */
 	clients:			[],
 
+	/**
+	 * @class <p>Class representing entities. You have to extend it to create your game</p>
+	 *
+	 * @description Your game is a class extenting the Game class as in the example below:
+	 * @example
+	 * require('./lib/cassidie/cassidie.js');
+	 * var Game		= require('./lib/cassidie/components/game.js');
+	 * var CustomPlayer	= require('./players/customPlayer.js');
+	 * 
+	 * var myGame = Game.extend({
+	 * 	initialize: function(data) {
+	 * 		this._super(data, CustomPlayer);
+	 * 	}
+	 * });
+	 * Cassidie.start('localhost', 27017, 'cassidie', myGame, 'Test1');
+	 *
+	 * @constructs
+	 * @param {Object} data an object representing game data
+	 * @param {Player} playerClass the class used for the players
+	 */
 	initialize: function(data, playerClass) {
 
 		this.name			= data.name;
@@ -28,6 +115,11 @@ var Game = Class.create({
 		Logger.systemLog(this.consoleName, 'constructor called');
 	},
 
+	/**
+	 * Load all game levels
+	 *
+	 * @public
+	 */
 	loadLevels: function() {
 		var loadings = [];
 
@@ -36,7 +128,7 @@ var Game = Class.create({
 			var name = this.levelsList[i];
 			Logger.systemLog(this.consoleName, 'loading level: '+name);
 
-			loadings.push(this.loadLevel(name, i));
+			loadings.push(this.loadLevel(name));
 		}
 
 		Cassidie.wait(loadings, function() {
@@ -45,16 +137,30 @@ var Game = Class.create({
 		});
 	},
 
-	loadLevel: function(name, i) {
+	/**
+	 * Load a single level
+	 *
+	 * @private
+	 * @param {String} name level name
+	 */
+	loadLevel: function(name) {
 		var self = this;
 		var fnc = function(next) {
-			self.loadLevelCallback(self, name, i, next);			
+			self.loadLevelCallback(self, name, next);			
 		}	
 
 		return fnc;
 	},
-	
-	loadLevelCallback: function(context, name, i, next) {
+
+	/**
+	 * Callbak for level loading
+	 *
+	 * @private
+	 * @param {Game} context reference to the main Game class
+	 * @param {String} name level name
+	 * @param {Function} next
+	 */
+	loadLevelCallback: function(context, name, next) {
 		Cassidie.database.find('levels', {name: name}, function(data) {
 			var Level = require(process.cwd()+data[0].path);
 			context.levels[name] = new Level(data[0]);
@@ -64,6 +170,12 @@ var Game = Class.create({
 		});
 	},
 
+	/**
+	 * Stop the game
+	 *
+	 * @public
+	 * @param {Function} callback method exectued after everything is stopped
+	 */
 	stop: function(callback) {
 		var self		= this;
 		var loadings	= [];
@@ -98,6 +210,13 @@ var Game = Class.create({
 		});
 	},
 
+	/**
+	 * Method for player entering the game
+	 *
+	 * @public
+	 * @param {Socket} socket socket used by the player
+	 * @param {Integer} characterId id of the character
+	 */
 	enter: function(socket, characterId) {
 		socket.client.character = new this.playerClass(socket.client, socket.client.getCharacterData(characterId));
 		socket.client.setInGame(true);
@@ -129,6 +248,13 @@ var Game = Class.create({
 		Logger.systemLog(this.consoleName, socket.client.email+' entered the game with "'+socket.client.character.toString()+'"');
 	},
 
+	/**
+	 * Method for player leaving the game
+	 *
+	 * @public
+	 * @param {Socket} socket socket used by the player
+	 * @param {Function} callback callback called after character saving
+	 */
 	leave: function(socket, callback) {
 		if (socket.client == undefined) return;
 		if (!socket.client.getAuthenticated() || !socket.client.getInGame()) return;
@@ -147,7 +273,14 @@ var Game = Class.create({
 
 		socket.emit('game_left');
 	},
-	
+
+	/**
+	 * Method for player changing from level
+	 *
+	 * @public
+	 * @param {Integer} characterId id of the current character
+	 * @param {Level} level target level
+	 */
 	changeLevel: function(character, level) {
 		var oldLevel = character.currentLevel;
 		character.removeFromLevel();

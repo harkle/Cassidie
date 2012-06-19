@@ -1,15 +1,90 @@
-module.exports = Class.create({
-	name:			null,
+var Level = Class.create(
+/** @lends Level.prototype */
+{
+	/** 
+	 * @field
+	 * @type String
+	 * @description level name
+	 */
+	name:			null, 
+
+	/** 
+	 * @field
+	 * @type String
+	 * @description level title
+	 */
 	title:			null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description level name
+	 */
 	dimensions: 	null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description size of cells
+	 */
 	cellSize: 		null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description isometry value
+	 */
 	isometry:		null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Array
+	 * @description list of level cells
+	 */
 	cells:			null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description raw character Data
+	 */
 	charactersData: null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description raw object data
+	 */
 	objectsData: 	null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Array
+	 * @description list of characters
+	 */
 	characters: 	null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Array
+	 * @description list of levels
+	 */
 	objects:		null,
 
+	/**
+	 * @class <p>Create a new levels</p>
+	 *
+	 * @constructs
+	 * @param {Object} data an object representing level data
+	 */
 	initialize: function(data) {
 		this.name				= data.name;
 		this.title				= data.title;
@@ -23,6 +98,14 @@ module.exports = Class.create({
 		this.objects			= [];
 	},
 
+	/**
+	 *	Return characters attached to the level
+	 *
+	 * @public
+	 * @param {String} filter restrict to specific type of characters
+	 * @param {Boolean} [onlyData] set true to get only data, false to get the Object
+	 * @returns {Array} array of characters
+	 */
 	getCharacters: function(onlyData, filter) {
 		if (onlyData == undefined) onlyData = false;
 		var characters = [];
@@ -36,6 +119,13 @@ module.exports = Class.create({
 		return characters;
 	},
 
+	/**
+	 * Return objects attached to the level
+	 *
+	 * @public
+	 * @param {Boolean} [onlyData] set true to get only data, false to get the Object
+	 * @returns {Array} array of objects
+	 */
 	getObjects: function(onlyData) {
 		if (onlyData == undefined) onlyData = false;
 		var objects = [];
@@ -47,6 +137,14 @@ module.exports = Class.create({
 		return objects;
 	},
 
+	/**
+	 * Return characters attached to the level from a specific rang of an other character
+	 *
+	 * @public
+	 * @param {Character} character character to search around
+	 * @param {Integer} range range value
+	 * @returns {Array} array of characters
+	 */
 	getCharactersByRang: function(character, range) {
 		var characters = [];
 
@@ -58,6 +156,13 @@ module.exports = Class.create({
 		return characters;
 	},
 
+	/**
+	 * Return the original character data loaded from DB
+	 *
+	 * @public
+	 * @param {String} name character name
+	 * @returns {Object} characters data
+	 */
 	getCharacterData: function(name) {
 		if (this.charactersData == undefined) return null;
 
@@ -68,6 +173,13 @@ module.exports = Class.create({
 		return null;
 	},
 
+	/**
+	 * Return the original object data loaded from DB
+	 *
+	 * @public
+	 * @param {String} name object name
+	 * @returns {Object} objects data
+	 */
 	getObjectData: function(name) {
 		if (this.objectsData == undefined) return null;
 
@@ -78,6 +190,12 @@ module.exports = Class.create({
 		return null;
 	},
 
+	/**
+	 * Attach a character from the level
+	 *
+	 * @public
+	 * @param {Character} character character to be attached
+	 */
 	attachCharacter: function(character) {
 
 		character.level 		= this;
@@ -92,7 +210,13 @@ module.exports = Class.create({
 			Logger.systemLog(Cassidie.consoleName, 'character '+character.id+' attached to '+this.name);
 		}
 	},
-	
+
+	/**
+	 * Remove a character from the level
+	 *
+	 * @public
+	 * @param {Integer} id character id
+	 */
 	detachCharacter: function(id) {
 
 		var character = null;
@@ -109,12 +233,24 @@ module.exports = Class.create({
 		Logger.systemLog(Cassidie.consoleName, 'character '+character.id+' removed from '+this.name);
 	},
 
+	/**
+	 * Attach an object from the level
+	 *
+	 * @public
+	 * @param {Item} object item to be attached
+	 */
 	attachObject: function(object) {
 
 		object.level = this;
 		this.objects.push(object);
 	},
 
+	/**
+	 * Remove an object from the level
+	 *
+	 * @public
+	 * @param {Integer} id object id
+	 */
 	detachObject: function(id) {
 
 		var object = null;
@@ -125,8 +261,17 @@ module.exports = Class.create({
 			}
 		}
 	},
-	
+
+	/**
+	 * Return a specific cell from the level
+	 *
+	 * @public
+	 * @param {Integer} x x position
+	 * @param {Integer} y y position
+	 * @returns {Object} cell data
+	 */
 	getCell: function(x, y) {
 		return (this.cells[y * this.dimensions.width + x] != undefined) ? this.cells[y * this.dimensions.width + x] : this.cells[0];
 	}
 });
+module.exports = Level;

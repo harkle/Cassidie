@@ -1,11 +1,48 @@
 var Entity = require('./entity.js');
 
-module.exports = Entity.extend({
+var Character = Entity.extend(
+/** @lends Character.prototype */
+{
+	/** 
+	 * @field
+	 * @private
+	 * @type Object
+	 * @description custome attributes used for character creation
+	 */
 	attributes: 	null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Boolean
+	 * @description define if the character is now moving
+	 */
 	isMoving:		null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Integer
+	 * @description destination x coorindate
+	 */
 	destinationX:	null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Integer
+	 * @description destination y coordinate
+	 */
 	destinationY:	null,
 
+	/**
+	 * @class <p>Class representing characte. Should be used only trought NPC or Player class</p>
+	 *
+	 * @constructs
+	 * @augments Entity
+	 * @param {String} type define what the type of the character
+	 * @param {Object} [data] an object representing character data. Warning, if you don't give any data, the character will not be restored when programme restart. Fill it using Level.getCharacterData
+	 */
 	initialize: function(type, data) {
 		this._super(type, data);
 
@@ -30,15 +67,24 @@ module.exports = Entity.extend({
 		this.objectType = 'character';
 	},
 
+	/**
+	 * Override default toString method
+	 *
+	 * @public
+	 * @returns {String}
+	 */
 	toString: function() {
 		return 'character'
 	},
 
-	removeFromLevel: function() {
-		this.level.detachCharacter(this.id);
-		this.level = null;	
-	},
-
+	/**
+	 *	Set a destination to the character
+	 *
+	 *	@public
+	 *	@param {Integer} x destination coordinate x
+	 *	@param {Integer} y destination coordinate y
+	 *	@param {Boolean} [notify] notify player
+	 */
 	moveTo: function(x, y, notify) {
 		if (!this.isVisible) return;
 		if (notify == undefined) notify = false;
@@ -51,6 +97,15 @@ module.exports = Entity.extend({
 		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY}, notify);	
 	},
 
+	/**
+	 *	Update the current character position
+	 *
+	 *	@public
+	 *	@param {Integer} x destination coordinate x
+	 *	@param {Integer} y destination coordinate y
+	 *	@param {Boolean} end this is the last move of the travel
+	 *	@param {Boolean} [notify] notify other player
+	 */
 	setPosition: function(x, y, end, notify) {
 		if (notify == undefined) notify = false;
 
@@ -73,6 +128,12 @@ module.exports = Entity.extend({
 		if (notify) this.sendData('character_positioned', {x: this.x, y: this.y}, true);	
 	},
 
+	/**
+	 *	Trigger a speach form the character
+	 *
+	 *	@public
+	 *	@param {String} message what the character has to say
+	 */
 	speak: function(message) {
 		if (!this.isVisible) return;
 
@@ -82,3 +143,4 @@ module.exports = Entity.extend({
 		}, this.level);
 	}
 });
+module.exports = Character;

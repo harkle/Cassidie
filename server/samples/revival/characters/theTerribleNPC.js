@@ -24,12 +24,18 @@ module.exports = NPC.extend({
 		setTimeout(function() {
 			if (self.isMoving) {
 				if (self.destinationX == self.x && self.destinationY == self.y) {
-					//todo
+					if (self.x == 30 && self.y == 30) {
+						self.goRight();
+					} else {
+						self.x					= 5;
+						self.y					= 5;
+						self.goLeft();					
+					}
+				} else {
+					self.moveTo(self.destinationX, self.destinationY, function() {
+						self.goRight();
+					});	
 				}
-
-				self.moveTo(self.destinationX, self.destinationY, function() {
-					self.goRight();
-				})
 			} else {
 				if (self.x == 30 && self.y == 30) {
 					self.goRight();

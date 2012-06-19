@@ -1,15 +1,43 @@
 var Character = require('./character.js');
 
-module.exports = Character.extend({
+var Player = Character.extend(
+/** @lends Player.prototype */
+{
+	/** 
+	 * @field
+	 * @type Client
+	 * @description belonging client class
+	 */
 	client:			null,
+
+	/** 
+	 * @field
+	 * @private
+	 * @type Level
+	 * @description current player level
+	 */
 	currentLevel:	null,
 
+	/**
+	 * @class <p>Class for default player</p>
+	 *
+	 * @constructs
+	 * @public
+	 * @augments Character
+	 * @param {Client} [client] the client instance of the player
+	 * @param {Object} [data] an object representing player data
+	 */
 	initialize: function(client, data) {
 		this._super('player', data);
-		
+
 		this.client = client;
 	},
-	
+
+	/**
+	 *
+	 * @public
+	 * @param {Function} [callback] function executed when save is done
+	 */
 	save: function(callback) {
 		var self = this;
 
@@ -30,7 +58,13 @@ module.exports = Character.extend({
 		}
 	},
 
+	/**
+	 * Empty method triggered when an action is done
+	 *
+	 * @public
+	 */
 	action: function() {
 		
 	}
 });
+module.exports = Player;
