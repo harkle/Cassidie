@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Cassidie - Revival</title>
+		
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="../../lib/bootstrap/css/bootstrap-responsive.min.css" />
+
+		<script src="../../lib/jquery/jquery.js" 				type="text/javascript"></script>
+		<script src="../../lib/bootstrap/js/bootstrap.min.js" 	type="text/javascript"></script>
+
+		<script src="../../lib/cassidie/utils/utils.js"			type="text/javascript"></script>
+		<script src="../../lib/cassidie/cassidie.js" 			type="text/javascript"></script>
+		<script type="text/javascript">
+			Cassidie.load('./scripts.js', '/lib/cassidie/',' http://'+location.host+':7000', 'container', false);
+		</script>
+		<style type="text/css">
+			.thumbnail {
+				text-align: center;
+				cursor: pointer;
+			}
+			
+			#chatWindow {
+				width: 508px;
+				height: 150px;
+				border: 1px solid #ccc;
+				margin-bottom: 10px;
+				overflow-y: scroll;
+			}
+			
+			#chatInput {
+				width: 500px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container" id="container">
+			<h1>Cassidie</h1>
+			<h2 class="page-header">Infos</h2>
+			
+			<div class="row">
+				<div class="span6">
+					<div class="row">
+						<div class="span1">ClientID</div>
+						<div class="span4" id="clientid"></div>
+					</div>
+					<div class="row">
+						<div class="span1">Game infos</div>
+						<div class="span4" id="gameinfos"></div>
+					</div>
+					<div class="row">
+						<div class="span1">Authentificated</div>
+						<div class="span4" id="auth">false</div>
+					</div>
+					<div class="row">
+						<div class="span1">As</div>
+						<div class="span4" id="auth_infos">N/A</div>
+					</div>
+				</div>
+				<div class="span6 hidden" id="chat">
+					<div id="chatWindow"></div>
+					<input id="chatInput" value="" />
+				</div>
+			</div>
+
+			<div id="actions">
+				<h2 class="page-header">Actions</h2>
+				<div class="row">
+					<div class="span6">
+						<h3>Register</h3>
+						<div id="register_message" class="alert hidden"></div>
+						<label for="register_email">Email:</label><input type="text" id="register_email" value="" /><br/>
+						<label for="register_nickname">Pseudo:</label><input type="text" id="register_nickname" value="" /><br/>
+						<label for="register_password">Mot de passe:</label><input type="password" id="register_password" value="" /><br/>
+						<button class="btn" id="register_submit">Envoyer</button>				
+					</div>
+					<div class="span6">
+						<h3>Login</h3>
+						<div id="login_message" class="alert hidden"></div>
+						<label for="login_email">Email:</label><input type="text" id="login_email" value="" /><br/>
+						<label for="login_password">Mot de passe:</label><input type="password" id="login_password" value="" /><br/>
+						<button class="btn" id="login_submit">Envoyer</button>				
+					</div>
+				</div>
+			</div>
+
+			<div id="characters" class="hidden">
+				<h2 class="page-header">Personnages</h2>
+				<div class="row">
+					<div class="span4">
+						<h3>Liste <span id="chr_counter"></span></h3>
+						<ul id="characterList" class="thumbnails">
+						</ul>
+						<button class="btn" id="new_character">Nouveau</button>
+						<button class="btn btn-danger" id="delete_character" disabled="disabled">Supprimer</button>
+						<button class="btn btn-success" id="start_game" disabled="disabled">Jouer</button>
+					</div>
+					<div class="span4">
+						<h3>Nouveau</h3>
+						<div id="character_message" class="alert hidden"></div>
+						<div id="newPlayer">
+						</div>
+					</div>
+					<div class="span4">
+						<h3>Logout</h3>
+						<button class="btn" id="logout_submit">Déconnexion</button>				
+					</div>
+				</div>
+			</div>
+
+			<p id="console"></p>
+		</div>
+	</body>
+</html>

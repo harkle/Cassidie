@@ -1,0 +1,275 @@
+{
+	name:	'level1',
+	path:	'/level1.js',
+	title:	'The Den',
+	viewport: {
+		x: 400,
+		y: 300
+	},
+	dimensions: {
+		width:	40,
+		height: 30
+	},
+	initialPositions: {
+		default: [0, 0],
+		level1: [1,1]
+	},
+	charactersData: [],
+	cells:	[
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 1,
+			sprite:		0,
+			accessible: true
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+		{
+			background: 3,
+			sprite:		0,
+			accessible: false
+		},
+	]
+}

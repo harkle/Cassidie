@@ -1,0 +1,15 @@
+{
+	name: 	'Test1',
+	title:	'Cassidie Framework First Test Game',
+	author:	'The Author',
+	viewport: {
+		width: 800,
+		height: 600
+	},
+	maxCharacters: 10,
+	defaultLevel: 'level1',
+	levels: [
+		'level1'
+	],
+	chatDistance: 10
+}
