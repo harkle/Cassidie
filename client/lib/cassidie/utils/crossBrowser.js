@@ -1,14 +1,9 @@
-CrossBrowser = {
-	/**
-	 * @author Patrick Poulain
-	 * @see http://petitchevalroux.net
-	 * @licence GPL
-	 */
+var CrossBrowser = {
 	getMousePosition: function(event) {
-		var e = event || window.event;
-		var scroll = new Array((document.documentElement && document.documentElement.scrollLeft) || window.pageXOffset || self.pageXOffset || document.body.scrollLeft,(document.documentElement && document.documentElement.scrollTop) || window.pageYOffset || self.pageYOffset || document.body.scrollTop);;
+		var e 		= event || window.event;
+		var scroll	= {left: (document.documentElement && document.documentElement.scrollLeft) || window.pageXOffset || self.pageXOffset || document.body.scrollLeft, top: (document.documentElement && document.documentElement.scrollTop) || window.pageYOffset || self.pageYOffset || document.body.scrollTop};
 	
-		return {left: e.clientX + scroll[0] - document.body.clientLeft, top: e.clientY + scroll[1] - document.body.clientTop};
+		return {left: e.clientX + scroll.left - document.body.clientLeft, top: e.clientY + scroll.top - document.body.clientTop};
 	},
 
 	addEventListener: function(element, eventName, handler) {

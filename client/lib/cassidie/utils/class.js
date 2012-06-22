@@ -2,6 +2,7 @@
  * Tools and base for javascript class
  *
  * Inspired by John Resig http://ejohn.org/
+ * Customized by Lionel tardy
  */
 (function() {
     var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
