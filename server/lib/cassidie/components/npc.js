@@ -1,5 +1,5 @@
 var Character 	= require('./character.js');
-var PathFinder	= require('../utils/pathfinding/pathfinder.js');
+var PathFinder	= require('../utils/pathfinder.js');
 
 var NPC = Character.extend(
 /** @lends NPC.prototype */

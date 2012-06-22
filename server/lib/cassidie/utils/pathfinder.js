@@ -1,5 +1,5 @@
-var GraphClass	= require('./graph.js');
-var Astar 		= require('./astar.js');
+var GraphClass	= require('../lib/javascript-astar/graph.js');
+var Astar 		= require('../lib/javascript-astar/astar.js');
 
 module.exports = function(level, x1, y1, x2, y2) {
 	this.cellList	= null;

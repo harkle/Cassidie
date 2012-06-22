@@ -2,7 +2,7 @@ var NPC = require('../../../lib/cassidie/components/NPC.js');
 
 module.exports = NPC.extend({
 	internalSecretParamater: null,
-	
+
 	initialize: function(data) {
 		this.exclusionList.push('internalSecretParamater');
 
