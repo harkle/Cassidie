@@ -44,7 +44,7 @@ var Game = require('./components/game.js');
 		gameStartTime:	0,
 		isRunning:		false,
 
-		version:		'0.1',
+		version:		'0.2',
 		consoleName:	'cassidie	',
 
 		clients:		[]
