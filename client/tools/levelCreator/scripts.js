@@ -1,4 +1,6 @@
 var Game 						= {};
+Game.gameData					= {};
+Game.gameData.viewport			= {width: 800, height: 600};
 Game.level 						= {};
 Game.level.checkCoordinates 	= function() {};
 Game.level.playerCharacter		= {};
@@ -51,7 +53,7 @@ $(function() {
 			}
 		}
 		
-		mode = '';
+		mode = 'tile';
 				
 		var ctrl	= false;
 		var alt		= false;
@@ -72,8 +74,10 @@ $(function() {
 		$('#gameContainer').mousedown(function(e) {
 			position = $('#gameContainer').children('div').offset();
 		}).mousemove(function(e) {
-			var baseX = e.clientX-Game.container.offsetLeft-parseInt(Engine.container.style.left);
-			var baseY = e.clientY-Game.container.offsetTop-parseInt(Engine.container.style.top);
+			var mousePosition = CrossBrowser.getMousePosition(e);
+
+			var baseX = mousePosition.left - Game.container.offsetLeft - parseInt(Engine.scene.style.left);
+			var baseY = mousePosition.top - Game.container.offsetTop - parseInt(Engine.scene.style.top);
 
 			var clickedTile = Engine.getCoordinates(baseX, baseY);
 
@@ -94,11 +98,13 @@ $(function() {
 		}).mouseup(function(e) {
 			e.preventDefault();
 
+			var mousePosition = CrossBrowser.getMousePosition(e);
+
 			newPosition = $('#gameContainer').children('div').offset();
 			if (newPosition.left != position.left && newPosition.top != position.top) return;
 
-			var baseX = e.clientX-Game.container.offsetLeft-parseInt(Engine.container.style.left);
-			var baseY = e.clientY-Game.container.offsetTop-parseInt(Engine.container.style.top);
+			var baseX = mousePosition.left - Game.container.offsetLeft - parseInt(Engine.scene.style.left);
+			var baseY = mousePosition.top - Game.container.offsetTop - parseInt(Engine.scene.style.top);
 
 			var clickedTile = Engine.getCoordinates(baseX, baseY);
 
@@ -200,7 +206,8 @@ $(function() {
 		}
 	}
 
-	function changeCell(x, y, e) {	
+	function changeCell(x, y, e) {
+		
 		if (currentTile != undefined && mode == 'tile') {
 		    $('#cell_'+x+'_'+y).css('background', 'url(./ressources/levels/tiles/'+currentTile+'.png)');
 		}
