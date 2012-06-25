@@ -29,6 +29,12 @@ var Game = require('./components/game.js');
 			case 'reset':
 				Cassidie.reset();
 				break;
+			case 'debugio':
+				Cassidie.netConnection.manager.set('log level', 3);
+				break;
+			case 'mute':
+				Cassidie.netConnection.manager.set('log level', 0);
+				break;
 		}
 	});
 
