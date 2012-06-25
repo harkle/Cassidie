@@ -298,7 +298,8 @@ var Game = Class.create(
 				dimensions: 		this.levels[level].dimensions,
 				cells:				this.levels[level].cells,
 				characters: 		this.levels[level].getCharacters(true),
-				objects:			this.levels[level].getObjects(true)
+				objects:			this.levels[level].getObjects(true),
+				sprites:			this.levels[level].sprites
 			},
 			character: character.getData()
 		});
