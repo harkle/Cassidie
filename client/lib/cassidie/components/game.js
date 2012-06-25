@@ -1,19 +1,17 @@
-(function() {
-	this.Game 						= function() {};	
-	this.Game.prototype 			= new Events.Observable();
-	this.Game.prototype.constructor = this.Game;
-	this.Game 						= new Game();
+var GameClass = Events.Observable.extend({
+	gameData:		null,
+	clientID:		null,
+	characterID:	null,
+	targetDiv:		null,
+	container:		null,
+	level:			null,
+	engine:			null,
+	playerSpeed:	null,
 
-	this.Game.gameData		= null;
-	this.Game.clientID		= null;
-	this.Game.characterID	= null;
-	this.Game.targetDiv 	= null;
-	this.Game.container 	= null;
-	this.Game.level			= null;
-	this.Game.engine		= null;
-	this.Game.playerSpeed	= null;
+	initialize: function() {
+	},
 
-	this.Game.initialize = function(gameData) {
+	setup: function(gameData) {
 		this.gameData	= gameData;
 		this.targetDiv	= Cassidie.targetDiv;
 
@@ -43,17 +41,17 @@
 		Cassidie.socket.on('game_entered', function(data) {
 			self.characterID = data.character.id;
 
-			Game.playerSpeed = data.playerSpeed;
+			self.playerSpeed = data.playerSpeed;
 
 			self.level = new Level(data);
 
-			Game.container.style.display = 'block';
+			self.container.style.display = 'block';
 
 			self.trigger(Events.GAME_ENTERED, data);
 		});
 
 		Cassidie.socket.on('game_left', function(data) {
-			Game.container.style.display = 'none';
+			self.container.style.display = 'none';
 
 			self.trigger(Events.GAME_LEFT, data);
 		});
@@ -67,13 +65,13 @@
 
 			self.trigger(Events.LEVEL_ENTER, data);
 		});
-	};
+	},
 
-	this.Game.enterGame = function(characterID) {
+	enterGame: function(characterID) {
 		Cassidie.socket.emit('enter_game', {characterId: characterID});
-	};
+	},
 
-	this.Game.leaveGame = function() {
+	leaveGame: function() {
 
 		var character = this.level.playerCharacter.getData();
 
@@ -81,10 +79,11 @@
 
 		Cassidie.socket.emit('leave_game');
 		this.level = null;
-	};
+	},
 
-	this.Game.clean = function() {
+	clean: function() {
 		this.level.destroy();
 		this.level = null;
-	};
-})();
+	}
+});
+var Game = new GameClass();

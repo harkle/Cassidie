@@ -28,7 +28,8 @@ var CassidieClass = Events.Observable.extend({
 		this.socket.on('welcome', function (data) {
 			if (data.clientID) {
 				self.clientID 	= data.clientID;
-				Game.initialize(data.game);
+
+				Game.setup(data.game);
 
 				self.trigger(Events.CONNECT, data);
 			}
