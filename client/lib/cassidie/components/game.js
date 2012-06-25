@@ -11,6 +11,7 @@
 	this.Game.container 	= null;
 	this.Game.level			= null;
 	this.Game.engine		= null;
+	this.Game.playerSpeed	= null;
 
 	this.Game.initialize = function(gameData) {
 		this.gameData	= gameData;
@@ -41,6 +42,8 @@
 		var self = this;
 		Cassidie.socket.on('game_entered', function(data) {
 			self.characterID = data.character.id;
+
+			Game.playerSpeed = data.playerSpeed;
 
 			self.level = new Level(data);
 

@@ -119,14 +119,13 @@
 
 			this.setSkin('walking', true);
 
-			var speed = 20;
-			dx /= speed;
-			dy /= speed;
+			dx /= Game.playerSpeed;
+			dy /= Game.playerSpeed;
 
-			this.moveCharacterStep(path, dx, dy, speed, notiyOthers);
+			this.moveCharacterStep(path, dx, dy, notiyOthers);
 		},
 
-		moveCharacterStep: function(path, dx, dy, speed, notiyOthers) {
+		moveCharacterStep: function(path, dx, dy, notiyOthers) {
 			var step = 0;
 			var self = this;
 			this.intervalID = setInterval(function() {
@@ -135,7 +134,7 @@
 
 				Game.engine.setEntityPosition(self.id, self.x, self.y, self.cellX, self.cellY);
 
-				if (step == speed-1) {
+				if (step == Game.playerSpeed-1) {
 					self.x = path[0].x;
 					self.y = path[0].y;
 					self.cellX = 0;

@@ -51,7 +51,7 @@ module.exports = function(level, x1, y1, x2, y2) {
 
 				if (typeof callback == 'function') callback();
 			}
-		}, 820);
+		}, 40 * Cassidie.game.playerSpeed + 20);
 	};
 
 	this.stop = function() {
