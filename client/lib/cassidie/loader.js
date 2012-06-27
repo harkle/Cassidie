@@ -60,7 +60,7 @@ Loader = {
 	load: function(scripts, path, server, targetDiv, useCustomeEngine, customEngineFiles) {
 		domready(function() {
 			var customEngineFilesList	= (customEngineFiles instanceof Array) ? customEngineFiles : [customEngineFiles];
-			var engineFiles 			= (useCustomeEngine) ? customEngineFilesList: [path+'/lib/three.js/Detector.js', path+'lib/three.js/three.js', path+'lib/three.js/stat.js', path+'utils/graphics/threeEngine.js', path+'utils/graphics/divEngine.js'];
+			var engineFiles 			= (useCustomeEngine) ? customEngineFilesList: [path+'/lib/three.js/Detector.js', path+'lib/three.js/Three.js', path+'lib/three.js/Stat.js', path+'utils/graphics/threeEngine.js', path+'utils/graphics/divEngine.js'];
 			scripts 					= (scripts instanceof Array) ? scripts : [scripts];
 
 			load([

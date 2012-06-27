@@ -1,4 +1,4 @@
-var NPC = require('../../../lib/cassidie/components/NPC.js');
+var NPC = require('../../../lib/cassidie/components/npc.js');
 
 module.exports = NPC.extend({
 	internalSecretParamater: null,

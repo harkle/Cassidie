@@ -1,4 +1,4 @@
-var Player = require('../../../lib/cassidie/components/Player.js');
+var Player = require('../../../lib/cassidie/components/player.js');
 
 module.exports = Player.extend({
 	activity: null,
