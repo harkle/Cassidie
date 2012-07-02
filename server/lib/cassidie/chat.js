@@ -7,8 +7,6 @@ var Chat = Class.create({
 	broadcast: function(client, data, level) {
 		if (data.action == 'player') {
 			var targetClient = Cassidie.getClientsFromCharacterName(data.player);
-			
-			console.log(targetClient);
 
 			if (targetClient != undefined) {
 				targetClient.socket.emit('chat_receive', {action: 'player', player: client.character.attributes.name, message: data.message});

@@ -210,8 +210,8 @@ Game.observe(Events.CHARACTER_PARAMETER_CHANGED, function(data) {
 	console.log('CHARACTER_PARAMETER_CHANGED', data);
 });
 
-Game.observe(Events.OBJECT_PARAMETER_CHANGED, function(data) {
-	console.log('OBJECT_PARAMETER_CHANGED', data);
+Game.observe(Events.ITEM_PARAMETER_CHANGED, function(data) {
+	console.log('ITEM_PARAMETER_CHANGED', data);
 });
 
 Game.observe(Events.ACTION_TRIGGERED, function(data) {
@@ -244,6 +244,7 @@ function addToChat(from, message, color) {
     $("#chatWindow")[0].scrollTop = $("#chatWindow")[0].scrollHeight;
 }
 Chat.observe(Event.CHAT_RECEIVE, function(data) {
+	console.log(data);
     if (data.action == 'player') color = '#9f11c3';
     if (data.action == 'level') color = '#739bc8';
     if (data.action == 'speak') color = '#000';
