@@ -98,6 +98,24 @@ var Character = Entity.extend(
 	},
 
 	/**
+	 * Update a parameter of the character
+	 *
+	 * @public
+	 * @param {Integer} parameter the parameter to be changed
+	 * @param {Integer} value the value of the parameter
+	 * @param {Boolean} notifyOther notify other player
+	 * @param {Boolean} [notify] notify player
+	 */
+	setParameter: function(parameter, value, notifyOther, notify) {
+		if (notifyOther == undefined) notifyOther = false;
+		if (notify == undefined) notify = false;
+
+		this._super(parameter, value);
+
+		if (notifyOther) this.sendData('character_parameter_changed', {parameter: parameter, value:value}, notify);
+	},
+
+	/**
 	 *	Update the current character position
 	 *
 	 *	@public

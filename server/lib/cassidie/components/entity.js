@@ -145,14 +145,9 @@ var Entity = Class.create(
 	 * @public
 	 * @param {Integer} parameter the parameter to be changed
 	 * @param {Integer} value the value of the parameter
-	 * @param {Boolean} notifyOther notify other player
-	 * @param {Boolean} [notify] notify player
 	 */
-	setParameter: function(parameter, value, notifyOther, notify) {
-		if (notify == undefined) notify = false;
+	setParameter: function(parameter, value) {
 		eval('this.'+parameter+'=value');
-
-		if (notifyOther) this.sendData('object_parameter_changed', {parameter: parameter, value:value}, notify);
 	},
 
 	/**

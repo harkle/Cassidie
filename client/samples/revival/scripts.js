@@ -171,11 +171,11 @@ Game.observe(Events.GAME_ENTERED, function(data) {
     });
 
     $('#chr_nothing').click(function() {
-    	Game.level.playerCharacter.setParameter('activity', 0, true);
+    	Game.level.playerCharacter.setParameter('activity', 0);
     });
 
     $('#chr_attak').click(function() {
-    	Game.level.playerCharacter.setParameter('activity', 1, true);
+    	Game.level.playerCharacter.setParameter('activity', 1);
     });
 });
 

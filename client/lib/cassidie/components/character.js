@@ -14,18 +14,7 @@
 
 			if (data.isMoving) {
 				this.move(data.destinationX, data.destinationY, isPlayer);
-			}
-			
-			this.setParameter();	
-		},
-
-		setParameter: function(parameter, value, notifyOther) {
-			this._super(parameter, value);
-
-			if (notifyOther) {
-				Cassidie.socket.emit('character_set_parameter', {id: this.id, parameter: parameter, value: value});
-				Game.trigger(Events.CHARACTER_PARAMETER_CHANGED, {id: this.id, parameter: parameter, value: value});
-			}
+			}			
 		},
 
 		move: function(x, y, notiyOthers, noPath) {

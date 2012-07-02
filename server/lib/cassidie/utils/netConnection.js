@@ -87,9 +87,9 @@ io.sockets.on('connection', function (socket) {
 		Cassidie.chat.broadcast(socket.client, data);
 	});
 
-	socket.on('character_set_parameter', function(data) {
+	socket.on('entity_set_parameter', function(data) {
 		if (!socket.client.getAuthenticated()) return;
-		socket.client.character.setParameter(data.parameter, data.value);
+		socket.client.character.setParameter(data.parameter, data.value, true, true);
 	});
 
 	socket.on('action_triggered', function(data) {
