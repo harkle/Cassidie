@@ -81,12 +81,12 @@
 				Game.trigger(Events.CHARACTER_PARAMETER_CHANGED, data);
 			});
 
-			Cassidie.socket.removeAllListeners('object_parameter_changed');
-			Cassidie.socket.on('object_parameter_changed', function(data) {
+			Cassidie.socket.removeAllListeners('item_parameter_changed');
+			Cassidie.socket.on('item_parameter_changed', function(data) {
 				var object = self.getObject(data.id);
 
 				object.setParameter(data.parameter, data.value, false);
-				Game.trigger(Events.OBJECT_PARAMETER_CHANGED, data);
+				Game.trigger(Events.ITEM_PARAMETER_CHANGED, data);
 			});
 
 			Cassidie.socket.removeAllListeners('action_success');

@@ -48,7 +48,7 @@ var Item = Entity.extend(
 
 		this._super(parameter, value);
 
-		if (notifyOther) this.sendData('object_parameter_changed', {parameter: parameter, value:value}, notify);
+		if (notifyOther) this.sendData('item_parameter_changed', {parameter: parameter, value:value}, notify);
 	},
 });
 module.exports = Item;
