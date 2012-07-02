@@ -57,8 +57,8 @@ var Character = Entity.extend(
 			this.destinationX	= 0;
 			this.destinationY	= 0;
 			this.isVisible		= true;
-			this.appearance		= 'standing';
 		}
+		this.appearance		= 'standing';
 
 		this.animationList				= {
 			'walking':  {numFrame: 1, looping: true},

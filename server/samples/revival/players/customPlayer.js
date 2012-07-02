@@ -2,7 +2,6 @@ var Player = require('../../../lib/cassidie/components/player.js');
 
 module.exports = Player.extend({
 	activity: null,
-	wanttofart: false,
 	
 	initialize: function(client, data) {
 		this._super(client, data);
@@ -16,8 +15,8 @@ module.exports = Player.extend({
 
 		if (data == undefined) {
 			this.attributes.skin = '';
-			this.activity		 = 0;
 		}		
+		this.activity		 = 0;
 	},
 
 	action: function(target) {
