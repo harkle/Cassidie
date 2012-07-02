@@ -48,6 +48,7 @@ var GameClass = Events.Observable.extend({
 			self.container.style.display = 'block';
 
 			self.trigger(Events.GAME_ENTERED, data);
+			self.trigger(Events.LEVEL_ENTER, data);
 		});
 
 		Cassidie.socket.on('game_left', function(data) {
@@ -57,7 +58,7 @@ var GameClass = Events.Observable.extend({
 		});
 
 		Cassidie.socket.on('level_change', function(data) {
-			self.trigger(Events.LEVEL_LEAVE, data);
+			self.trigger(Events.LEVEL_LEAVE, self.level.levelData);
 
 			self.level.destroy();
 
