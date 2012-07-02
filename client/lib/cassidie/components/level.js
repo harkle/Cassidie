@@ -46,7 +46,6 @@
 
 			Cassidie.socket.removeAllListeners('character_positioned');
 			Cassidie.socket.on('character_positioned', function(data) {
-				console.log('a');
 				var character = self.getCharacter(data.id);
 				character.move(data.x, data.y, false, true);
 			});
