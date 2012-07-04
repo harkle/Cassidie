@@ -130,9 +130,16 @@ var Game = Class.create(
 	 * @public
 	 */
 	loadLevels: function() {
-		var loadings = [];
+		var loadings	= [];
+		var self		= this;
 
-		var self = this;
+		if (this.levelsList.length == 0) {
+			Logger.systemLog(this.consoleName, 'no level loaded');
+			setTimeout(function() {
+				self.emit(Game.READY);
+			}, 500);			
+		}
+
 		for (var i = 0; i < this.levelsList.length; i++) {
 			var name = this.levelsList[i];
 			Logger.systemLog(this.consoleName, 'loading level: '+name);

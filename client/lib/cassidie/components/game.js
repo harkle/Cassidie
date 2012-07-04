@@ -83,7 +83,7 @@ var GameClass = Events.Observable.extend({
 	},
 
 	clean: function() {
-		this.level.destroy();
+		if (this.level != undefined)  this.level.destroy();
 		this.level = null;
 	}
 });

@@ -81,12 +81,16 @@
 				socket.emit('character_not_created', {message: 'name_already_used'});
 			}
 		});
-
-
 	};
 
 	this.Account.remove_character = function(data, socket) {
-		socket.client.getCharactersData().splice(data.id, 1);
+		var characters = socket.client.getCharactersData();
+
+		for (var i = characters.length-1; i >= 0; i--) {
+			if (characters[i].id == data.id) {
+				socket.client.getCharactersData().splice(i, 1);
+			}
+		}
 
 		Cassidie.database.update('users', {email: socket.client.email}, {characters: socket.client.getCharactersData()}, function() {
 			socket.emit('character_removed');
