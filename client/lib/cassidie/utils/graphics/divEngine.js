@@ -21,6 +21,10 @@
 		this.initialize = function(data) {
 			this.levelData = data;
 
+			var newContainer = Game.container.cloneNode(true);
+			Game.container.parentNode.replaceChild(newContainer, Game.container);
+			Game.container = newContainer;
+
 			var width	= Game.gameData.viewport.width;
 			var height	= Game.gameData.viewport.height;
 
