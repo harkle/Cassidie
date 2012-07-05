@@ -15,6 +15,8 @@ var mode;
 
 $(function() {
 	$('#mapper').append('<div id="gameContainer"></div>');
+	Game.gameData.viewport = {width: $('#mapper').width(), height: $('#mapper').height()};
+
 	Game.container = document.getElementById('gameContainer');
 
 	$('#render').click(function() {
@@ -38,21 +40,24 @@ $(function() {
 		Engine.initialize(level);
 		
 		//cells
-		for (var i = 0; i < level.cells.length; i++) {
-			if (level.cells[i].sprite != '') {
-				var y = Math.floor(i / level.dimensions.width);
-				var x = i - y * level.dimensions.width;
+		setTimeout(function() {
+			for (var i = 0; i < level.cells.length; i++) {
+				if (level.cells[i].sprite != '') {
+					var y = Math.floor(i / level.dimensions.width);
+					var x = i - y * level.dimensions.width;
 
-				mode = 'sprite';
-				currentSprite = {
-					image:	level.cells[i].sprite,
-					x:		level.sprites['s_'+level.cells[i].sprite].x,
-					y:		level.sprites['s_'+level.cells[i].sprite].y
+					mode = 'sprite';
+					currentSprite = {
+						image:	level.cells[i].sprite,
+						x:		level.sprites['s_'+level.cells[i].sprite].x,
+						y:		level.sprites['s_'+level.cells[i].sprite].y
+					}
+					$('#sprite_'+x+'_'+y).remove();
+					changeCell(x, y);				
 				}
-				changeCell(x, y);				
 			}
-		}
-		
+		}, 1000);
+
 		mode = 'tile';
 				
 		var ctrl	= false;
@@ -125,12 +130,10 @@ $(function() {
 				if (cell == undefined) cell = level.cells[0];
 
 				if (!cell.accessible) {
-					$(this).css('opacity', '0.3');	
+					changeAccessibility(parseInt(id[0]), parseInt(id[1]), false);
 				}
 			}
 		});
-
-		createCode();
 	});
 
 	$('#tiles img').click(function() {
@@ -192,7 +195,7 @@ $(function() {
 				var l = data[2];
 
 				level.cells[y * level.dimensions.width + x].level = l;
-				
+
 				eval ('level.initialPositions.'+l+' = ['+x+','+y+'];');
 			}
 		}
@@ -200,26 +203,32 @@ $(function() {
 
 	function changeAccessibility(x, y, state) {
 		if(!state) {
-		    $('#cell_'+x+'_'+y).css('opacity', 0.3);			
+			var img = $('<img src="./ressources/na.png" class="na" />');
+			$('#cell_'+x+'_'+y).children('.na').remove();
+			$('#cell_'+x+'_'+y).append(img);
 		} else {
-		    $('#cell_'+x+'_'+y).css('opacity', 1);						
+			$('#cell_'+x+'_'+y).children('.na').remove();
 		}
 	}
 
 	function changeCell(x, y, e) {
-		
 		if (currentTile != undefined && mode == 'tile') {
 		    $('#cell_'+x+'_'+y).css('background', 'url(./ressources/levels/tiles/'+currentTile+'.png)');
 		}
 
 		if (currentSprite != undefined && mode == 'sprite') {
-			var img = $('<img src="./ressources/levels/sprites/'+currentSprite.image+'.png" />');
-			img.css({
-				position: 'absolute',
-				left: -currentSprite.x,
-				top: -currentSprite.y
-			})
-		    $('#cell_'+x+'_'+y).empty().append(img);
+			if (currentSprite.image == 'empty') {
+				$('#cell_'+x+'_'+y).children('img').not('.na').remove();				
+			} else {
+				var img = $('<img src="./ressources/levels/sprites/'+currentSprite.image+'.png" />');
+				img.css({
+					position: 'absolute',
+					left: -currentSprite.x,
+					top: -currentSprite.y
+				});
+				$('#cell_'+x+'_'+y).children('img').not('.na').remove();
+				$('#cell_'+x+'_'+y).prepend(img);				
+			}
 		}
 	}
 
@@ -228,19 +237,18 @@ $(function() {
 		level.cells 	= [];
 		level.sprites	= {};
 
-		//$('#gameContainer').children('div').children().each(function() {
 		function processCell(elm) {
 			var id = $(elm).attr('id');
 
 			if (id != undefined) {
-				var tileId = $(elm).css('background-image').replace('.png)', '').replace('url('+window.location+'ressources/levels/tiles/', '');
-		
-				var img = $(elm).find('img');
+				var tileId = $(elm).css('background-image').replace('.png)', '').split('/'); //.replace('url('+window.location+'ressources/levels/tiles/', '');
+				tileId = tileId[tileId.length -1];
+
+				var img = $(elm).find('img:not(.na)');
 				var sprite = '';
 				
 				if (img.length > 0) {
 					sprite = img.attr('src').replace('.png', '').replace('./ressources/levels/sprites/', '');
-					console.log(sprite);
 					level.sprites['s_'+sprite] = {
 						width: 	img.width(),
 						height: img.height(),
@@ -252,7 +260,7 @@ $(function() {
 				level.cells.push({
 					background: tileId,
 					sprite:		sprite,
-					accessible: ($(elm).css('opacity') == 1) ? true : false
+					accessible: ($(elm).children('.na').length == 0) ? true : false
 				});
 
 				id = id.replace('cell_', '').split('_');
@@ -260,9 +268,9 @@ $(function() {
 				var cell = level.cells[parseInt(id[1]) * level.dimensions.width + parseInt(id[0])];
 				if (cell == undefined) cell = level.cells[0];
 
-				if (!cell.accessible) {
+				/*if (!cell.accessible) {
 					$(elm).css('opacity', '0.3');	
-				}
+				}*/
 			}
 		};
 		

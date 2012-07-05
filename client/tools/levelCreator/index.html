@@ -17,17 +17,19 @@
 		<style type="text/css">
 			#gameContainer {
 				position:relative;
-				width:800px;
-				height:600px;
+				width:100%;
+				height:100%;
 				background:black;
 				overflow:hidden;
 			}
 
 			#tiles {
-				margin-top: 5px;
-				margin-bottom: 5px;
-				border: 1px solid gray;
+				background: white;
 				overflow-y: scroll; 
+				position: absolute;
+				bottom: 0px;
+				z-index: 50;
+				width: 100%;
 			}
 
 			#tiles img, #sprites img {
@@ -40,32 +42,68 @@
 			}	
 			
 			#sprites {
-				display: none;
-				margin-top: 5px;
-				margin-bottom: 5px;
-				border: 1px solid gray;
-				overflow-y: scroll; 
-			}		
+				background: white;
+				overflow-y: scroll;
+				position: absolute;
+				bottom: 0px;
+				z-index: 50;
+				width: 100%;
+			}
+			
+			img {
+				max-width: none;
+			}
+			#mapper {
+				position: absolute;
+				top:0px;
+				left: 0px;
+				width: 100%;
+				background: red;
+				height: 100%;
+				z-index: 0;
+			}
+			
+			#menu {
+				position: absolute;
+				top:0px;
+				right: 0px;
+				width: 350px;
+				z-index: 100;
+			}
+		
+			.box {
+				padding-left:10px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				background: white;
+				margin-bottom: 1px;
+			}
+
+			.na {
+				position: absolute;
+				top:0px;
+				left: 0px;
+			}
 		</style>
 	</head>
 	<body>
-		<div class="container" id="container">
-			<h1>Cassidie</h1>
-			<h3 style="margin-top:0px;" class="page-header">level creator</h3>
-			<div class="row">
-				<div class="span8">
-					<div id="mapper"></div>
-				</div>
-				<div class="span4">
-					<h3>Tools</h3>
-					SHIFT + mouse drag = fill tile<br/>
-					CTRL + mouse drag/click = accessible<br/>
-					Atl + mouse drag/click = innaccessible
-					<h3>Infos</h3>
-					x: <span id="cx"></span>, y: <span id="cy"></span>
-					<h3>Map</h3>
-					<input type="button" value="render" class="btn" id="render" /><br/>
-					<textarea id="levelCode" style="width:100%;height:200px;">
+		<div id="container">
+				<div id="mapper"></div>
+				<div id="menu">
+					<div class="box">
+						<h3>Tools</h3>
+						SHIFT + mouse drag = fill tile<br/>
+						CTRL + mouse drag/click = accessible<br/>
+						Atl + mouse drag/click = innaccessible
+					</div>
+					<div class="box">
+						<h3>Infos</h3>
+						x: <span id="cx"></span>, y: <span id="cy"></span>
+					</div>
+
+					<div class="box">
+						<h3>Map</h3>
+						<textarea id="levelCode" style="width:100%;height:150px;">
 {
   	"name" : "level1",
   	"path" : "/levels/level1.js",
@@ -85,191 +123,305 @@
 		}
 	]
 }			
-					</textarea>
-					<input type="button" value="update" class="btn" id="update" /><br/>
-					<textarea id="levelLink" style="width:100%;height:100px;"></textarea>
+						</textarea>
+						<input type="button" value="render" class="btn" id="render" /><br/>
+					</div>
+
+					<div class="box">
+						<h3>Level links</h3>
+						<p>each line specify a link point to a level<br/>
+						4,4,level2<br/>
+						10,21,level3
+						</p>
+						<textarea id="levelLink" style="width:100%;height:75px;"></textarea>
+						<input type="button" value="update" class="btn" id="update" /><br/>
+					</div>
+					<div class="box" id="mode">
+						<a href="#" class="btn">Tiles</a> <a href="#" class="btn">Sprites</a>
+					</div>
 				</div>
 			</div>
-			
-			<div id="mode"><a href="#">Tiles</a> <a href="#">Sprites</a></div>
+
 			<div id="sprites">
-				<div style="width:4500px">
-						<img src="./ressources/levels/sprites/3.png" alt="wall0" width="32" height="144"  data-x="0" data-y="112" />
-						<img src="./ressources/levels/sprites/4.png" alt="wall1" width="48" height="119" data-x="-32" data-y="84" />
-						<img src="./ressources/levels/sprites/5.png" alt="wall2" width="48" height="119"  data-x="-32" data-y="84" />
-						<img src="./ressources/levels/sprites/0.png" alt="corner3" width="35" height="125"  data-x="3" data-y="93" />
-						<img src="./ressources/levels/sprites/1.png" alt="corner2" width="58" height="128"  data-x="-32" data-y="93" />
-						<img src="./ressources/levels/sprites/2.png" alt="corner1" width="80" height="143" data-x="0" data-y="111" />
-						<img src="./ressources/levels/sprites/6.png" alt="door1" width="74" height="127"  data-x="-32" data-y="91" />
-						<img src="./ressources/levels/sprites/7.png" alt="door2" width="86" height="131"  data-x="6" data-y="84" />
-					<img src="./ressources/levels/sprites/8.png" alt="door3" width="40" height="102"  data-x="-32" data-y="41" />
-					<img src="./ressources/levels/sprites/9.png" alt="door4" width="64" height="169" data-x="32" data-y="137"  />
+				<div style="width:8000px">
+						<img src="./ressources/levels/sprites/empty.png" title="wall0" data-x="0" data-y="124" />
+
+						<img src="./ressources/levels/sprites/3.png" title="wall0" data-x="0" data-y="124" />
+						<img src="./ressources/levels/sprites/4.png" title="wall1" data-x="16" data-y="122" />
+						<img src="./ressources/levels/sprites/5.png" title="wall2" data-x="16" data-y="122" />
+						<img src="./ressources/levels/sprites/0.png" title="corner3" data-x="3" data-y="93" />
+						<img src="./ressources/levels/sprites/1.png" title="corner2" data-x="16" data-y="118" />
+						<img src="./ressources/levels/sprites/2.png" title="corner1" data-x="0" data-y="120" />
+						<img src="./ressources/levels/sprites/6.png" title="door1" data-x="16" data-y="121" />
+						<img src="./ressources/levels/sprites/7.png" title="door2" data-x="16" data-y="121" />
+						<img src="./ressources/levels/sprites/8.png" title="412" data-x="0" data-y="124" />
+						<img src="./ressources/levels/sprites/9.png" title="412" data-x="0" data-y="124" />
+
+						<img src="./ressources/levels/sprites/800.png" title="wall1" data-x="16" data-y="122" />
+						<img src="./ressources/levels/sprites/801.png" title="wall0" data-x="0" data-y="124" />
+						<img src="./ressources/levels/sprites/802.png" title="corner1" data-x="0" data-y="120" />
+						<img src="./ressources/levels/sprites/803.png" title="wall1" data-x="16" data-y="122" />
+						<img src="./ressources/levels/sprites/804.png" title="wall0" data-x="0" data-y="124" />
+
+						<img src="./ressources/levels/sprites/902.png" title="wall1" data-x="16" data-y="122" />
+						<img src="./ressources/levels/sprites/904.png" title="wall0" data-x="0" data-y="124" />
+						<img src="./ressources/levels/sprites/900.png" title="wall1" data-x="16" data-y="122" />
+						<img src="./ressources/levels/sprites/901.png" title="wall0" data-x="0" data-y="124" />
+						<img src="./ressources/levels/sprites/903.png" title="wall1" data-x="0" data-y="97" />
+
+						<img src="./ressources/levels/sprites/101.png" title="fence S" width="53" height="64"  data-x="-22" data-y="24" />
+						<img src="./ressources/levels/sprites/102.png" title="fence W" width="36" height="72"  data-x="0" data-y="36" />
+						<img src="./ressources/levels/sprites/103.png" title="fence N" width="53" height="64"  data-x="0" data-y="45" />
+						<img src="./ressources/levels/sprites/104.png" title="fence E" width="36" height="72"  data-x="-44" data-y="44" />
+						<img src="./ressources/levels/sprites/105.png" title="Fence" width="84" height="74"  data-x="0" data-y="44" />
+						<img src="./ressources/levels/sprites/106.png" title="Fence" width="53" height="86" data-x="-22" data-y="46" />
+						<img src="./ressources/levels/sprites/107.png" title="Fence" width="84" height="75"  data-x="0" data-y="34" />
+						<img src="./ressources/levels/sprites/108.png" title="Fence" width="53" height="85"  data-x="0" data-y="44" />
+
+						<img src="./ressources/levels/sprites/1000.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1001.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1002.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1003.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1004.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1005.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1006.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1007.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1008.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1009.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1010.png" title="412" data-x="20" data-y="186" />
+						<img src="./ressources/levels/sprites/1011.png" title="412" data-x="20" data-y="186" />
+
+						<img src="./ressources/levels/sprites/1100.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1101.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1102.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1103.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1104.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1105.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1106.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1107.png" title="412" data-x="0" data-y="186" />
+
+						<img src="./ressources/levels/sprites/1200.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1201.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1202.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1203.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1204.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1205.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1206.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1208.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1209.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1210.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1211.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1212.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1213.png" title="412" data-x="0" data-y="186" />
+
+						<img src="./ressources/levels/sprites/1300.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1301.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1302.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1303.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1304.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1305.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1306.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1308.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1309.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1310.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1311.png" title="412" data-x="20" data-y="186" />
+						<img src="./ressources/levels/sprites/1312.png" title="412" data-x="20" data-y="186" />
+						<img src="./ressources/levels/sprites/1313.png" title="412" data-x="20" data-y="186" />
+
+						<img src="./ressources/levels/sprites/1400.png" title="412" data-x="20" data-y="186" />
+						<img src="./ressources/levels/sprites/1401.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1402.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1403.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1404.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1405.png" title="412" data-x="0" data-y="186" />
+						<img src="./ressources/levels/sprites/1406.png" title="412" data-x="20" data-y="186" />
+						<img src="./ressources/levels/sprites/1407.png" title="412" data-x="20" data-y="186" />
+						<img src="./ressources/levels/sprites/1408.png" title="412" data-x="20" data-y="186" />
+
 				</div>				
 			</div>
 			<div id="tiles">
 				<div style="width:4500px">
-				<img src="./ressources/levels/tiles/1.png" alt="1" width="80" height="36" />
-				<img src="./ressources/levels/tiles/2.png" alt="2" width="80" height="36" />
-				<img src="./ressources/levels/tiles/3.png" alt="3" width="80" height="36" />
-				<img src="./ressources/levels/tiles/4.png" alt="4" width="80" height="36" />
-				<img src="./ressources/levels/tiles/5.png" alt="5" width="80" height="36" />
-				<img src="./ressources/levels/tiles/6.png" alt="6" width="80" height="36" />
-				<img src="./ressources/levels/tiles/7.png" alt="7" width="80" height="36" />
-				<img src="./ressources/levels/tiles/8.png" alt="8" width="80" height="36" />
-				<img src="./ressources/levels/tiles/9.png" alt="9" width="80" height="36" />
-				<img src="./ressources/levels/tiles/10.png" alt="10" width="80" height="36" />
-				<img src="./ressources/levels/tiles/11.png" alt="11" width="80" height="36" />
-				<img src="./ressources/levels/tiles/12.png" alt="12" width="80" height="36" />
-				<img src="./ressources/levels/tiles/14.png" alt="14" width="80" height="36" />
-				<img src="./ressources/levels/tiles/15.png" alt="15" width="80" height="36" />
-				<img src="./ressources/levels/tiles/16.png" alt="16" width="80" height="36" />
-				<img src="./ressources/levels/tiles/17.png" alt="17" width="80" height="36" />
-				<img src="./ressources/levels/tiles/18.png" alt="18" width="80" height="36" />
-				<img src="./ressources/levels/tiles/19.png" alt="19" width="80" height="36" />
-				<img src="./ressources/levels/tiles/20.png" alt="20" width="80" height="36" />
-				<img src="./ressources/levels/tiles/21.png" alt="21" width="80" height="36" />
-				<img src="./ressources/levels/tiles/22.png" alt="22" width="80" height="36" />
-				<img src="./ressources/levels/tiles/23.png" alt="23" width="80" height="36" />
-				<img src="./ressources/levels/tiles/24.png" alt="24" width="80" height="36" />
-				<img src="./ressources/levels/tiles/25.png" alt="25" width="80" height="36" />
-				<img src="./ressources/levels/tiles/26.png" alt="26" width="80" height="36" />
-				<img src="./ressources/levels/tiles/27.png" alt="27" width="80" height="36" />
-				<img src="./ressources/levels/tiles/28.png" alt="28" width="80" height="36" />
-				<img src="./ressources/levels/tiles/29.png" alt="29" width="80" height="36" />
-				<img src="./ressources/levels/tiles/30.png" alt="30" width="80" height="36" />
-				<img src="./ressources/levels/tiles/31.png" alt="31" width="80" height="36" />
-				<img src="./ressources/levels/tiles/32.png" alt="32" width="80" height="36" />
-				<img src="./ressources/levels/tiles/33.png" alt="33" width="80" height="36" /><br/>
-				<img src="./ressources/levels/tiles/101.png" alt="101" width="80" height="36" />
-				<img src="./ressources/levels/tiles/102.png" alt="102" width="80" height="36" />
-				<img src="./ressources/levels/tiles/103.png" alt="103" width="80" height="36" />
-				<img src="./ressources/levels/tiles/104.png" alt="104" width="80" height="36" />
-				<img src="./ressources/levels/tiles/105.png" alt="105" width="80" height="36" />
-				<img src="./ressources/levels/tiles/106.png" alt="106" width="80" height="36" />
-				<img src="./ressources/levels/tiles/107.png" alt="107" width="80" height="36" />
-				<img src="./ressources/levels/tiles/108.png" alt="108" width="80" height="36" />
-				<img src="./ressources/levels/tiles/109.png" alt="109" width="80" height="36" />
-				<img src="./ressources/levels/tiles/110.png" alt="110" width="80" height="36" />
-				<img src="./ressources/levels/tiles/111.png" alt="111" width="80" height="36" />
-				<img src="./ressources/levels/tiles/112.png" alt="112" width="80" height="36" />
-				<img src="./ressources/levels/tiles/113.png" alt="113" width="80" height="36" />
-				<img src="./ressources/levels/tiles/114.png" alt="114" width="80" height="36" />
-				<img src="./ressources/levels/tiles/115.png" alt="115" width="80" height="36" />
-				<img src="./ressources/levels/tiles/116.png" alt="116" width="80" height="36" />
-				<img src="./ressources/levels/tiles/117.png" alt="117" width="80" height="36" />
-				<img src="./ressources/levels/tiles/118.png" alt="118" width="80" height="36" />
-				<img src="./ressources/levels/tiles/119.png" alt="119" width="80" height="36" />
-				<img src="./ressources/levels/tiles/120.png" alt="120" width="80" height="36" />
-				<img src="./ressources/levels/tiles/121.png" alt="121" width="80" height="36" />
-				<img src="./ressources/levels/tiles/122.png" alt="122" width="80" height="36" />
-				<img src="./ressources/levels/tiles/123.png" alt="123" width="80" height="36" />
-				<img src="./ressources/levels/tiles/124.png" alt="124" width="80" height="36" />
-				<img src="./ressources/levels/tiles/125.png" alt="125" width="80" height="36" />
-				<img src="./ressources/levels/tiles/126.png" alt="126" width="80" height="36" />
-				<img src="./ressources/levels/tiles/127.png" alt="127" width="80" height="36" />
-				<img src="./ressources/levels/tiles/128.png" alt="128" width="80" height="36" />
-				<img src="./ressources/levels/tiles/129.png" alt="129" width="80" height="36" />
-				<img src="./ressources/levels/tiles/130.png" alt="130" width="80" height="36" />
-				<img src="./ressources/levels/tiles/131.png" alt="131" width="80" height="36" />
-				<img src="./ressources/levels/tiles/132.png" alt="132" width="80" height="36" />
-				<img src="./ressources/levels/tiles/133.png" alt="133" width="80" height="36" />
-				<img src="./ressources/levels/tiles/134.png" alt="134" width="80" height="36" />
-				<img src="./ressources/levels/tiles/135.png" alt="135" width="80" height="36" />
-				<img src="./ressources/levels/tiles/136.png" alt="136" width="80" height="36" />
-				<img src="./ressources/levels/tiles/137.png" alt="137" width="80" height="36" />
-				<img src="./ressources/levels/tiles/138.png" alt="138" width="80" height="36" />
-				<img src="./ressources/levels/tiles/139.png" alt="139" width="80" height="36" />
-				<img src="./ressources/levels/tiles/140.png" alt="140" width="80" height="36" />
-				<img src="./ressources/levels/tiles/141.png" alt="141" width="80" height="36" />
-				<img src="./ressources/levels/tiles/142.png" alt="142" width="80" height="36" /><br/>
-				<img src="./ressources/levels/tiles/201.png" alt="201" width="80" height="36" />
-				<img src="./ressources/levels/tiles/202.png" alt="202" width="80" height="36" />
-				<img src="./ressources/levels/tiles/203.png" alt="203" width="80" height="36" />
-				<img src="./ressources/levels/tiles/204.png" alt="204" width="80" height="36" />
-				<img src="./ressources/levels/tiles/205.png" alt="205" width="80" height="36" />
-				<img src="./ressources/levels/tiles/206.png" alt="206" width="80" height="36" />
-				<img src="./ressources/levels/tiles/207.png" alt="207" width="80" height="36" />
-				<img src="./ressources/levels/tiles/208.png" alt="208" width="80" height="36" />
-				<img src="./ressources/levels/tiles/209.png" alt="209" width="80" height="36" />
-				<img src="./ressources/levels/tiles/210.png" alt="210" width="80" height="36" />
-				<img src="./ressources/levels/tiles/211.png" alt="211" width="80" height="36" />
-				<img src="./ressources/levels/tiles/212.png" alt="212" width="80" height="36" />
-				<img src="./ressources/levels/tiles/213.png" alt="213" width="80" height="36" />
-				<img src="./ressources/levels/tiles/214.png" alt="214" width="80" height="36" />
-				<img src="./ressources/levels/tiles/215.png" alt="215" width="80" height="36" />
-				<img src="./ressources/levels/tiles/216.png" alt="216" width="80" height="36" />
-				<img src="./ressources/levels/tiles/217.png" alt="217" width="80" height="36" />
-				<img src="./ressources/levels/tiles/218.png" alt="218" width="80" height="36" />
-				<img src="./ressources/levels/tiles/219.png" alt="219" width="80" height="36" />
-				<img src="./ressources/levels/tiles/220.png" alt="220" width="80" height="36" />
-				<img src="./ressources/levels/tiles/221.png" alt="221" width="80" height="36" />
-				<img src="./ressources/levels/tiles/222.png" alt="222" width="80" height="36" />
-				<img src="./ressources/levels/tiles/223.png" alt="223" width="80" height="36" />
-				<img src="./ressources/levels/tiles/224.png" alt="224" width="80" height="36" />
-				<img src="./ressources/levels/tiles/225.png" alt="225" width="80" height="36" />
-				<img src="./ressources/levels/tiles/226.png" alt="226" width="80" height="36" />
-				<img src="./ressources/levels/tiles/227.png" alt="227" width="80" height="36" />
-				<img src="./ressources/levels/tiles/228.png" alt="228" width="80" height="36" />
-				<img src="./ressources/levels/tiles/229.png" alt="229" width="80" height="36" />
-				<img src="./ressources/levels/tiles/230.png" alt="230" width="80" height="36" />
-				<img src="./ressources/levels/tiles/231.png" alt="231" width="80" height="36" />
-				<img src="./ressources/levels/tiles/232.png" alt="232" width="80" height="36" />
-				<img src="./ressources/levels/tiles/233.png" alt="233" width="80" height="36" />
-				<img src="./ressources/levels/tiles/234.png" alt="234" width="80" height="36" />
-				<img src="./ressources/levels/tiles/235.png" alt="235" width="80" height="36" />
-				<img src="./ressources/levels/tiles/236.png" alt="236" width="80" height="36" />
-				<img src="./ressources/levels/tiles/237.png" alt="237" width="80" height="36" />
-				<img src="./ressources/levels/tiles/238.png" alt="238" width="80" height="36" />
-				<img src="./ressources/levels/tiles/239.png" alt="239" width="80" height="36" />
-				<img src="./ressources/levels/tiles/240.png" alt="240" width="80" height="36" />
-				<img src="./ressources/levels/tiles/241.png" alt="241" width="80" height="36" />
-				<img src="./ressources/levels/tiles/242.png" alt="242" width="80" height="36" />
-				<img src="./ressources/levels/tiles/243.png" alt="243" width="80" height="36" />
-				<img src="./ressources/levels/tiles/244.png" alt="244" width="80" height="36" />
-				<img src="./ressources/levels/tiles/245.png" alt="245" width="80" height="36" />
-				<img src="./ressources/levels/tiles/246.png" alt="246" width="80" height="36" /><br/>
-				<img src="./ressources/levels/tiles/301.png" alt="301" width="80" height="36" />
-				<img src="./ressources/levels/tiles/302.png" alt="302" width="80" height="36" />
-				<img src="./ressources/levels/tiles/303.png" alt="303" width="80" height="36" />
-				<img src="./ressources/levels/tiles/304.png" alt="304" width="80" height="36" />
-				<img src="./ressources/levels/tiles/305.png" alt="305" width="80" height="36" />
-				<img src="./ressources/levels/tiles/306.png" alt="306" width="80" height="36" />
-				<img src="./ressources/levels/tiles/307.png" alt="307" width="80" height="36" />
-				<img src="./ressources/levels/tiles/308.png" alt="308" width="80" height="36" />
-				<img src="./ressources/levels/tiles/309.png" alt="309" width="80" height="36" />
-				<img src="./ressources/levels/tiles/310.png" alt="310" width="80" height="36" />
-				<img src="./ressources/levels/tiles/311.png" alt="311" width="80" height="36" />
-				<img src="./ressources/levels/tiles/312.png" alt="312" width="80" height="36" />
-				<img src="./ressources/levels/tiles/313.png" alt="313" width="80" height="36" />
-				<img src="./ressources/levels/tiles/314.png" alt="314" width="80" height="36" />
-				<img src="./ressources/levels/tiles/315.png" alt="315" width="80" height="36" />
-				<img src="./ressources/levels/tiles/316.png" alt="316" width="80" height="36" />
-				<img src="./ressources/levels/tiles/317.png" alt="317" width="80" height="36" />
-				<img src="./ressources/levels/tiles/318.png" alt="318" width="80" height="36" />
-				<img src="./ressources/levels/tiles/319.png" alt="319" width="80" height="36" />
-				<img src="./ressources/levels/tiles/320.png" alt="320" width="80" height="36" />
-				<img src="./ressources/levels/tiles/321.png" alt="321" width="80" height="36" />
-				<img src="./ressources/levels/tiles/322.png" alt="322" width="80" height="36" />
-				<img src="./ressources/levels/tiles/323.png" alt="323" width="80" height="36" />
-				<img src="./ressources/levels/tiles/324.png" alt="324" width="80" height="36" />
-				<img src="./ressources/levels/tiles/325.png" alt="325" width="80" height="36" />
-				<img src="./ressources/levels/tiles/326.png" alt="326" width="80" height="36" />
-				<img src="./ressources/levels/tiles/327.png" alt="327" width="80" height="36" />
-				<img src="./ressources/levels/tiles/328.png" alt="328" width="80" height="36" />
-				<img src="./ressources/levels/tiles/329.png" alt="329" width="80" height="36" />
-				<img src="./ressources/levels/tiles/330.png" alt="330" width="80" height="36" /><br/>
-				<img src="./ressources/levels/tiles/401.png" alt="401" width="80" height="36" />
-				<img src="./ressources/levels/tiles/402.png" alt="402" width="80" height="36" />
-				<img src="./ressources/levels/tiles/403.png" alt="403" width="80" height="36" />
-				<img src="./ressources/levels/tiles/404.png" alt="404" width="80" height="36" />
-				<img src="./ressources/levels/tiles/405.png" alt="405" width="80" height="36" />
-				<img src="./ressources/levels/tiles/406.png" alt="406" width="80" height="36" />
-				<img src="./ressources/levels/tiles/407.png" alt="407" width="80" height="36" />
-				<img src="./ressources/levels/tiles/408.png" alt="408" width="80" height="36" />
-				<img src="./ressources/levels/tiles/409.png" alt="409" width="80" height="36" />
-				<img src="./ressources/levels/tiles/410.png" alt="410" width="80" height="36" />
-				<img src="./ressources/levels/tiles/411.png" alt="411" width="80" height="36" />
-				<img src="./ressources/levels/tiles/412.png" alt="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/1.png" title="1" width="80" height="36" />
+				<img src="./ressources/levels/tiles/2.png" title="2" width="80" height="36" />
+				<img src="./ressources/levels/tiles/3.png" title="3" width="80" height="36" />
+				<img src="./ressources/levels/tiles/4.png" title="4" width="80" height="36" />
+				<img src="./ressources/levels/tiles/5.png" title="5" width="80" height="36" />
+				<img src="./ressources/levels/tiles/6.png" title="6" width="80" height="36" />
+				<img src="./ressources/levels/tiles/7.png" title="7" width="80" height="36" />
+				<img src="./ressources/levels/tiles/8.png" title="8" width="80" height="36" />
+				<img src="./ressources/levels/tiles/9.png" title="9" width="80" height="36" />
+				<img src="./ressources/levels/tiles/10.png" title="10" width="80" height="36" />
+				<img src="./ressources/levels/tiles/11.png" title="11" width="80" height="36" />
+				<img src="./ressources/levels/tiles/12.png" title="12" width="80" height="36" />
+				<img src="./ressources/levels/tiles/14.png" title="14" width="80" height="36" />
+				<img src="./ressources/levels/tiles/15.png" title="15" width="80" height="36" />
+				<img src="./ressources/levels/tiles/16.png" title="16" width="80" height="36" />
+				<img src="./ressources/levels/tiles/17.png" title="17" width="80" height="36" />
+				<img src="./ressources/levels/tiles/18.png" title="18" width="80" height="36" />
+				<img src="./ressources/levels/tiles/19.png" title="19" width="80" height="36" />
+				<img src="./ressources/levels/tiles/20.png" title="20" width="80" height="36" />
+				<img src="./ressources/levels/tiles/21.png" title="21" width="80" height="36" />
+				<img src="./ressources/levels/tiles/22.png" title="22" width="80" height="36" />
+				<img src="./ressources/levels/tiles/23.png" title="23" width="80" height="36" />
+				<img src="./ressources/levels/tiles/24.png" title="24" width="80" height="36" />
+				<img src="./ressources/levels/tiles/25.png" title="25" width="80" height="36" />
+				<img src="./ressources/levels/tiles/26.png" title="26" width="80" height="36" />
+				<img src="./ressources/levels/tiles/27.png" title="27" width="80" height="36" />
+				<img src="./ressources/levels/tiles/28.png" title="28" width="80" height="36" />
+				<img src="./ressources/levels/tiles/29.png" title="29" width="80" height="36" />
+				<img src="./ressources/levels/tiles/30.png" title="30" width="80" height="36" />
+				<img src="./ressources/levels/tiles/31.png" title="31" width="80" height="36" />
+				<img src="./ressources/levels/tiles/32.png" title="32" width="80" height="36" />
+				<img src="./ressources/levels/tiles/33.png" title="33" width="80" height="36" /><br/>
+				<img src="./ressources/levels/tiles/101.png" title="101" width="80" height="36" />
+				<img src="./ressources/levels/tiles/102.png" title="102" width="80" height="36" />
+				<img src="./ressources/levels/tiles/103.png" title="103" width="80" height="36" />
+				<img src="./ressources/levels/tiles/104.png" title="104" width="80" height="36" />
+				<img src="./ressources/levels/tiles/105.png" title="105" width="80" height="36" />
+				<img src="./ressources/levels/tiles/106.png" title="106" width="80" height="36" />
+				<img src="./ressources/levels/tiles/107.png" title="107" width="80" height="36" />
+				<img src="./ressources/levels/tiles/108.png" title="108" width="80" height="36" />
+				<img src="./ressources/levels/tiles/109.png" title="109" width="80" height="36" />
+				<img src="./ressources/levels/tiles/110.png" title="110" width="80" height="36" />
+				<img src="./ressources/levels/tiles/111.png" title="111" width="80" height="36" />
+				<img src="./ressources/levels/tiles/112.png" title="112" width="80" height="36" />
+				<img src="./ressources/levels/tiles/113.png" title="113" width="80" height="36" />
+				<img src="./ressources/levels/tiles/114.png" title="114" width="80" height="36" />
+				<img src="./ressources/levels/tiles/115.png" title="115" width="80" height="36" />
+				<img src="./ressources/levels/tiles/116.png" title="116" width="80" height="36" />
+				<img src="./ressources/levels/tiles/117.png" title="117" width="80" height="36" />
+				<img src="./ressources/levels/tiles/118.png" title="118" width="80" height="36" />
+				<img src="./ressources/levels/tiles/119.png" title="119" width="80" height="36" />
+				<img src="./ressources/levels/tiles/120.png" title="120" width="80" height="36" />
+				<img src="./ressources/levels/tiles/121.png" title="121" width="80" height="36" />
+				<img src="./ressources/levels/tiles/122.png" title="122" width="80" height="36" />
+				<img src="./ressources/levels/tiles/123.png" title="123" width="80" height="36" />
+				<img src="./ressources/levels/tiles/124.png" title="124" width="80" height="36" />
+				<img src="./ressources/levels/tiles/125.png" title="125" width="80" height="36" />
+				<img src="./ressources/levels/tiles/126.png" title="126" width="80" height="36" />
+				<img src="./ressources/levels/tiles/127.png" title="127" width="80" height="36" />
+				<img src="./ressources/levels/tiles/128.png" title="128" width="80" height="36" />
+				<img src="./ressources/levels/tiles/129.png" title="129" width="80" height="36" />
+				<img src="./ressources/levels/tiles/130.png" title="130" width="80" height="36" />
+				<img src="./ressources/levels/tiles/131.png" title="131" width="80" height="36" />
+				<img src="./ressources/levels/tiles/132.png" title="132" width="80" height="36" />
+				<img src="./ressources/levels/tiles/133.png" title="133" width="80" height="36" />
+				<img src="./ressources/levels/tiles/134.png" title="134" width="80" height="36" />
+				<img src="./ressources/levels/tiles/135.png" title="135" width="80" height="36" />
+				<img src="./ressources/levels/tiles/136.png" title="136" width="80" height="36" />
+				<img src="./ressources/levels/tiles/137.png" title="137" width="80" height="36" />
+				<img src="./ressources/levels/tiles/138.png" title="138" width="80" height="36" />
+				<img src="./ressources/levels/tiles/139.png" title="139" width="80" height="36" />
+				<img src="./ressources/levels/tiles/140.png" title="140" width="80" height="36" />
+				<img src="./ressources/levels/tiles/141.png" title="141" width="80" height="36" />
+				<img src="./ressources/levels/tiles/142.png" title="142" width="80" height="36" /><br/>
+				<img src="./ressources/levels/tiles/201.png" title="201" width="80" height="36" />
+				<img src="./ressources/levels/tiles/202.png" title="202" width="80" height="36" />
+				<img src="./ressources/levels/tiles/203.png" title="203" width="80" height="36" />
+				<img src="./ressources/levels/tiles/204.png" title="204" width="80" height="36" />
+				<img src="./ressources/levels/tiles/205.png" title="205" width="80" height="36" />
+				<img src="./ressources/levels/tiles/206.png" title="206" width="80" height="36" />
+				<img src="./ressources/levels/tiles/207.png" title="207" width="80" height="36" />
+				<img src="./ressources/levels/tiles/208.png" title="208" width="80" height="36" />
+				<img src="./ressources/levels/tiles/209.png" title="209" width="80" height="36" />
+				<img src="./ressources/levels/tiles/210.png" title="210" width="80" height="36" />
+				<img src="./ressources/levels/tiles/211.png" title="211" width="80" height="36" />
+				<img src="./ressources/levels/tiles/212.png" title="212" width="80" height="36" />
+				<img src="./ressources/levels/tiles/213.png" title="213" width="80" height="36" />
+				<img src="./ressources/levels/tiles/214.png" title="214" width="80" height="36" />
+				<img src="./ressources/levels/tiles/215.png" title="215" width="80" height="36" />
+				<img src="./ressources/levels/tiles/216.png" title="216" width="80" height="36" />
+				<img src="./ressources/levels/tiles/217.png" title="217" width="80" height="36" />
+				<img src="./ressources/levels/tiles/218.png" title="218" width="80" height="36" />
+				<img src="./ressources/levels/tiles/219.png" title="219" width="80" height="36" />
+				<img src="./ressources/levels/tiles/220.png" title="220" width="80" height="36" />
+				<img src="./ressources/levels/tiles/221.png" title="221" width="80" height="36" />
+				<img src="./ressources/levels/tiles/222.png" title="222" width="80" height="36" />
+				<img src="./ressources/levels/tiles/223.png" title="223" width="80" height="36" />
+				<img src="./ressources/levels/tiles/224.png" title="224" width="80" height="36" />
+				<img src="./ressources/levels/tiles/225.png" title="225" width="80" height="36" />
+				<img src="./ressources/levels/tiles/226.png" title="226" width="80" height="36" />
+				<img src="./ressources/levels/tiles/227.png" title="227" width="80" height="36" />
+				<img src="./ressources/levels/tiles/228.png" title="228" width="80" height="36" />
+				<img src="./ressources/levels/tiles/229.png" title="229" width="80" height="36" />
+				<img src="./ressources/levels/tiles/230.png" title="230" width="80" height="36" />
+				<img src="./ressources/levels/tiles/231.png" title="231" width="80" height="36" />
+				<img src="./ressources/levels/tiles/232.png" title="232" width="80" height="36" />
+				<img src="./ressources/levels/tiles/233.png" title="233" width="80" height="36" />
+				<img src="./ressources/levels/tiles/234.png" title="234" width="80" height="36" />
+				<img src="./ressources/levels/tiles/235.png" title="235" width="80" height="36" />
+				<img src="./ressources/levels/tiles/236.png" title="236" width="80" height="36" />
+				<img src="./ressources/levels/tiles/237.png" title="237" width="80" height="36" />
+				<img src="./ressources/levels/tiles/238.png" title="238" width="80" height="36" />
+				<img src="./ressources/levels/tiles/239.png" title="239" width="80" height="36" />
+				<img src="./ressources/levels/tiles/240.png" title="240" width="80" height="36" />
+				<img src="./ressources/levels/tiles/241.png" title="241" width="80" height="36" />
+				<img src="./ressources/levels/tiles/242.png" title="242" width="80" height="36" />
+				<img src="./ressources/levels/tiles/243.png" title="243" width="80" height="36" />
+				<img src="./ressources/levels/tiles/244.png" title="244" width="80" height="36" />
+				<img src="./ressources/levels/tiles/245.png" title="245" width="80" height="36" />
+				<img src="./ressources/levels/tiles/246.png" title="246" width="80" height="36" /><br/>
+				<img src="./ressources/levels/tiles/301.png" title="301" width="80" height="36" />
+				<img src="./ressources/levels/tiles/302.png" title="302" width="80" height="36" />
+				<img src="./ressources/levels/tiles/303.png" title="303" width="80" height="36" />
+				<img src="./ressources/levels/tiles/304.png" title="304" width="80" height="36" />
+				<img src="./ressources/levels/tiles/305.png" title="305" width="80" height="36" />
+				<img src="./ressources/levels/tiles/306.png" title="306" width="80" height="36" />
+				<img src="./ressources/levels/tiles/307.png" title="307" width="80" height="36" />
+				<img src="./ressources/levels/tiles/308.png" title="308" width="80" height="36" />
+				<img src="./ressources/levels/tiles/309.png" title="309" width="80" height="36" />
+				<img src="./ressources/levels/tiles/310.png" title="310" width="80" height="36" />
+				<img src="./ressources/levels/tiles/311.png" title="311" width="80" height="36" />
+				<img src="./ressources/levels/tiles/312.png" title="312" width="80" height="36" />
+				<img src="./ressources/levels/tiles/313.png" title="313" width="80" height="36" />
+				<img src="./ressources/levels/tiles/314.png" title="314" width="80" height="36" />
+				<img src="./ressources/levels/tiles/315.png" title="315" width="80" height="36" />
+				<img src="./ressources/levels/tiles/316.png" title="316" width="80" height="36" />
+				<img src="./ressources/levels/tiles/317.png" title="317" width="80" height="36" />
+				<img src="./ressources/levels/tiles/318.png" title="318" width="80" height="36" />
+				<img src="./ressources/levels/tiles/319.png" title="319" width="80" height="36" />
+				<img src="./ressources/levels/tiles/320.png" title="320" width="80" height="36" />
+				<img src="./ressources/levels/tiles/321.png" title="321" width="80" height="36" />
+				<img src="./ressources/levels/tiles/322.png" title="322" width="80" height="36" />
+				<img src="./ressources/levels/tiles/323.png" title="323" width="80" height="36" />
+				<img src="./ressources/levels/tiles/324.png" title="324" width="80" height="36" />
+				<img src="./ressources/levels/tiles/325.png" title="325" width="80" height="36" />
+				<img src="./ressources/levels/tiles/326.png" title="326" width="80" height="36" />
+				<img src="./ressources/levels/tiles/327.png" title="327" width="80" height="36" />
+				<img src="./ressources/levels/tiles/328.png" title="328" width="80" height="36" />
+				<img src="./ressources/levels/tiles/329.png" title="329" width="80" height="36" />
+				<img src="./ressources/levels/tiles/330.png" title="330" width="80" height="36" /><br/>
+				<img src="./ressources/levels/tiles/401.png" title="401" width="80" height="36" />
+				<img src="./ressources/levels/tiles/402.png" title="402" width="80" height="36" />
+				<img src="./ressources/levels/tiles/403.png" title="403" width="80" height="36" />
+				<img src="./ressources/levels/tiles/404.png" title="404" width="80" height="36" />
+				<img src="./ressources/levels/tiles/405.png" title="405" width="80" height="36" />
+				<img src="./ressources/levels/tiles/406.png" title="406" width="80" height="36" />
+				<img src="./ressources/levels/tiles/407.png" title="407" width="80" height="36" />
+				<img src="./ressources/levels/tiles/408.png" title="408" width="80" height="36" />
+				<img src="./ressources/levels/tiles/409.png" title="409" width="80" height="36" />
+				<img src="./ressources/levels/tiles/410.png" title="410" width="80" height="36" />
+				<img src="./ressources/levels/tiles/411.png" title="411" width="80" height="36" />
+				<img src="./ressources/levels/tiles/412.png" title="412" width="80" height="36" /><br/>
+				<img src="./ressources/levels/tiles/500.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/600.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/601.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/602.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/603.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/604.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/605.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/606.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/607.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/608.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/609.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/610.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/611.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/612.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/613.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/614.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/615.png" title="412" width="80" height="36" />
+				<img src="./ressources/levels/tiles/616.png" title="412" width="80" height="36" />
 				</div>
 			</div>
 		</div>
