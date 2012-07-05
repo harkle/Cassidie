@@ -52,7 +52,7 @@
 			this.appearance = appearance;
 
 			var animationParameters = (this.animationList[appearance] != undefined) ? this.animationList[appearance] : {numFrame: 1, looping: false};
-			Game.engine.setEntitySkin(this.id, './ressources/objects/'+this.skin+'/'+this.appearance, isAnimated, animationParameters);
+			Game.engine.setEntitySkin(this.id, './ressources/items/'+this.skin+'/'+this.appearance, isAnimated, animationParameters);
 		},
 
 		triggerAction: function() {

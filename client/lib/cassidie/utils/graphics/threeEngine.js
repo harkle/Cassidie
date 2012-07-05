@@ -1,8 +1,3 @@
-/*
-- anims gifs
-- background
-- decors
-*/
 (function() {
 	this.ThreeEngine = function(useWebGL) {
 		this.renderer			= null;
@@ -351,10 +346,32 @@
 
 			var isAnimated = (objectData.animationList[objectData.appearance] != undefined) ? true : false;
 
+			if (isAnimated && objectData.animationList[objectData.appearance].numFrame == 1) isAnimated = false;
+
 			objectData.setSkin(objectData.appearance, isAnimated);
 			
 			if (objectData.isVisible) this.showEntity(objectData.id);
 			if (!objectData.isVisible) this.hideEntity(objectData.id);
+
+			this.preloadSkins(objectData);
+		};
+
+		this.preloadSkins = function(data) {
+			var directions = ['ne', 'nw', 'se', 'sw'];
+
+			for (anim in data.animationList) {
+				var path = (data.objectType == 'character') ? './ressources/characters/'+data.attributes.skin+'/'+anim+'/' : './ressources/items/'+data.skin+'/'+anim+'/';
+
+				for (var i = 0; i < directions.length; i++) {
+					if (data.animationList[anim].numFrame == 1) {
+						this.getMaterial(path+directions[i]);
+					} else {
+						for (var n = 0; n < data.animationList[anim].numFrame; n++) {
+							this.getMaterial(path+directions[i]+n);
+						}
+					}
+				}
+			}
 		};
 
 		this.characterSpeech = function(id, text) {
@@ -396,7 +413,7 @@
 
 			} else {
 				this.animations[id].running		= false;
-				this.entities[id].material		= this.getMaterial(file);
+				this.entities[id].material		= this.getMaterial(file+'0');
 			}			
 		};
 
