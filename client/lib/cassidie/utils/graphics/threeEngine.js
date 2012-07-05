@@ -164,12 +164,17 @@
 					if (Game.level.objects[i].x == overTile.x && Game.level.objects[i].y == overTile.y) onEntity = true; 
 				}
 
-				if (onEntity) {
-					self.setCursor('./ressources/cursor_a');					
-				} else if (self.levelData.cells[overTile.y * self.levelData.dimensions.width + overTile.x].accessible) {
-					self.setCursor('./ressources/cursor');					
+				var numTile = overTile.y * self.levelData.dimensions.width + overTile.x;
+				if (numTile >= 0 && numTile < self.levelData.dimensions.width * self.levelData.dimensions.height) {
+					if (onEntity) {
+						self.setCursor('./ressources/cursor_a');					
+					} else if (self.levelData.cells[numTile].accessible) {
+						self.setCursor('./ressources/cursor');					
+					} else {
+						self.setCursor('./ressources/cursor_na');
+					}
 				} else {
-					self.setCursor('./ressources/cursor_na');
+						self.setCursor('./ressources/cursor_na');					
 				}
 
 				if (!drag) return;

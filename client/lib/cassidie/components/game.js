@@ -62,9 +62,11 @@ var GameClass = Events.Observable.extend({
 
 			self.level.destroy();
 
-			self.level = new Level(data);
+			setTimeout(function() {
+				self.level = new Level(data);
 
-			self.trigger(Events.LEVEL_ENTER, data);
+				self.trigger(Events.LEVEL_ENTER, data);
+			}, 500);
 		});
 	},
 
