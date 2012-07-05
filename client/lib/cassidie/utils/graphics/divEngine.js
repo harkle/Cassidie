@@ -156,6 +156,10 @@
 			}
 		};
 
+		this.setCursor = function(file) {
+			this.cursor.setAttribute('style', 'z-index:20000;position:absolute;height:36px;width:80px;left:-80px;top:-36px;background:url('+file+'.png)');		
+		};
+
 		this.getCoordinates = function(mouseX, mouseY) {
 			var xx = mouseX - mouseY * 4 / 3;
 			var x = Math.floor(xx / 64);

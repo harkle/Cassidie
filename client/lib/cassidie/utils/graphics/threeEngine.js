@@ -155,6 +155,23 @@
 				self.cursor.position.x = position.x;
 				self.cursor.position.y = (position.y-self.isometry.y);
 
+				var onEntity = false;
+				for (var i = 0; i < Game.level.characters.length; i++) {
+					if (Game.level.characters[i].x == overTile.x && Game.level.characters[i].y == overTile.y) onEntity = true; 
+				}
+
+				for (var i = 0; i < Game.level.objects.length; i++) {
+					if (Game.level.objects[i].x == overTile.x && Game.level.objects[i].y == overTile.y) onEntity = true; 
+				}
+
+				if (onEntity) {
+					self.setCursor('./ressources/cursor_a');					
+				} else if (self.levelData.cells[overTile.y * self.levelData.dimensions.width + overTile.x].accessible) {
+					self.setCursor('./ressources/cursor');					
+				} else {
+					self.setCursor('./ressources/cursor_na');
+				}
+
 				if (!drag) return;
 				dragged = true;
 
@@ -267,6 +284,10 @@
 			return this.materials['r_'+file];
 		};
 
+		this.setCursor = function(file) {
+			this.cursor.material = this.getMaterial(file);
+		};
+
 		this.getCoordinates = function(mouseX, mouseY) {
 			var xx = mouseX - mouseY * 4 / 3;
 			var x = Math.floor(xx / 64);
@@ -363,12 +384,8 @@
 				var path = (data.objectType == 'character') ? './ressources/characters/'+data.attributes.skin+'/'+anim+'/' : './ressources/items/'+data.skin+'/'+anim+'/';
 
 				for (var i = 0; i < directions.length; i++) {
-					if (data.animationList[anim].numFrame == 1) {
-						this.getMaterial(path+directions[i]);
-					} else {
-						for (var n = 0; n < data.animationList[anim].numFrame; n++) {
-							this.getMaterial(path+directions[i]+n);
-						}
+					for (var n = 0; n < data.animationList[anim].numFrame; n++) {
+						this.getMaterial(path+directions[i]+n);
 					}
 				}
 			}
