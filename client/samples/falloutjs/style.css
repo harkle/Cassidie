@@ -1,0 +1,153 @@
+body {
+	background: black;
+	font-family: 'Dosis', sans-serif;
+	font-weight: 100;
+}
+
+#title {
+	color: white;
+	text-align: center;
+	margin-top: 10px;
+	font-weight: 100;
+	font-size: 20px;
+}
+
+#menu {
+	width: 640px;
+	height: 480px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url(./ressources/interface/menu.png);
+	display: none;
+}
+
+#menu .main, #menu .login, #menu .register, #menu .account, #menu .newCharacter {
+	display: none;	
+}
+
+#menu .button {
+	width: 144px;
+	height: 29px;
+	position: absolute;
+	background-image: url(./ressources/interface/button.png);
+	padding-left: 50px;	
+	padding-top: 7px;
+	font-weight: 700;
+	color:#ffee4a;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+#menu .input {
+	width: 144px;
+	height: 29px;
+	position: absolute;
+	background-image: url(./ressources/interface/input.png);
+	padding-left: 50px;	
+	padding-top: 7px;
+	font-weight: 700;
+	color:#ffee4a;
+	cursor: pointer;
+	outline: 0px;
+	border: 0px;
+}
+
+#menu .button:hover {
+	color: white;	
+}
+
+#menu .p0 {
+	left: 413px;
+	top:40px;	
+}
+
+#menu .p1 {
+	left: 413px;
+	top:82px;	
+}
+
+#menu .p2 {
+	left: 413px;
+	top:124px;	
+}
+
+#menu .p3 {
+	left: 413px;
+	top:163px;	
+}
+
+#menu .p4 {
+	left: 413px;
+	top:210px;
+}
+
+.remove {
+	position: absolute;
+	font-size: 10px;
+	color: red;
+	top:10px;
+	right: 15px;	
+}
+
+.remove:hover {
+	color: white;
+}
+
+#container {
+	display: none;
+	margin-left: auto;
+	margin-right: auto;
+	width: 640px;
+	height: 480px;
+	cursor: none;
+	position: relative;
+}
+
+#chat {
+	margin-left: auto;
+	margin-right: auto;
+	width: 640px;
+	margin-top: 5px;
+	display: none;
+}
+
+#chatWindow {
+	border: 1px solid #00ff00;
+	height: 100px;
+	overflow-y: scroll;
+	color: #00ff00;
+	font-size: 12px;
+}
+
+#chatInput {
+	width: 630px;
+	padding: 4px;
+	border: 1px solid #00ff00;
+	outline: 0px;
+	background: #002200;
+	color: #00ff00;
+}
+
+#loading {
+	background-image: url(./ressources/interface/loading.png);
+	display: none;
+	margin-left: auto;
+	margin-right: auto;
+	width: 640px;
+	height: 480px;
+	cursor: none;
+}
+
+#menu2 {
+	width: 80px;
+	height: 310px;
+	background-image: url(./ressources/interface/menu2.png);
+	position: absolute;
+	right: 0px;
+	top:0px;
+	right: -80px;
+	cursor: default;
+	text-align: center;
+	padding-top: 30px;
+}

@@ -2,13 +2,5 @@
 	username: '',
 	nickname: '',
 	password: '',
-	characters: [
-		{
-			attributes: {
-			},
-			level:	'',
-			x:		'',
-			y:		''
-		}	
-	]
+	characters: []
 }

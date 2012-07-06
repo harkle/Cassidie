@@ -77,7 +77,7 @@ var Level = Class.create(
 	 * @type Array
 	 * @description list of levels
 	 */
-	objects:		null,
+	items:			null,
 
 	/**
 	 * @class <p>Create a new levels</p>
@@ -91,11 +91,11 @@ var Level = Class.create(
 		this.dimensions			= data.dimensions;
 		this.cells				= data.cells;
 		this.charactersData 	= data.charactersData;	
-		this.objectsData 		= data.objectsData;	
+		this.itemsData 			= data.itemsData;	
 		this.initialPositions	= data.initialPositions;
 		this.sprites			= data.sprites;	
 		this.characters 		= [];
-		this.objects			= [];
+		this.items				= [];
 	},
 
 	/**
@@ -126,15 +126,15 @@ var Level = Class.create(
 	 * @param {Boolean} [onlyData] set true to get only data, false to get the Object
 	 * @returns {Array} array of objects
 	 */
-	getObjects: function(onlyData) {
+	getItems: function(onlyData) {
 		if (onlyData == undefined) onlyData = false;
-		var objects = [];
+		var items = [];
 
-		for(var i = 0; i < this.objects.length; i++) {
-			objects.push((onlyData) ? this.objects[i].getData() : this.objects[i]);
+		for(var i = 0; i < this.items.length; i++) {
+			items.push((onlyData) ? this.items[i].getData() : this.items[i]);
 		}
 
-		return objects;
+		return items;
 	},
 
 	/**
@@ -180,11 +180,11 @@ var Level = Class.create(
 	 * @param {String} name object name
 	 * @returns {Object} objects data
 	 */
-	getObjectData: function(name) {
-		if (this.objectsData == undefined) return null;
+	getItemData: function(name) {
+		if (this.itemsData == undefined) return null;
 
-		for (var i = 0; i < this.charactersData.length; i++) {
-			if (this.objectsData[i].name == name) return this.objectsData[i];
+		for (var i = 0; i < this.itemsData.length; i++) {
+			if (this.itemsData[i].name == name) return this.itemsData[i];
 		}
 
 		return null;
@@ -239,10 +239,10 @@ var Level = Class.create(
 	 * @public
 	 * @param {Item} object item to be attached
 	 */
-	attachObject: function(object) {
+	attachItem: function(item) {
 
-		object.level = this;
-		this.objects.push(object);
+		item.level = this;
+		this.items.push(item);
 	},
 
 	/**
@@ -251,13 +251,11 @@ var Level = Class.create(
 	 * @public
 	 * @param {Integer} id object id
 	 */
-	detachObject: function(id) {
+	detachItem: function(id) {
 
-		var object = null;
-		for (var i = this.objects.length-1; i >= 0; i--) {
-			if (this.objects[i].id == id) {
-				object = this.objects[i];
-				this.objects.splice(i, 1);
+		for (var i = this.items.length-1; i >= 0; i--) {
+			if (this.items[i].id == id) {
+				this.items.splice(i, 1);
 			}
 		}
 	},

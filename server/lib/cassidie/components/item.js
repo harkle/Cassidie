@@ -30,7 +30,25 @@ var Item = Entity.extend(
 			this.appearance		= 'default';
 		}
 
-		this.objectType = 'object';
-	}
+		this.entityType = 'item';
+	},
+
+	/**
+	 * Update a parameter of the item
+	 *
+	 * @public
+	 * @param {Integer} parameter the parameter to be changed
+	 * @param {Integer} value the value of the parameter
+	 * @param {Boolean} notifyOther notify other player
+	 * @param {Boolean} [notify] notify player
+	 */
+	setParameter: function(parameter, value, notifyOther, notify) {
+		if (notifyOther == undefined) notifyOther = false;
+		if (notify == undefined) notify = false;
+
+		this._super(parameter, value);
+
+		if (notifyOther) this.sendData('item_parameter_changed', {parameter: parameter, value:value}, notify);
+	},
 });
 module.exports = Item;

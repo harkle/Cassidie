@@ -57,14 +57,15 @@ var Character = Entity.extend(
 			this.destinationX	= 0;
 			this.destinationY	= 0;
 			this.isVisible		= true;
-			this.appearance		= 'standing';
 		}
+		this.appearance		= 'standing';
 
 		this.animationList				= {
+			'standing':	{numFrame: 1, looping: false},
 			'walking':  {numFrame: 1, looping: true},
 		};
 
-		this.objectType = 'character';
+		this.entityType = 'character';
 	},
 
 	/**
@@ -98,6 +99,24 @@ var Character = Entity.extend(
 	},
 
 	/**
+	 * Update a parameter of the character
+	 *
+	 * @public
+	 * @param {Integer} parameter the parameter to be changed
+	 * @param {Integer} value the value of the parameter
+	 * @param {Boolean} notifyOther notify other player
+	 * @param {Boolean} [notify] notify player
+	 */
+	setParameter: function(parameter, value, notifyOther, notify) {
+		if (notifyOther == undefined) notifyOther = false;
+		if (notify == undefined) notify = false;
+
+		this._super(parameter, value);
+
+		if (notifyOther) this.sendData('character_parameter_changed', {parameter: parameter, value:value}, notify);
+	},
+
+	/**
 	 *	Update the current character position
 	 *
 	 *	@public
@@ -126,6 +145,16 @@ var Character = Entity.extend(
 		}
 
 		if (notify) this.sendData('character_positioned', {x: this.x, y: this.y}, true);	
+	},
+
+	/**
+	 * Detach the entity from its belonging level
+	 *
+	 * @public
+	 */
+	removeFromLevel: function() {
+		this.level.detachCharacter(this.id);
+		this.level = null;	
 	},
 
 	/**

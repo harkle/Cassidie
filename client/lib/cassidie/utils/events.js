@@ -42,7 +42,7 @@
 	this.Events.GAME_ENTERED				= 13;
 	this.Events.GAME_LEFT					= 14;
 	this.Events.CHARACTER_PARAMETER_CHANGED = 15;
-	this.Events.OBJECT_PARAMETER_CHANGED	= 16;
+	this.Events.ITEM_PARAMETER_CHANGED		= 16;
 	this.Events.ACTION_TRIGGERED			= 17;
 	this.Events.CHARACTER_ACTION_SUCCESS	= 18;
 	this.Events.CHARACTER_ACTION_FAIL		= 19;

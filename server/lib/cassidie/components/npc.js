@@ -1,5 +1,5 @@
 var Character 	= require('./character.js');
-var PathFinder	= require('../utils/pathfinding/pathfinder.js');
+var PathFinder	= require('../utils/pathfinder.js');
 
 var NPC = Character.extend(
 /** @lends NPC.prototype */
@@ -19,8 +19,13 @@ var NPC = Character.extend(
 	 * @augments Character
 	 * @param {Object} [data] an object representing character data. Warning, if you don't give any data, the character will not be restored when programme restart. Fill it using Level.getCharacterData
 	 */
-	initialize: function(data) {
-		this._super('npc', data);	
+	initialize: function(x, y, data) {
+		this._super('npc', data);
+
+		if (data == undefined) {
+			this.x = x;
+			this.y = y;
+		}
 	},
 
 	/**

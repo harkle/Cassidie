@@ -63,8 +63,8 @@ var Player = Character.extend(
 	 *
 	 * @public
 	 */
-	action: function() {
-		
+	action: function(target, result) {
+		this._super(target, result);
 	}
 });
 module.exports = Player;

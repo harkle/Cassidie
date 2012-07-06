@@ -79,6 +79,14 @@ var Game = Class.create(
 	clients:			[],
 
 	/**
+	 * @field
+	 * @private
+	 * @type Integer
+	 * @description play speed
+	 */
+	playerSpeed: 		null,
+	  
+	/**
 	 * @class <p>Class representing entities. You have to extend it to create your game</p>
 	 *
 	 * @description Your game is a class extenting the Game class as in the example below:
@@ -109,6 +117,7 @@ var Game = Class.create(
 		this.chatDistance	= data.chatDistance;
 		this.levelsList		= data.levels;
 		this.proximity		= data.proximity;
+		this.playerSpeed	= 20;
 
 		this.loadLevels();
 
@@ -121,9 +130,16 @@ var Game = Class.create(
 	 * @public
 	 */
 	loadLevels: function() {
-		var loadings = [];
+		var loadings	= [];
+		var self		= this;
 
-		var self = this;
+		if (this.levelsList.length == 0) {
+			Logger.systemLog(this.consoleName, 'no level loaded');
+			setTimeout(function() {
+				self.emit(Game.READY);
+			}, 500);			
+		}
+
 		for (var i = 0; i < this.levelsList.length; i++) {
 			var name = this.levelsList[i];
 			Logger.systemLog(this.consoleName, 'loading level: '+name);
@@ -193,15 +209,15 @@ var Game = Class.create(
 		}
 
 		//Save NPCs
-		function saveNpcsObjects (level, npcs, objects) {
+		function saveNpcsItems (level, npcs, items) {
 			loadings.push(function(next) {
-				Cassidie.database.update('levels', {name: level}, {objectsData: objects, charactersData: npcs}, function() {
+				Cassidie.database.update('levels', {name: level}, {itemsData: items, charactersData: npcs}, function() {
 					next();
 				});
 			});
 		}
 		for (level in this.levels) {
-			saveNpcsObjects(level, this.levels[level].getCharacters(true, 'npc'), this.levels[level].getObjects(true));
+			saveNpcsItems(level, this.levels[level].getCharacters(true, 'npc'), this.levels[level].getItems(true));
 		}
 
 		Cassidie.wait(loadings, function() {
@@ -240,10 +256,11 @@ var Game = Class.create(
 				dimensions: 		this.levels[socket.client.character.currentLevel].dimensions,
 				cells:				this.levels[socket.client.character.currentLevel].cells,
 				characters: 		this.levels[socket.client.character.currentLevel].getCharacters(true),
-				objects:			this.levels[socket.client.character.currentLevel].getObjects(true),
+				items:				this.levels[socket.client.character.currentLevel].getItems(true),
 				sprites:			this.levels[socket.client.character.currentLevel].sprites
 			},
-			character: socket.client.character.getData()
+			character:		socket.client.character.getData(),
+			playerSpeed:	this.playerSpeed
 		});
 		Logger.systemLog(this.consoleName, socket.client.email+' entered the game with "'+socket.client.character.toString()+'"');
 	},
@@ -298,7 +315,8 @@ var Game = Class.create(
 				dimensions: 		this.levels[level].dimensions,
 				cells:				this.levels[level].cells,
 				characters: 		this.levels[level].getCharacters(true),
-				objects:			this.levels[level].getObjects(true)
+				items:				this.levels[level].getItems(true),
+				sprites:			this.levels[level].sprites
 			},
 			character: character.getData()
 		});

@@ -5,7 +5,22 @@ var Game = require('./components/game.js');
 
 (function() {
 	var	util 		= require('util');
+	var	debug		= false;
 
+	// Add new stuff to Object
+	Object.defineProperty(Object.prototype, "extend", {
+		enumerable: false,
+		value: function(from) {
+			var props = Object.getOwnPropertyNames(from);
+			var dest = this;
+			props.forEach(function(name) {
+				var destination = Object.getOwnPropertyDescriptor(from, name);
+				Object.defineProperty(dest, name, destination);
+			});
+			return this;
+		}
+	});
+	
 	// Start console listening
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');
@@ -13,7 +28,8 @@ var Game = require('./components/game.js');
 	process.stdin.on('data', function (input) {
 		Logger.userLog('user		', input.trim());
 
-		switch (input.trim()) {
+		var command = input.trim().split(' ');
+		switch (command[0]) {
 			case 'exit':
 				Cassidie.exit();
 				break;
@@ -27,7 +43,43 @@ var Game = require('./components/game.js');
 				Cassidie.showGame();
 				break;
 			case 'reset':
-				Cassidie.reset();
+				//Cassidie.reset();
+				break;
+			case 'speed':
+				if (isNaN(Number(command[1]))) {
+					Logger.systemLog(Cassidie.consoleName, 'playe enter a valid player speed (i.e. speed 20)');					
+				} else {
+					Logger.systemLog(Cassidie.consoleName, 'player speed set to "'+Number(command[1])+'"');
+					Cassidie.game.playerSpeed = Number(command[1]);
+				}
+				break;
+			case 'debugio':
+				debug = !debug;
+
+				if (debug) {
+					Logger.systemLog(Cassidie.consoleName, 'socket.io debug enabled');
+					Cassidie.netConnection.manager.set('log level', 3);
+				} else {
+					Logger.systemLog(Cassidie.consoleName, 'socket.io debug disabled');
+					Cassidie.netConnection.manager.set('log level', 0);	
+				}	
+
+				break;
+			case 'mute':
+				break;
+			case 'commands':
+				Logger.systemLog(Cassidie.consoleName, 'commands list:');
+				Logger.systemLog('\t\t', 'exit\t\tsave and exit the server');
+				Logger.systemLog('\t\t', 'status\t\tshow server status');
+				Logger.systemLog('\t\t', 'clients\t\tshow how many clients are connected');
+				Logger.systemLog('\t\t', 'game\t\tshow game information');
+				Logger.systemLog('\t\t', 'reset\t\trestet the server (not working)');
+				Logger.systemLog('\t\t', 'debugio\t\ttoggle socket.io debug');
+				Logger.systemLog('\t\t', 'speed\t\tset player speed (i.e. speed 20)');
+				Logger.systemLog('\t\t', 'commands\tshow command list');
+				break;
+			default:
+				Logger.systemLog(Cassidie.consoleName, ''+input.trim()+': command not found. (Type "commands" to get a command list.)');
 				break;
 		}
 	});
@@ -44,7 +96,7 @@ var Game = require('./components/game.js');
 		gameStartTime:	0,
 		isRunning:		false,
 
-		version:		'0.1',
+		version:		'0.2',
 		consoleName:	'cassidie	',
 
 		clients:		[]

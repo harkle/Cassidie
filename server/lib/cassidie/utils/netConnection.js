@@ -87,9 +87,9 @@ io.sockets.on('connection', function (socket) {
 		Cassidie.chat.broadcast(socket.client, data);
 	});
 
-	socket.on('character_set_parameter', function(data) {
+	socket.on('entity_set_parameter', function(data) {
 		if (!socket.client.getAuthenticated()) return;
-		socket.client.character.setParameter(data.parameter, data.value);
+		socket.client.character.setParameter(data.parameter, data.value, true, true);
 	});
 
 	socket.on('action_triggered', function(data) {
@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket) {
 
 		var target = null;
 
-		var elements	= socket.client.character.level.getObjects().concat(socket.client.character.level.getCharacters());		
+		var elements	= socket.client.character.level.getItems().concat(socket.client.character.level.getCharacters());		
 		for (var i = 0; i < elements.length; i++) {
 			if (elements[i].id == data.targetId && elements[i].isVisible) {
 				target = elements[i];

@@ -66,7 +66,7 @@ var Entity = Class.create(
 	 * @private
 	 * @type String
 	 */
-	objectType:			null,
+	entityType:			null,
 
 	/** 
 	 * @field
@@ -126,16 +126,16 @@ var Entity = Class.create(
 	 * @returns {String}
 	 */
 	toString: function() {
-		return 'object'
+		return 'entity'
 	},
 
 	/**
-	 * Detach the character from its belonging level
+	 * Detach the entity from its belonging level
 	 *
 	 * @public
 	 */
 	removeFromLevel: function() {
-		this.level.detachObject(this.id);
+		this.level.detachItem(this.id);
 		this.level = null;	
 	},
 
@@ -145,14 +145,9 @@ var Entity = Class.create(
 	 * @public
 	 * @param {Integer} parameter the parameter to be changed
 	 * @param {Integer} value the value of the parameter
-	 * @param {Boolean} notifyOther notify other player
-	 * @param {Boolean} [notify] notify player
 	 */
-	setParameter: function(parameter, value, notifyOther, notify) {
-		if (notify == undefined) notify = false;
+	setParameter: function(parameter, value) {
 		eval('this.'+parameter+'=value');
-
-		if (notifyOther) this.sendData('object_parameter_changed', {parameter: parameter, value:value}, notify);
 	},
 
 	/**
@@ -217,7 +212,7 @@ var Entity = Class.create(
 
 		this.proximityCheck();
 
-		this.sendData('object_moved', {x: this.x, y: this.y}, true);	
+		this.sendData('item_moved', {x: this.x, y: this.y}, true);	
 	},
 
 	/**
@@ -229,6 +224,8 @@ var Entity = Class.create(
 	 * @param {Boolean} notifyEverbody set true if every level player have to be notified or false if only the player have to notified
 	 */
 	sendData: function(key, data, notifyEverbody) {
+		if (this.level == undefined) return;
+
 		if (notifyEverbody == undefined) notifyEverbody = false;
 
 		var emitter = (this.client == undefined || notifyEverbody) ? Cassidie.netConnection : this.client.socket.broadcast;
@@ -247,7 +244,7 @@ var Entity = Class.create(
 		if (notify == undefined) notify = false;
 		this.isVisible = true;
 
-		this.sendData('object_visibility', {isVisible: true}, notify);
+		this.sendData('item_visibility', {isVisible: true}, notify);
 	},
 
 	/**
@@ -260,7 +257,7 @@ var Entity = Class.create(
 		if (notify == undefined) notify = false;
 		this.isVisible = false;
 
-		this.sendData('object_visibility', {isVisible: false}, notify);
+		this.sendData('item_visibility', {isVisible: false}, notify);
 	},
 
 	/**
@@ -292,8 +289,10 @@ var Entity = Class.create(
 	 * @param {Object} result object describing the action
 	 */
 	action: function(target, result) {
+		if(result == undefined) return;
+
 		if (result.success) {
-			this.sendData('action_performed', {action: result.name, emiterId: this.id, targetId: target.id});		
+			this.sendData('action_performed', {action: result.name, emiterId: this.id, targetId: target.id});
 			if (this.client != undefined) this.client.socket.emit('action_success', {action: result.name, emiterId: this.id, targetId: target.id});		
 		} else {
 			if (this.client != undefined) this.client.socket.emit('action_fail', {action: result.name, emiterId: this.id, targetId: target.id});				
@@ -306,7 +305,7 @@ var Entity = Class.create(
 	 * @public
 	 */
 	proximityCheck: function() {
-		var elements	= this.level.getObjects().concat(this.level.getCharacters());
+		var elements	= this.level.getItems().concat(this.level.getCharacters());
 
 		for (var i = 0; i < elements.length; i++) {
 			var distance = this.getDistanceFrom(elements[i]);

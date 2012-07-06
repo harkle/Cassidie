@@ -1,60 +1,67 @@
-var Client = function(socket) {
-	this.clientID		= new Date().getTime();
-	this.socket   		= socket;
-	this.authenticated	= false;
-	this.inGame			= false;
-	this.email			= null;
-	this.nickname		= null;
-	this.charactersData	= null;
-	this.character		= null;
+var Client = Class.create({
+	clientID:		null,
+	socket:			null,
+	authenticated:	false,
+	inGame:			false,
+	email:			null,
+	nickname:		null,
+	charactersData:	null,
+	character:		null,
 
-	this.getID = function() {
+	initialize: function(socket) {
+		this.clientID	= new Date().getTime();
+		this.socket		= socket;
+	},
+
+	getID: function() {
 		return this.clientID;				
-	}
+	},
 
-	this.getAuthenticated = function() {
+	getAuthenticated: function() {
 		return this.authenticated;
-	}
+	},
 
-	this.setAuthenticated = function(authenticated) {
+	setAuthenticated: function(authenticated) {
 		this.authenticated = authenticated;
-	}
+	},
 
-	this.setInGame = function(inGame) {
+	setInGame: function(inGame) {
 		this.inGame = inGame;
-	}
+	},
 
-	this.getInGame = function() {
+	getInGame: function() {
 		return this.inGame;
-	}
+	},
 
-	this.getEmail = function() {
+	getEmail: function() {
 		return this.email;
-	}
+	},
 
-	this.setEmail = function(email) {
+	setEmail: function(email) {
 		this.email = email;
-	}
+	},
 
-	this.getNickname = function() {
+	getNickname: function() {
 		return this.nickname;
-	}	
+	},
 
-	this.setNickname = function(nickname) {
+	setNickname: function(nickname) {
 		this.nickname = nickname;
-	}	
+	},
 
-	this.getCharacterData = function(id) {
-		return this.charactersData[id];
-	}
+	getCharacterData: function(id) {
+		for (var i = 0; i < this.charactersData.length; i++) {
+			if (this.charactersData[i].id == id) return this.charactersData[i];
+		}
+	},
 
-	this.getCharactersData = function() {
+	getCharactersData: function() {
 		return this.charactersData;
-	}
+	},
 
-	this.setCharactersData = function(charactersData) {
+	setCharactersData: function(charactersData) {
 		this.charactersData = charactersData;
 	}
-}
+});
 
 module.exports = Client;
