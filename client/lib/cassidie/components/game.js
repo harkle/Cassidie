@@ -8,21 +8,21 @@
 		level:			null,
 		engine:			null,
 		playerSpeed:	null,
-	
+
 		initialize: function() {
 		},
-	
+
 		setup: function(gameData) {
 			this.gameData	= gameData;
 			this.targetDiv	= Cassidie.targetDiv;
-	
+
 			this.container	= document.createElement('div');
 			this.container.setAttribute('id', 'gameContainer');
 			this.container.setAttribute('style', 'cursor:non;display:none;position:relative;width:'+this.gameData.viewport.width+'px;height:'+this.gameData.viewport.height+'px;background:black;overflow:hidden;');
 			this.targetDiv.appendChild(this.container);
-	
+
 			//Test
-			/*if (Cassidie.useCustomeEngine) {
+			if (Cassidie.useCustomeEngine) {
 				this.engine = new CustomEngine();
 				console.log('start CUSTOM ENGINE');
 			} else {
@@ -36,9 +36,8 @@
 					this.engine = new DivEngine();
 					console.log('start DIV ENGINE');				
 				}
-			}*/
-			this.engine = new DivEngine();
-	
+			}
+
 			var self = this;
 			Cassidie.socket.on('game_entered', function(data) {
 				self.characterID = data.character.id;

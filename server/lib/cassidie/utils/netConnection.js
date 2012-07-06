@@ -63,7 +63,6 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('enter_game', function(data) {
-		console.log('Enter', data);
 		if (!socket.client.getAuthenticated() || socket.client.getInGame()) return;
 		Cassidie.game.enter(socket, data.characterId);
 	});

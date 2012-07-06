@@ -9,10 +9,10 @@ module.exports = NPC.extend({
 		this._super(data);
 
 		this.skinCoordinates 			= [0, 60, 80, 80];
-		this.animationList				= {
+		this.animationList.extend({
 			'walking':  {numFrame: 8, looping: true},
 			'action_1': {numFrame: 9, looping: false},
-		};
+		});
 
 		this.attributes.name			= 'The terrible NPC'
 		this.attributes.skin 			= 7;

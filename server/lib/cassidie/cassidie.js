@@ -7,6 +7,20 @@ var Game = require('./components/game.js');
 	var	util 		= require('util');
 	var	debug		= false;
 
+	// Add new stuff to Object
+	Object.defineProperty(Object.prototype, "extend", {
+		enumerable: false,
+		value: function(from) {
+			var props = Object.getOwnPropertyNames(from);
+			var dest = this;
+			props.forEach(function(name) {
+				var destination = Object.getOwnPropertyDescriptor(from, name);
+				Object.defineProperty(dest, name, destination);
+			});
+			return this;
+		}
+	});
+	
 	// Start console listening
 	process.stdin.resume();
 	process.stdin.setEncoding('utf8');

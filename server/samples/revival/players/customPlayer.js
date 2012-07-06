@@ -7,10 +7,11 @@ module.exports = Player.extend({
 		this._super(client, data);
 
 		this.skinCoordinates 			= [0, 60, 80, 80];
-		this.animationList				= {
+
+		this.animationList.extend({
 			'walking':  {numFrame: 8, looping: true},
 			'action_1': {numFrame: 9, looping: false},
-		};
+		});
 
 		if (data == undefined) {
 			this.attributes.skin = '';
