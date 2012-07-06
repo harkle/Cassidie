@@ -209,15 +209,15 @@ var Game = Class.create(
 		}
 
 		//Save NPCs
-		function saveNpcsObjects (level, npcs, objects) {
+		function saveNpcsItems (level, npcs, items) {
 			loadings.push(function(next) {
-				Cassidie.database.update('levels', {name: level}, {objectsData: objects, charactersData: npcs}, function() {
+				Cassidie.database.update('levels', {name: level}, {itemsData: items, charactersData: npcs}, function() {
 					next();
 				});
 			});
 		}
 		for (level in this.levels) {
-			saveNpcsObjects(level, this.levels[level].getCharacters(true, 'npc'), this.levels[level].getObjects(true));
+			saveNpcsItems(level, this.levels[level].getCharacters(true, 'npc'), this.levels[level].getItems(true));
 		}
 
 		Cassidie.wait(loadings, function() {
@@ -256,7 +256,7 @@ var Game = Class.create(
 				dimensions: 		this.levels[socket.client.character.currentLevel].dimensions,
 				cells:				this.levels[socket.client.character.currentLevel].cells,
 				characters: 		this.levels[socket.client.character.currentLevel].getCharacters(true),
-				objects:			this.levels[socket.client.character.currentLevel].getObjects(true),
+				items:				this.levels[socket.client.character.currentLevel].getItems(true),
 				sprites:			this.levels[socket.client.character.currentLevel].sprites
 			},
 			character:		socket.client.character.getData(),
@@ -315,7 +315,7 @@ var Game = Class.create(
 				dimensions: 		this.levels[level].dimensions,
 				cells:				this.levels[level].cells,
 				characters: 		this.levels[level].getCharacters(true),
-				objects:			this.levels[level].getObjects(true),
+				items:				this.levels[level].getItems(true),
 				sprites:			this.levels[level].sprites
 			},
 			character: character.getData()

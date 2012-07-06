@@ -23,8 +23,8 @@ module.exports = function(level, x1, y1, x2, y2) {
 		    }
 		    cells.push(row);
 		}
-		for (var i = 0; i < level.objects.length; i++) {
-		    cells[level.objects[i].x][level.objects[i].y] = 1;
+		for (var i = 0; i < level.items.length; i++) {
+		    cells[level.items[i].x][level.items[i].y] = 1;
 		}
 		if(cells[x2][y2] == 1) return;
 

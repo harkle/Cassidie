@@ -66,7 +66,7 @@ var Entity = Class.create(
 	 * @private
 	 * @type String
 	 */
-	objectType:			null,
+	entityType:			null,
 
 	/** 
 	 * @field
@@ -126,16 +126,16 @@ var Entity = Class.create(
 	 * @returns {String}
 	 */
 	toString: function() {
-		return 'object'
+		return 'entity'
 	},
 
 	/**
-	 * Detach the character from its belonging level
+	 * Detach the entity from its belonging level
 	 *
 	 * @public
 	 */
 	removeFromLevel: function() {
-		this.level.detachObject(this.id);
+		this.level.detachItem(this.id);
 		this.level = null;	
 	},
 
@@ -212,7 +212,7 @@ var Entity = Class.create(
 
 		this.proximityCheck();
 
-		this.sendData('object_moved', {x: this.x, y: this.y}, true);	
+		this.sendData('item_moved', {x: this.x, y: this.y}, true);	
 	},
 
 	/**
@@ -242,7 +242,7 @@ var Entity = Class.create(
 		if (notify == undefined) notify = false;
 		this.isVisible = true;
 
-		this.sendData('object_visibility', {isVisible: true}, notify);
+		this.sendData('item_visibility', {isVisible: true}, notify);
 	},
 
 	/**
@@ -255,7 +255,7 @@ var Entity = Class.create(
 		if (notify == undefined) notify = false;
 		this.isVisible = false;
 
-		this.sendData('object_visibility', {isVisible: false}, notify);
+		this.sendData('item_visibility', {isVisible: false}, notify);
 	},
 
 	/**
@@ -301,7 +301,7 @@ var Entity = Class.create(
 	 * @public
 	 */
 	proximityCheck: function() {
-		var elements	= this.level.getObjects().concat(this.level.getCharacters());
+		var elements	= this.level.getItems().concat(this.level.getCharacters());
 
 		for (var i = 0; i < elements.length; i++) {
 			var distance = this.getDistanceFrom(elements[i]);

@@ -1,63 +1,61 @@
-(function() {
-	this.Entity = Events.Observable.extend({
-		id:			null,
-		x:			null,
-		y:			null,
-		isVisible:	null,
-		level:		null,
+this.Entity = Events.Observable.extend({
+    id:			null,
+    x:			null,
+    y:			null,
+    isVisible:	null,
+    level:		null,
 
-		initialize: function(data, level) {
-			for (attribute in data) {
-				eval('this.'+attribute+'=data[attribute]');
-			}
+    initialize: function(data, level) {
+    	for (attribute in data) {
+    		eval('this.'+attribute+'=data[attribute]');
+    	}
 
-			this.level = level;	
-		},
+    	this.level = level;	
+    },
 
-		setParameter: function(parameter, value, notify) {
-			if (notify == undefined) notify = true;
-	
-			eval('this.'+parameter+'=value');
+    setParameter: function(parameter, value, notify) {
+    	if (notify == undefined) notify = true;
 
-			if (notify) Cassidie.socket.emit('entity_set_parameter', {id: this.id, parameter: parameter, value: value});
-		},
+    	eval('this.'+parameter+'=value');
 
-		getData: function() {
-			var returnObject = {};
+    	if (notify) Cassidie.socket.emit('entity_set_parameter', {id: this.id, parameter: parameter, value: value});
+    },
 
-			for (attribute in this) {
-				if (typeof this[attribute] != 'function' && attribute != 'level' && attribute != 'intervalID' && attribute != 'cellX' && attribute!= 'cellY') eval('returnObject.'+attribute+'=this[attribute]');
-			}
+    getData: function() {
+    	var returnObject = {};
 
-			return returnObject;
-		},
+    	for (attribute in this) {
+    		if (typeof this[attribute] != 'function' && attribute != 'level' && attribute != 'intervalID' && attribute != 'cellX' && attribute!= 'cellY') eval('returnObject.'+attribute+'=this[attribute]');
+    	}
 
-		move: function(x, y) {
-			this.x = x;
-			this.y = y;
-		},
+    	return returnObject;
+    },
 
-		show: function() {
-			this.isVisible = true;
-		},
+    move: function(x, y) {
+    	this.x = x;
+    	this.y = y;
+    },
 
-		hide:function() {
-			this.isVisible = false;
-		},
+    show: function() {
+    	this.isVisible = true;
+    },
 
-		destroy: function() {
-		},
+    hide:function() {
+    	this.isVisible = false;
+    },
 
-		setSkin: function(appearance, isAnimated) {
-			this.appearance = appearance;
+    destroy: function() {
+    },
 
-			var animationParameters = (this.animationList[appearance] != undefined) ? this.animationList[appearance] : {numFrame: 1, looping: false};
-			Game.engine.setEntitySkin(this.id, './ressources/items/'+this.skin+'/'+this.appearance, isAnimated, animationParameters);
-		},
+    setSkin: function(appearance, isAnimated) {
+    	this.appearance = appearance;
 
-		triggerAction: function() {
-			Cassidie.socket.emit('action_triggered', {targetId: this.id});
-			Game.trigger(Events.ACTION_TRIGGERED, this);
-		}
-	});
-})();
+    	var animationParameters = (this.animationList[appearance] != undefined) ? this.animationList[appearance] : {numFrame: 1, looping: false};
+    	Game.engine.setEntitySkin(this.id, './ressources/items/'+this.skin+'/'+this.appearance, isAnimated, animationParameters);
+    },
+
+    triggerAction: function() {
+    	Cassidie.socket.emit('action_triggered', {targetId: this.id});
+    	Game.trigger(Events.ACTION_TRIGGERED, this);
+    }
+});

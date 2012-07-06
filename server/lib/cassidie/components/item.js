@@ -30,7 +30,7 @@ var Item = Entity.extend(
 			this.appearance		= 'default';
 		}
 
-		this.objectType = 'object';
+		this.entityType = 'item';
 	},
 
 	/**

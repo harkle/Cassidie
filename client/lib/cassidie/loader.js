@@ -56,7 +56,7 @@ function asyncLoadScript(src) {
  * @param useCustomeEngine {Boolean} Use user's graphic engine instead of standard one
  * @param customEngineFiles {Array, String} List of user's javascript graphic engine files 
  */
-Loader = {
+var Loader = {
 	load: function(scripts, path, server, targetDiv, useCustomeEngine, customEngineFiles) {
 		domready(function() {
 			var customEngineFilesList	= (customEngineFiles instanceof Array) ? customEngineFiles : [customEngineFiles];

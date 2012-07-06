@@ -61,10 +61,11 @@ var Character = Entity.extend(
 		this.appearance		= 'standing';
 
 		this.animationList				= {
+			'standing':	{numFrame: 1, looping: false},
 			'walking':  {numFrame: 1, looping: true},
 		};
 
-		this.objectType = 'character';
+		this.entityType = 'character';
 	},
 
 	/**
@@ -144,6 +145,16 @@ var Character = Entity.extend(
 		}
 
 		if (notify) this.sendData('character_positioned', {x: this.x, y: this.y}, true);	
+	},
+
+	/**
+	 * Detach the entity from its belonging level
+	 *
+	 * @public
+	 */
+	removeFromLevel: function() {
+		this.level.detachCharacter(this.id);
+		this.level = null;	
 	},
 
 	/**

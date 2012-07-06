@@ -63,6 +63,7 @@ io.sockets.on('connection', function (socket) {
 	});
 
 	socket.on('enter_game', function(data) {
+		console.log('Enter', data);
 		if (!socket.client.getAuthenticated() || socket.client.getInGame()) return;
 		Cassidie.game.enter(socket, data.characterId);
 	});
@@ -97,7 +98,7 @@ io.sockets.on('connection', function (socket) {
 
 		var target = null;
 
-		var elements	= socket.client.character.level.getObjects().concat(socket.client.character.level.getCharacters());		
+		var elements	= socket.client.character.level.getItems().concat(socket.client.character.level.getCharacters());		
 		for (var i = 0; i < elements.length; i++) {
 			if (elements[i].id == data.targetId && elements[i].isVisible) {
 				target = elements[i];

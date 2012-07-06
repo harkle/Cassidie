@@ -9,7 +9,6 @@ module.exports = Player.extend({
 		this.skinCoordinates 			= [0, 60, 80, 80];
 		this.animationList				= {
 			'walking':  {numFrame: 8, looping: true},
-			'action_0': {numFrame: 13, looping: false},
 			'action_1': {numFrame: 9, looping: false},
 		};
 

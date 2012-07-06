@@ -76,7 +76,7 @@ Account.observe(Events.CHARACTER_LIST, function(data) {
     var i = 0;
 
     $.each(data, function(item) {
-    	$('#characterList').append('<li data-id="'+i+'" class="span2" ><div class="thumbnail"><img src="./ressources/images/heads/'+data[item].attributes.skin+'.gif" style="width:100px"/><h5>'+data[item].attributes.name+'</h5></div></li>')
+    	$('#characterList').append('<li data-id="'+data[item].id+'" class="span2" ><div class="thumbnail"><img src="./ressources/images/heads/'+data[item].attributes.skin+'.gif" style="width:100px"/><h5>'+data[item].attributes.name+'</h5></div></li>')
     	i++;
     });
 

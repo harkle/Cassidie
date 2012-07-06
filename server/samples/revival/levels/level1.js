@@ -10,7 +10,7 @@ module.exports = Level.extend({
 		var theTerribleNPC = new TheTerribleNPC(this.getCharacterData('The terrible NPC'));
 		this.attachCharacter(theTerribleNPC);
 
-		var camera = new Camera(10, 10, this.getObjectData('Camera'));
-		this.attachObject(camera);
+		var camera = new Camera(10, 10, this.getItemData('Camera'));
+		this.attachItem(camera);
 	}
 });
