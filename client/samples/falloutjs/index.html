@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+		<title>Fallout</title>
+
+		<link href='http://fonts.googleapis.com/css?family=Dosis:700,400,200' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="style.css" />
+
+		<script src="http://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript"></script>
+		<script src="../../lib/cassidie/loader.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			Loader.load(['./scripts/main.js', './scripts/account.js', './scripts/game.js', './scripts/chat.js'], '../../lib/cassidie/',' http://'+location.host+':7000', 'container', false);
+		</script>
+	</head>
+	<body>
+		<h1 id="title">Loading...</h1>
+		<div id="menu">
+			<div class="main">
+				<div class="button p0">Login</div>
+				<div class="button p1">Register</div>
+			</div>
+			<div class="login">
+				<input class="input p0" type="text" value="" id="login_email" placeholder="e-mail" />
+				<input class="input p1" type="password" value="" id="login_password" placeholder="password" />
+				<div class="button p2">Login</div>				
+				<div class="button p4 back">Back</div>				
+			</div>
+			<div class="register">
+				<input class="input p0" type="text" value="" id="register_email" placeholder="e-mail" />
+				<input class="input p1" type="password" value="" id="register_password" placeholder="password" />
+				<input class="input p2" type="text" value="" id="register_nickname" placeholder="nickname" />
+				<div class="button p3">Register</div>				
+				<div class="button p4 back">Back</div>				
+			</div>
+			<div class="account">
+				<div class="button p3">New character</div>				
+				<div class="button p4">Logout</div>				
+			</div>
+			<div class="newCharacter">
+				<input class="input p0" type="text" value="" id="character_name" placeholder="name" />
+				<div class="button p1">Create</div>				
+				<div class="button p4 backAccount">Back</div>				
+			</div>
+		</div>
+		<div id="container">
+			<div id="menu2">
+				<div id="stat">
+					PV: <span id="pv">0</span>
+				</div>
+				<img src="ressources/interface/action_none_on.png" alt="action_none_on" width="40" height="40" class="action" data-action="none" data-selected="true" />
+				<img src="ressources/interface/action_speak_off.png" alt="action_speak_off" width="40" height="40"  class="action" data-action="speak" data-selected="false"/>
+				<img src="ressources/interface/action_attack_off.png" alt="action_attack_off" width="40" height="40"  class="action" data-action="attack" data-selected="false"/>
+				
+				Quitter
+				<img src="ressources/interface/button2.png" alt="button2" width="49" height="28" id="leave" />
+			</div>
+		</div>
+		<div id="chat">
+			<div id="chatWindow"></div>
+			<input id="chatInput" value="" />			
+		</div>
+		<div id="loading"></div>
+	</body>
+</html>
