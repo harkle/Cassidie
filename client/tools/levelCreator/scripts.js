@@ -3,6 +3,7 @@ Game.gameData					= {};
 Game.gameData.viewport			= {width: 800, height: 600};
 Game.level 						= {};
 Game.level.checkCoordinates 	= function() {};
+Game.level.entities				= [];
 Game.level.playerCharacter		= {};
 Game.level.playerCharacter.move	= function() {};
 
@@ -37,7 +38,7 @@ $(function() {
 
 		$('#levelLink').val(levels);
 
-		Engine.initialize(level);
+		Engine.setup(level);
 		
 		//cells
 		setTimeout(function() {

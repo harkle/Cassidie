@@ -224,6 +224,8 @@ var Entity = Class.create(
 	 * @param {Boolean} notifyEverbody set true if every level player have to be notified or false if only the player have to notified
 	 */
 	sendData: function(key, data, notifyEverbody) {
+		if (this.level == undefined) return;
+
 		if (notifyEverbody == undefined) notifyEverbody = false;
 
 		var emitter = (this.client == undefined || notifyEverbody) ? Cassidie.netConnection : this.client.socket.broadcast;
@@ -287,6 +289,8 @@ var Entity = Class.create(
 	 * @param {Object} result object describing the action
 	 */
 	action: function(target, result) {
+		if(result == undefined) return;
+
 		if (result.success) {
 			this.sendData('action_performed', {action: result.name, emiterId: this.id, targetId: target.id});
 			if (this.client != undefined) this.client.socket.emit('action_success', {action: result.name, emiterId: this.id, targetId: target.id});		

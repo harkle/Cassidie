@@ -105,7 +105,7 @@ var DivEngine = Class.create({
     		}
 
     		var numTile = overTile.y * self.levelData.dimensions.width + overTile.x;
-    		if (numTile >= 0 && numTile < self.levelData.dimensions.width * self.levelData.dimensions.height) {
+    		if (self.levelData.cells[numTile] != undefined) {
     			if (onEntity) {
     				self.setCursor('./ressources/cursor_a');					
     			} else if (self.levelData.cells[numTile].accessible) {

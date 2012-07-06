@@ -6,6 +6,19 @@ var CrossBrowser = {
 		return {left: e.clientX + scroll.left - document.body.clientLeft, top: e.clientY + scroll.top - document.body.clientTop};
 	},
 
+	findPosition: function(obj) {
+		var curleft = curtop = 0;
+
+		if (obj.offsetParent) {
+			do {
+				curleft += obj.offsetLeft;
+				curtop += obj.offsetTop;
+			} while (obj = obj.offsetParent);
+		}
+
+		return {left: curleft, top: curtop};
+	},
+
 	addEventListener: function(element, eventName, handler) {
 		if (element.addEventListener) {
 			element.addEventListener(eventName, handler, false);

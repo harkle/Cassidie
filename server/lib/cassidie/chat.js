@@ -5,6 +5,8 @@ var Chat = Class.create({
 	},
 
 	broadcast: function(client, data, level) {
+		if (level == undefined) return;
+
 		if (data.action == 'player') {
 			var targetClient = Cassidie.getClientsFromCharacterName(data.player);
 
