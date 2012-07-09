@@ -12,7 +12,9 @@ var ThreeEngine = Class.create({
     animations:			null,
     animationInterval:	null,
     useWebGL:			null,
-    
+    stats:				null,
+    destroyed:			false,
+
     isometry: {
     	x: 32,
     	y: 12		
@@ -28,6 +30,7 @@ var ThreeEngine = Class.create({
 
     setup: function(data) {
     	this.levelData = data;
+    	this.destroyed = false;
 
     	var newContainer = Game.container.cloneNode(true);
     	Game.container.parentNode.replaceChild(newContainer, Game.container);
@@ -127,11 +130,11 @@ var ThreeEngine = Class.create({
     	/*var meshSprites = new THREE.Mesh(this.sprites, new THREE.MeshFaceMaterial());
     	this.scene.add(meshSprites);*/
 
-    	stats = new Stats();
-    	stats.domElement.style.position = 'absolute';
-    	stats.domElement.style.top = '0px';
-    	stats.domElement.style.zIndex = 100;
-    	Game.container.appendChild( stats.domElement );
+    	this.stats = new Stats();
+    	this.stats.domElement.style.position = 'absolute';
+    	this.stats.domElement.style.top = '0px';
+    	this.stats.domElement.style.zIndex = 100;
+    	Game.container.appendChild(this.stats.domElement);
 
     	var self 	= this;
     	var drag	= false;
@@ -257,19 +260,26 @@ var ThreeEngine = Class.create({
     },
 
     render: function() {
+    	if (this.destroyed) return;
+
     	this.renderer.render(this.scene, this.camera);  		
 
     	var self = this;
 
     	window.requestAnimationFrame(function() {
     		self.render();
-    		stats.update();
+    		self.stats.update();
     	}, this.renderer.domElement);
     },
 
     destroy: function() {
     	clearInterval(this.animationInterval);
+    	Game.container.removeChild(this.stats.domElement);
     	Game.container.removeChild(this.renderer.domElement);
+
+    	this.renderer	= null;
+    	this.stats		= null;
+    	this.destroyed	= true;
     },
 
     getMaterial: function(file, animationID) {

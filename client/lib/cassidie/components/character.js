@@ -33,20 +33,20 @@ var Character = Entity.extend({
     	}
 
     	var cells = [];
-    	for (var j = 0; j < this.level.levelData.level.dimensions.height; j++) {
-    		var row = [];
-    		for (var i = 0; i < this.level.levelData.level.dimensions.width; i++) {
-    			var tileID   = i * this.level.levelData.level.dimensions.width + j;
+    	for (var i = 0; i < this.level.levelData.level.dimensions.width; i++) {
+    		cells[i] = [];
+	    	for (var j = 0; j < this.level.levelData.level.dimensions.height; j++) {
+    			var tileID   = j * this.level.levelData.level.dimensions.width + i;
     			var tiletData = (this.level.levelData.level.cells[tileID] != undefined) ? this.level.levelData.level.cells[tileID] : this.level.levelData.level.cells[0];
 
     			if (tiletData.accessible) {
-    				row.push(0);
+    				cells[i][j] = 0;
     			} else {
-    				row.push(1);
+    				cells[i][j] = 1;
     			}
     		}
-    		cells.push(row);
     	}
+
     	for (var i = 0; i < this.level.entities.length; i++) {
     		if (this.level.entities[i].entityType == 'item') cells[this.level.entities[i].x][this.level.entities[i].y] = 1;
     	}
