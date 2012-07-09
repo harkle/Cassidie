@@ -305,6 +305,8 @@ var Entity = Class.create(
 	 * @public
 	 */
 	proximityCheck: function() {
+		if (this.level == undefined) return;
+
 		var elements	= this.level.getItems().concat(this.level.getCharacters());
 
 		for (var i = 0; i < elements.length; i++) {

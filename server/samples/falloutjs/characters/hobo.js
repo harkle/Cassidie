@@ -13,7 +13,7 @@ module.exports = NPC.extend({
 
 		this.skinCoordinates 			= [0, 60, 80, 80];
 		this.animationList.extend({
-			'walking':  {numFrame: 1, looping: false},
+			'walking':  {numFrame: 1, looping: true},
 			'speaking':  {numFrame: 13, looping: false},
 		});
 

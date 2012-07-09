@@ -267,6 +267,8 @@ var ThreeEngine = Class.create({
     	var self = this;
 
     	window.requestAnimationFrame(function() {
+	    	if (self.destroyed) return;
+
     		self.render();
     		self.stats.update();
     	}, this.renderer.domElement);

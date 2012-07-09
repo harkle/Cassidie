@@ -132,7 +132,7 @@ var Character = Entity.extend({
 
     			clearInterval(self.intervalID);
     			path.splice(0,1);
-    			
+
     			if (path.length > 0 ) {
     				self.moveCharacterCell(path, notiyOthers);
     				if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: false});

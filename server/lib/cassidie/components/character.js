@@ -93,7 +93,6 @@ var Character = Entity.extend(
 		this.destinationX	= x;
 		this.destinationY	= y;
 		this.isMoving		= true;
-		this.setAppearance('walking');
 
 		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY}, notify);	
 	},
@@ -135,7 +134,6 @@ var Character = Entity.extend(
 
 		if (end) {
 			this.isMoving	= false;
-			this.setAppearance('standing');
 
 			if (this.type == 'player') {
 				var cell = this.level.getCell(this.x, this.y);

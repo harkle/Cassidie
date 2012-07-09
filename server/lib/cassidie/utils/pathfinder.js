@@ -9,11 +9,11 @@ module.exports = function(level, x1, y1, x2, y2) {
 		this.cellList = [];
 
     	var cells = [];
-    	for (var i = 0; i < this.level.levelData.level.dimensions.width; i++) {
+    	for (var i = 0; i < level.dimensions.width; i++) {
     		cells[i] = [];
-	    	for (var j = 0; j < this.level.levelData.level.dimensions.height; j++) {
-    			var tileID   = j * this.level.levelData.level.dimensions.width + i;
-    			var tiletData = (this.level.levelData.level.cells[tileID] != undefined) ? this.level.levelData.level.cells[tileID] : this.level.levelData.level.cells[0];
+	    	for (var j = 0; j < level.dimensions.height; j++) {
+    			var tileID   = j * level.dimensions.width + i;
+    			var tiletData = (level.cells[tileID] != undefined) ? level.cells[tileID] : level.cells[0];
 
     			if (tiletData.accessible) {
     				cells[i][j] = 0;
