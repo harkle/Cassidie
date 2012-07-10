@@ -127,8 +127,8 @@ var Character = Entity.extend({
 	    var now 		= date.getTime();
 	    var timeDiff	= now - this.moveLastTime;
  
-	    var edx = dx * timeDiff / Game.playerSpeed * 1.5;
-	    var edy = dy * timeDiff / Game.playerSpeed * 1.5;
+	    var edx = dx * timeDiff / Game.playerSpeed;
+	    var edy = dy * timeDiff / Game.playerSpeed;
 
     	this.cellX += edx;
     	this.cellY += edy;
