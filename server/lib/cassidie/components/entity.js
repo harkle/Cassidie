@@ -159,7 +159,7 @@ var Entity = Class.create(
 	setData: function(data) {
 		for (attribute in this) {
 			if(typeof this[attribute] != 'function' && attribute != 'skinCoordinates' && attribute != 'animationList' && this.checkFieldValidity(attribute)) {
-				eval('this.'+attribute+'=data[attribute]');
+				if (data[attribute] != undefined) this[attribute] = data[attribute];
 			}
 		}
 	},
@@ -175,7 +175,7 @@ var Entity = Class.create(
 
 		for (attribute in this) {
 			if(typeof this[attribute] != 'function' && this.checkFieldValidity(attribute)) {
-				eval('returnObject.'+attribute+'=this[attribute]');
+				returnObject[attribute] =this[attribute];
 			}
 		}
 

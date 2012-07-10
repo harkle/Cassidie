@@ -168,6 +168,10 @@ var Character = Entity.extend(
 			action: 'speak',
 			message: message		
 		}, this.level);
+	},
+	
+	talk: function() {
+		
 	}
 });
 module.exports = Character;
