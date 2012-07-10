@@ -1,10 +1,11 @@
 var Level = Events.Observable.extend({
 	levelData:			null,
 	playerCharacter:	null,
-	entities:			[],
+	entities:			null,
 	pathfinder:			null,
 
 	initialize: function(data) {
+		this.entities = [];
     	var self = this;
 
     	this.levelData = data;

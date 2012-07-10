@@ -1,5 +1,7 @@
 function addToChat(from, message, color) {
-    $('#chatWindow').html($('#chatWindow').html()+'<span style="color:'+color+'">'+from+': '+message+'</span><br/>');
+	if (from != '') from += ': ';
+
+    $('#chatWindow').html($('#chatWindow').html()+'<span style="color:'+color+'">'+from+message+'</span><br/>');
     $("#chatWindow")[0].scrollTop = $("#chatWindow")[0].scrollHeight;
 }
 

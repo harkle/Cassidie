@@ -39,7 +39,8 @@ Account.observe(Events.CHARACTER_LIST, function(data) {
 		div.attr('data-id', data[i].id);
 
 		var remove = $('<div class="remove">x</div>');
-		remove.click(function() {
+		remove.click(function(e) {
+			e.stopPropagation();
 			var conf = confirm('Do you realy want to delete this character?');
 
 			if(conf) {

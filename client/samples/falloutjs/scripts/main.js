@@ -6,6 +6,8 @@ Cassidie.observe(Events.CONNECT, function(data) {
     $('#title').text(data.game.title);
     $('#menu').show();
     $('#menu .main').show();
+	
+	Account.login('net@lionel.me', 'Lopi28fg42');
 });
 
 Cassidie.observe(Events.DISCONNECT, function(data) {
