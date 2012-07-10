@@ -75,7 +75,7 @@ var Level = Events.Observable.extend({
     		if (!data.isVisible) character.hide();
     	});
 
-    	Cassidie.socket.removeAllListeners('item_visibility');
+    	Cassidie.socket.removeAllListeners('entity_visibility');
     	Cassidie.socket.on('entity_visibility', function(data) {
     		var item = self.getEntity(data.id);
 

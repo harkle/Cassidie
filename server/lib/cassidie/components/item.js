@@ -21,7 +21,7 @@ var Item = Entity.extend(
 	 * @param {Object} [data] an object representing entity data. Warning, if you don't give any data, the character will not be restored when programme restart. Fill it using Level.getCharacterData
 	 */
 	initialize: function(skin, x, y, data) {
-		this._super('interactiveObject', data);
+		this._super('item', data);
 
 		if (data == undefined) {
 			this.skin			= skin;
@@ -43,8 +43,8 @@ var Item = Entity.extend(
 	 * @param {Boolean} [notify] notify player
 	 */
 	setParameter: function(parameter, value, notifyOther, notify) {
-		if (notifyOther == undefined) notifyOther = false;
-		if (notify == undefined) notify = false;
+		if (notifyOther == undefined) notifyOther = true;
+		if (notify == undefined) notify = true;
 
 		this._super(parameter, value);
 

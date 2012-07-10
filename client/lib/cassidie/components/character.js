@@ -222,7 +222,12 @@ var Character = Entity.extend({
     	    	if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: this.x, y: this.y, end: false});
     	    } else {
     	    	this.setSkin('standing', false);
-    	    	if (this.moveCallback != undefined) this.moveCallback();
+    	    	if (this.moveCallback != undefined) {
+    	    		var self = this;
+    	    		setTimeout(function() {
+    	    			self.moveCallback();
+    	    		}, 100);
+    	    	}
     	    	if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: this.x, y: this.y, end: true});
     	    }
     	}

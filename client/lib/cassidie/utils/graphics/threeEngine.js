@@ -435,11 +435,11 @@ var ThreeEngine = Class.create({
     },
 
     showEntity: function(id) {
-    	THREE.SceneUtils.traverseHierarchy(this.entities[id], function ( entity ) { entity.visible = true; });
+    	this.scene.add(this.entities[id]);
     },
 
     hideEntity: function(id) {
-    	THREE.SceneUtils.traverseHierarchy(this.entities[id], function ( entity ) { entity.visible = false; });
+    	this.scene.remove(this.entities[id]);
     },
 
     setEntitySkin: function(id, file, isAnimated, animationParameters) {

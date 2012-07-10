@@ -107,8 +107,8 @@ var Character = Entity.extend(
 	 * @param {Boolean} [notify] notify player
 	 */
 	setParameter: function(parameter, value, notifyOther, notify) {
-		if (notifyOther == undefined) notifyOther = false;
-		if (notify == undefined) notify = false;
+		if (notifyOther == undefined) notifyOther = true;
+		if (notify == undefined) notify = true;
 
 		this._super(parameter, value);
 

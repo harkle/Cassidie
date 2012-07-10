@@ -241,10 +241,10 @@ var Entity = Class.create(
 	 * @param {Boolean} [notify] notify other player
 	 */
 	show: function(notify) {
-		if (notify == undefined) notify = false;
+		if (notify == undefined) notify = true;
 		this.isVisible = true;
 
-		this.sendData('item_visibility', {isVisible: true}, notify);
+		this.sendData('entity_visibility', {isVisible: true}, notify);
 	},
 
 	/**
@@ -254,10 +254,10 @@ var Entity = Class.create(
 	 * @param {Boolean} [notify] notify other player
 	 */
 	hide: function(notify) {
-		if (notify == undefined) notify = false;
+		if (notify == undefined) notify = true;
 		this.isVisible = false;
 
-		this.sendData('item_visibility', {isVisible: false}, notify);
+		this.sendData('entity_visibility', {isVisible: false}, notify);
 	},
 
 	/**
