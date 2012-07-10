@@ -202,7 +202,6 @@ var ThreeEngine = Class.create({
     			var baseY = mousePosition.top - containerPosition.top + self.camera.position.y;
 
     			var clickedTile = self.getCoordinates(baseX, baseY);
-    			Game.level.checkCoordinates(clickedTile.x, clickedTile.y);
     			Game.level.playerCharacter.move(clickedTile.x, clickedTile.y, true);
     		}
     	});

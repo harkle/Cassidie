@@ -8,6 +8,7 @@ var Character = Entity.extend({
     destinationY: 	0,
     intervalID:		0,
     moveLastTime:	0,
+    moveCallback:	null,
 
     initialize: function(data, level, isPlayer) {			
     	this._super(data, level);
@@ -31,6 +32,7 @@ var Character = Entity.extend({
     },
 
     move: function(x, y, notiyOthers, noPath) {
+    	this.moveCallback = function() {};
     	this.destinationX = x;
     	this.destinationY = y;
 
@@ -56,22 +58,91 @@ var Character = Entity.extend({
     		}
     	}
 
+    	var targetIsItem = false;
     	for (var i = 0; i < this.level.entities.length; i++) {
     		if (this.level.entities[i].entityType == 'item') cells[this.level.entities[i].x][this.level.entities[i].y] = 1;
+    		if (this.level.entities[i].x == x && this.level.entities[i].y == y) targetIsItem = true;
     	}
-    	if(cells[x][y] == 1) return;
+
+    	var newCell = {
+	    	x: x,
+	    	y: y
+    	}
+
+    	if (targetIsItem) {
+    		var dist	= 1000000;
+    		if (this.checkCell(cells, x-1, y) && this.checkDistance(x, x-1, y, y) < dist) {
+	    		dist		= this.checkDistance(this.x, x-1, this.y, y);
+	    		newCell.x	= x-1;
+	    		newCell.y	= y;
+    		}
+    		if (this.checkCell(cells, x+1, y) && this.checkDistance(x, x+1, y, y) < dist) {
+	    		dist		= this.checkDistance(this.x, x+1, this.y, y);
+	    		newCell.x	= x+1;
+	    		newCell.y	= y;
+    		}
+    		if (this.checkCell(cells, x, y-1) && this.checkDistance(x, x, y, y-1) < dist) {
+	    		dist		= this.checkDistance(this.x, x, this.y, y-1);
+	    		newCell.x	= x;
+	    		newCell.y	= y-1;
+    		}
+    		if (this.checkCell(cells, x, y+1) && this.checkDistance(x, x, y, y+1) < dist) {
+	    		dist		= this.checkDistance(this.x, x, this.y, y+1);
+	    		newCell.x	= x;
+	    		newCell.y	= y+1;
+    		}    		
+    	}
+
+    	if(cells[newCell.x][newCell.y] == 1) {
+    		if (this.id == Game.characterID) Game.level.checkCoordinates(newCell.x, newCell.y);
+
+	    	return {
+		    	destinationFree: false,
+		    	target: targetIsItem,
+	    		alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
+	    	};
+    	}
 
     	var graph = new Graph(cells);
 
     	var start	= graph.nodes[this.x][this.y];
-    	var end 	= graph.nodes[x][y];
+    	var end 	= graph.nodes[newCell.x][newCell.y];
 
     	var path = astar.search(graph.nodes, start, end);
-    	if(path.length == 0) return;
+    	if(path.length == 0) {
+    		Game.level.checkCoordinates(x, y);
 
-    	if (notiyOthers) Cassidie.socket.emit('character_move', {x: x, y: y});		
+    		return {
+	    		destinationFree: true,
+	    		target: targetIsItem,
+	    		alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
+		    };
+    	}
 
+    	if (notiyOthers) Cassidie.socket.emit('character_move', {x: newCell.x, y: newCell.y});		
+    	if (this.id == Game.characterID && targetIsItem) {
+	    	this.moveCallback = function() {
+		    	Game.level.checkCoordinates(x, y);
+	    	};
+    	}
+    	
     	this.moveToCell(path, notiyOthers);
+
+    	return {
+	    	destinationFree: true,
+		    target: targetIsItem,
+	    	alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
+	    };
+    },
+
+    checkCell: function(cells, x, y) {
+    	if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return false;
+
+		return (cells[x][y] == 1) ? false : true;  	
+    },
+    
+    checkDistance: function(x1, x2, y1, y2) {
+	    return Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2));
     },
 
     moveToCell: function(path, notiyOthers) {
@@ -151,6 +222,7 @@ var Character = Entity.extend({
     	    	if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: this.x, y: this.y, end: false});
     	    } else {
     	    	this.setSkin('standing', false);
+    	    	if (this.moveCallback != undefined) this.moveCallback();
     	    	if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: this.x, y: this.y, end: true});
     	    }
     	}
