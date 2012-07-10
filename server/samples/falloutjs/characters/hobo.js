@@ -13,7 +13,7 @@ module.exports = NPC.extend({
 
 		this.skinCoordinates 			= [0, 60, 80, 80];
 		this.animationList.extend({
-			'walking':  {numFrame: 1, looping: false},
+			'walking':  {numFrame: 1, looping: true},
 			'speaking':  {numFrame: 13, looping: false},
 		});
 
@@ -21,17 +21,10 @@ module.exports = NPC.extend({
 		this.attributes.skin 			= 1;
 		this.isEnnemy 					= false;
 		this.direction					= direction;
-
-		this.triggerSpeach();
 	},
 	
-	triggerSpeach: function() {
+	talk: function() {
 		this.setAppearance('speaking');
 		this.speak(texts[Math.floor(Math.random() * texts.length)]);
-
-		var self = this;
-		setTimeout(function() {
-			self.triggerSpeach();	
-		}, 10000 + Math.random() * 20000);
 	}
 });

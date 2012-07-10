@@ -89,7 +89,7 @@ io.sockets.on('connection', function (socket) {
 
 	socket.on('entity_set_parameter', function(data) {
 		if (!socket.client.getAuthenticated()) return;
-		socket.client.character.setParameter(data.parameter, data.value, true, true);
+		socket.client.character.setParameter(data.parameter, data.value);
 	});
 
 	socket.on('action_triggered', function(data) {

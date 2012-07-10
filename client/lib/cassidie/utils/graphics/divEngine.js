@@ -140,7 +140,6 @@ var DivEngine = Class.create({
 	    		var baseY = mousePosition.top - Game.container.offsetTop - parseInt(self.scene.style.top);
 	    		
 	    		var clickedTile = self.getCoordinates(baseX, baseY);
-	    		Game.level.checkCoordinates(clickedTile.x, clickedTile.y);
 	    		Game.level.playerCharacter.move(clickedTile.x, clickedTile.y, true);
 	    	}
 	    }, false);

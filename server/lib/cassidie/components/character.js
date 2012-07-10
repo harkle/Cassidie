@@ -93,7 +93,6 @@ var Character = Entity.extend(
 		this.destinationX	= x;
 		this.destinationY	= y;
 		this.isMoving		= true;
-		this.setAppearance('walking');
 
 		this.sendData('character_moved', {x: this.destinationX, y: this.destinationY}, notify);	
 	},
@@ -108,8 +107,8 @@ var Character = Entity.extend(
 	 * @param {Boolean} [notify] notify player
 	 */
 	setParameter: function(parameter, value, notifyOther, notify) {
-		if (notifyOther == undefined) notifyOther = false;
-		if (notify == undefined) notify = false;
+		if (notifyOther == undefined) notifyOther = true;
+		if (notify == undefined) notify = true;
 
 		this._super(parameter, value);
 
@@ -135,7 +134,6 @@ var Character = Entity.extend(
 
 		if (end) {
 			this.isMoving	= false;
-			this.setAppearance('standing');
 
 			if (this.type == 'player') {
 				var cell = this.level.getCell(this.x, this.y);
@@ -170,6 +168,10 @@ var Character = Entity.extend(
 			action: 'speak',
 			message: message		
 		}, this.level);
+	},
+	
+	talk: function() {
+		
 	}
 });
 module.exports = Character;
