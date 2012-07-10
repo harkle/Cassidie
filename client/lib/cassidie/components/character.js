@@ -1,10 +1,13 @@
 var Character = Entity.extend({
-    attributes:	null,
-    direction:	'se',
-    appearance:	'standing',
-    cellX:		0,
-    cellY:		0,
-    intervalID:	0,
+    attributes:		null,
+    direction:		'se',
+    appearance:		'standing',
+    cellX:			0,
+    cellY:			0,
+    destinationX: 	0,
+    destinationY: 	0,
+    intervalID:		0,
+    moveLastTime:	0,
 
     initialize: function(data, level, isPlayer) {			
     	this._super(data, level);
@@ -16,19 +19,25 @@ var Character = Entity.extend({
     	}			
     },
 
+    setPosition: function(x, y) {
+    	this.x		= x;
+    	this.y		= y;
+    	this.cellX	= 0;
+    	this.cellY	= 0;
+
+    	clearInterval(this.intervalID);
+
+    	Game.engine.setEntityPosition(this.id, this.x, this.y, 0, 0);    	
+    },
+
     move: function(x, y, notiyOthers, noPath) {
+    	this.destinationX = x;
+    	this.destinationY = y;
+
     	if (x < 0 || y < 0 || x > this.level.levelData.level.dimensions.width-1 || y > this.level.levelData.level.dimensions.height-1) return;
 
     	if (noPath) {
-    		this.x		= x;
-    		this.y		= y;
-    		this.cellX	= 0;
-    		this.cellY	= 0;
-
-    		clearInterval(this.intervalID);
-
-    		Game.engine.setEntityPosition(this.id, this.x, this.y, 0, 0);
-
+	    	this.setPosition();
     		return;
     	}
 
@@ -62,18 +71,13 @@ var Character = Entity.extend({
 
     	if (notiyOthers) Cassidie.socket.emit('character_move', {x: x, y: y});		
 
-    	this.moveCharacterCell(path, notiyOthers);
+    	this.moveToCell(path, notiyOthers);
     },
 
-    moveCharacterCell: function(path, notiyOthers) {
-    	clearInterval(this.intervalID);
+    moveToCell: function(path, notiyOthers) {
 
-    	var currentCell = 0;
-    	var self = this;
-    	var step = 0;
-    	var cx = this.x - path[currentCell].x;
-    	var cy = this.y - path[currentCell].y;
-
+    	var cx = this.x - path[0].x;
+    	var cy = this.y - path[0].y;
     	var dx = 0;
     	var dy = 0;
 
@@ -107,42 +111,52 @@ var Character = Entity.extend({
 
     	this.setSkin('walking', true);
 
-    	dx /= Game.playerSpeed;
-    	dy /= Game.playerSpeed;
+    	clearInterval(this.intervalID);
 
-    	this.moveCharacterStep(path, dx, dy, notiyOthers);
+    	var self			= this;
+    	var date 			= new Date();
+	    self.moveLastTime 	= date.getTime();
+    	this.intervalID = setInterval(function() {
+    		self.moveStep(path, dx, dy, notiyOthers);	
+    	}, 40);
+
     },
 
-    moveCharacterStep: function(path, dx, dy, notiyOthers) {
-    	var step = 0;
-    	var self = this;
-    	this.intervalID = setInterval(function() {
-    		self.cellX += dx;
-    		self.cellY += dy;
+    moveStep: function(path, dx, dy, notiyOthers) {
+    	var date 		= new Date();
+	    var now 		= date.getTime();
+	    var timeDiff	= now - this.moveLastTime;
+ 
+	    var edx = dx * timeDiff / Game.playerSpeed * 1.5;
+	    var edy = dy * timeDiff / Game.playerSpeed * 1.5;
 
-    		Game.engine.setEntityPosition(self.id, self.x, self.y, self.cellX, self.cellY);
+    	this.cellX += edx;
+    	this.cellY += edy;
 
-    		if (step == Game.playerSpeed-1) {
-    			self.x = path[0].x;
-    			self.y = path[0].y;
-    			self.cellX = 0;
-    			self.cellY = 0;
+    	Game.engine.setEntityPosition(this.id, this.x, this.y, this.cellX, this.cellY);
 
-    			Game.engine.setEntityPosition(self.id, self.x, self.y, self.cellX, self.cellY);
+    	if (Math.abs(this.cellX) >= Math.abs(Math.floor(dx))) {
+    	    this.x = path[0].x;
+    	    this.y = path[0].y;
+    	    this.cellX = 0;
+    	    this.cellY = 0;
 
-    			clearInterval(self.intervalID);
-    			path.splice(0,1);
+    	    Game.engine.setEntityPosition(this.id, this.x, this.y, this.cellX, this.cellY);
 
-    			if (path.length > 0 ) {
-    				self.moveCharacterCell(path, notiyOthers);
-    				if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: false});
-    			} else {
-    				self.setSkin('standing', false);
-    				if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: self.x, y: self.y, end: true});
-    			}
-    		}
-    		step++;
-    	}, 40);		
+    	    clearInterval(this.intervalID);
+    	    path.splice(0,1);
+
+    	    if (path.length > 0 ) {
+    	    	this.moveToCell(path, notiyOthers);
+    	    	if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: this.x, y: this.y, end: false});
+    	    } else {
+    	    	this.setSkin('standing', false);
+    	    	if (notiyOthers) Cassidie.socket.emit('character_set_position', {x: this.x, y: this.y, end: true});
+    	    }
+    	}
+
+    	var date 			= new Date();
+	    this.moveLastTime 	= date.getTime();
     },
 
     show: function() {

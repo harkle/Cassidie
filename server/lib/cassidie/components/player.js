@@ -59,6 +59,21 @@ var Player = Character.extend(
 	},
 
 	/**
+	 *	Update the current character position
+	 *
+	 *	@public
+	 *	@param {Integer} x destination coordinate x
+	 *	@param {Integer} y destination coordinate y
+	 *	@param {Boolean} end this is the last move of the travel
+	 *	@param {Boolean} [notify] notify other player
+	 */
+	setPosition: function(x, y, end, notify) {
+		this._super(x, y, end);
+
+		this.sendData('character_positioned', {x: this.x, y: this.y, positionCheck: true});
+	},
+
+	/**
 	 * Empty method triggered when an action is done
 	 *
 	 * @public

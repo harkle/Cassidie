@@ -45,7 +45,20 @@ var Level = Events.Observable.extend({
     	Cassidie.socket.removeAllListeners('character_positioned');
     	Cassidie.socket.on('character_positioned', function(data) {
     		var character = self.getEntity(data.id);
-    		character.move(data.x, data.y, false, true);
+    		if (data.positionCheck) {
+    			var dist = Math.sqrt(Math.pow(data.x-character.x, 2) + Math.pow(data.y-character.y, 2));
+
+    			if (dist < 2) return
+    			character.setPosition(data.x, data.y);
+
+    			if (data.x != character.destinationX || data.y != character.destinationY) {
+		    		character.move(character.destinationX, character.destinationY, false, false);    			
+    			} else {
+		    		character.setSkin('standing');
+    			}
+    		} else {
+	    		character.move(data.x, data.y, false, true);
+    		}
     	});
 
     	Cassidie.socket.removeAllListeners('item_moved');
@@ -103,7 +116,6 @@ var Level = Events.Observable.extend({
 
     	Cassidie.socket.removeAllListeners('skin_change');
     	Cassidie.socket.on('skin_change', function(data) {
-    		console.log('from server');
     		var entity = self.getEntity(data.id);
 
     		var isAnimated = (entity.animationList[data.name] != undefined) ? true : false;

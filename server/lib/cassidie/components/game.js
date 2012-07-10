@@ -117,7 +117,7 @@ var Game = Class.create(
 		this.chatDistance	= data.chatDistance;
 		this.levelsList		= data.levels;
 		this.proximity		= data.proximity;
-		this.playerSpeed	= 20;
+		this.playerSpeed	= 800;
 
 		this.loadLevels();
 

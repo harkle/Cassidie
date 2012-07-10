@@ -47,7 +47,7 @@ var Game = require('./components/game.js');
 				break;
 			case 'speed':
 				if (isNaN(Number(command[1]))) {
-					Logger.systemLog(Cassidie.consoleName, 'playe enter a valid player speed (i.e. speed 20)');					
+					Logger.systemLog(Cassidie.consoleName, 'playe enter a valid player speed (i.e. speed 800)');					
 				} else {
 					Logger.systemLog(Cassidie.consoleName, 'player speed set to "'+Number(command[1])+'"');
 					Cassidie.game.playerSpeed = Number(command[1]);
