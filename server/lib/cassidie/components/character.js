@@ -34,6 +34,14 @@ var Character = Entity.extend(
 	 * @description destination y coordinate
 	 */
 	destinationY:	null,
+	
+	/** 
+	 * @field
+	 * @pubic
+	 * @type Boolean
+	 * @description 
+	 */
+	isDead:			false,
 
 	/**
 	 * @class <p>Class representing characte. Should be used only trought NPC or Player class</p>
@@ -87,7 +95,7 @@ var Character = Entity.extend(
 	 *	@param {Boolean} [notify] notify player
 	 */
 	moveTo: function(x, y, notify) {
-		if (!this.isVisible) return;
+		if (!this.isVisible || this.isDead) return;
 		if (notify == undefined) notify = false;
 
 		this.destinationX	= x;
@@ -162,7 +170,7 @@ var Character = Entity.extend(
 	 *	@param {String} message what the character has to say
 	 */
 	speak: function(message) {
-		if (!this.isVisible) return;
+		if (!this.isVisible || this.isDead) return;
 
 		Cassidie.chat.broadcast(this, {
 			action: 'speak',
@@ -172,6 +180,38 @@ var Character = Entity.extend(
 	
 	talk: function() {
 		
+	},
+
+	setPositionFromTarget: function(target) {
+    	var cx = this.x - target.x;
+    	var cy = this.y - target.y;
+
+    	if (this.x > target.x && this.y > target.y) {
+    	    this.setParameter('direction', 'nw');
+    	}
+    	if (this.x > target.x && this.y < target.y) {
+    	    this.setParameter('direction', 'sw');
+    	}
+    	if (this.x < target.x && this.y > target.y) {
+    	    this.setParameter('direction', 'ne');
+    	}
+    	if (this.x < target.x && this.y < target.y) {
+    	    this.setParameter('direction', 'ne');
+    	}
+
+    	if (this.x == target.x && this.y > target.y) {
+    	    this.setParameter('direction', 'nw');
+    	}
+    	if (this.x == target.x && this.y < target.y) {
+    	    this.setParameter('direction', 'se');
+    	}
+    	if (this.x < target.x && this.y == target.y) {
+    	    this.setParameter('direction', 'ne');
+    	}
+    	if (this.x > target.x && this.y == target.y) {
+    	    this.setParameter('direction', 'sw');
+    	}
 	}
+	
 });
 module.exports = Character;

@@ -46,19 +46,18 @@ genid = function() {
 	this.m_count	= 0
 	this.counter	= 0
 	this.millisOld	= 0
+	this.base		= new Date().getTime();
 }
 
 genid.prototype.gen = function()
 {
 	var protectRollover = false
-	// 01 Jan 2010 is the selected epoch. Use
-	// 		Date.UTC(2010,0,1)
-	// to get this number (1262304000000)
-	var millis = new Date().getTime() - 1262304000000
+
+	var millis = new Date().getTime() - this.base;
 
 	if (this.millisOld == millis) {
 		this.counter++
-		// Rollover protection
+
 		if (this.counter == 4095)
 		{
 			protectRollover = true
@@ -75,7 +74,7 @@ genid.prototype.gen = function()
 
 	if (protectRollover == false)
 	{
-		millis = millis * Math.pow(2, 12)
+		millis = millis * Math.pow(2, 12);
 		var uid = millis + this.counter
 		return uid
 	}

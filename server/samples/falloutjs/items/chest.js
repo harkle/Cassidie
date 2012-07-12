@@ -9,16 +9,17 @@ module.exports = Item.extend({
 		if (data == undefined) {
 			this.name				= 'Chest';
 		}
-		
+
 		this.isVisible	= true;
 		this.appearance = 'default';
 	},
-	
+
 	use: function(target) {
 		if (target.weapon != 'none') return false;
 
 		target.setParameter('weapon', 'gun');
-		
+		target.setParameter('attributes.skin', 1);
+
 		return true;
 	}
 });
