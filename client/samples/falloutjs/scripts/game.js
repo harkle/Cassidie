@@ -1,6 +1,7 @@
 var quests = {
 	'kill_rats': {
-		name: 'I kill rats!'
+		name: 'I kill rats!',
+		max: 3
 	}	
 };
 
@@ -23,6 +24,8 @@ Game.observe(Events.LEVEL_LEAVE, function(data) {
 Game.observe(Events.LEVEL_ENTER, function(data) {
 	$('#loading').hide();
 	$('#container, #chat').show();
+
+	$('#health').text(data.character.health);
 });
 
 Game.observe(Events.CHARACTER_PARAMETER_CHANGED, function(data) {
@@ -34,9 +37,11 @@ Game.observe(Events.CHARACTER_PARAMETER_CHANGED, function(data) {
 
 			var action = data.parameter.split('.');
 			action = action[1];
-			
+
 			if (action == 'taken' && data.value) addToChat('', 'You started the quest "'+quests[questName].name+'"', '#ffff00');
 			if (action == 'done' && data.value) addToChat('', 'You finish the quest "'+quests[questName].name+'"', '#ffff00');
+
+			if (action == 'kills') addToChat('', '['+quests[questName].name+'] '+data.value+'/'+quests[questName].max, '#ffff00');
 		}
 
 		if (data.parameter == 'activity') {
@@ -55,6 +60,12 @@ Game.observe(Events.CHARACTER_PARAMETER_CHANGED, function(data) {
 		} else if (data.parameter == 'health') {
 			$('#health').text(data.value);
 		}
+		
+		if (data.parameter == 'isDead' && data.value) {
+			addToChat('', 'You are dead...', '#ffff00');			
+		}
+	} else {
+		console.log('other', data);
 	}
 });
 
@@ -63,11 +74,11 @@ Game.observe(Events.ACTION_TRIGGERED, function(data) {
 });
 
 Game.observe(Events.CHARACTER_ACTION_SUCCESS, function(data) {
-	//console.log('ok', data);
+	console.log('ok', data);
 });
 
 Game.observe(Events.CHARACTER_ACTION_FAIL, function(data) {
-	//console.log(data);
+	console.log('fail', data);
 });
 
 $('#leave').click(function() {

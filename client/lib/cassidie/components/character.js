@@ -32,6 +32,8 @@ var Character = Entity.extend({
     },
 
     move: function(x, y, notiyOthers, noPath) {
+    	if (this.isDead) return;
+
     	this.moveCallback = function() {};
     	this.destinationX = x;
     	this.destinationY = y;
@@ -58,10 +60,14 @@ var Character = Entity.extend({
     		}
     	}
 
-    	var targetIsItem = false;
+    	var targetIsEntity = false;
+    	var targetIsEnnemy = false;
     	for (var i = 0; i < this.level.entities.length; i++) {
     		if (this.level.entities[i].entityType == 'item') cells[this.level.entities[i].x][this.level.entities[i].y] = 1;
-    		if (this.level.entities[i].x == x && this.level.entities[i].y == y) targetIsItem = true;
+    		if (this.level.entities[i].x == x && this.level.entities[i].y == y) {
+    			targetIsEntity = true;
+    			if (this.level.entities[i].isEnnemy ) targetIsEnnemy = true;
+    		}
     	}
 
     	var newCell = {
@@ -69,7 +75,7 @@ var Character = Entity.extend({
 	    	y: y
     	}
 
-    	if (targetIsItem) {
+    	if (targetIsEntity) {
     		var dist	= 1000000;
     		if (this.checkCell(cells, x-1, y) && this.checkDistance(x, x-1, y, y) < dist) {
 	    		dist		= this.checkDistance(this.x, x-1, this.y, y);
@@ -98,7 +104,7 @@ var Character = Entity.extend({
 
 	    	return {
 		    	destinationFree: false,
-		    	target: targetIsItem,
+		    	target: targetIsEntity,
 	    		alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
 	    	};
     	}
@@ -114,23 +120,32 @@ var Character = Entity.extend({
 
     		return {
 	    		destinationFree: true,
-	    		target: targetIsItem,
+	    		target: targetIsEntity,
 	    		alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
 		    };
     	}
 
-    	if (notiyOthers) Cassidie.socket.emit('character_move', {x: newCell.x, y: newCell.y});		
-    	if (this.id == Game.characterID && targetIsItem) {
+    	if (this.id == Game.characterID && targetIsEntity && !targetIsEnnemy) {	    	
 	    	this.moveCallback = function() {
 		    	Game.level.checkCoordinates(x, y);
 	    	};
+    	} else if (this.id == Game.characterID && targetIsEntity && targetIsEnnemy) {
+			Game.level.checkCoordinates(x, y);	    	
+
+			return {
+	    		destinationFree: false,
+			    target: targetIsEntity,
+	    		alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
+	    	};
     	}
     	
-    	this.moveToCell(path, notiyOthers);
+	    if (notiyOthers) Cassidie.socket.emit('character_move', {x: newCell.x, y: newCell.y});		
 
-    	return {
+	    this.moveToCell(path, notiyOthers);
+
+	    return {
 	    	destinationFree: true,
-		    target: targetIsItem,
+		    target: targetIsEntity,
 	    	alreadyAtDestination: (this.x == newCell.x && this.y == newCell.y)
 	    };
     },

@@ -1,14 +1,14 @@
 var NPC 		= require('../../../lib/cassidie/components/npc.js');
 
 var texts = [
-	'Oh my god',
+	'Oh my god...',
 	'What time is it?',
 	'I should go home...'
 ];
 
 module.exports = NPC.extend({
 
-	initialize: function(x, y, direction, data) {
+	initialize: function(name, x, y, direction, data) {
 		this._super(x, y, data);
 
 		this.skinCoordinates 			= [0, 60, 80, 80];
@@ -17,8 +17,8 @@ module.exports = NPC.extend({
 			'speaking':  {numFrame: 13, looping: false},
 		});
 
-		this.attributes.name			= 'Hobo';
-		this.attributes.skin 			= 1;
+		this.attributes.name			= name;
+		this.attributes.skin 			= 4;
 		this.isEnnemy 					= false;
 		this.direction					= direction;
 	},

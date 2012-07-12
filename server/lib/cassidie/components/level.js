@@ -200,6 +200,7 @@ var Level = Class.create(
 
 		character.level 		= this;
 		character.currentLevel 	= this.name; 
+		character.proximityCheck();
 
 		this.characters.push(character);
 

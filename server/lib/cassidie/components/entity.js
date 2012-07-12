@@ -1,4 +1,5 @@
-var gid = require('../utils/genid.js');
+var gid 	= require('../utils/genid.js');
+var genid	= new gid.genid;
 
 var Entity = Class.create(
 /** @lends Entity.prototype */
@@ -105,7 +106,6 @@ var Entity = Class.create(
 		if (data != undefined) {
 			this.setData(data);
 		} else {
-			var genid = new gid.genid;
 
 			this.id				= genid.gen();
 			this.name			= '';

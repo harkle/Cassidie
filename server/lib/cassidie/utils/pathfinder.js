@@ -45,13 +45,11 @@ module.exports = function(level, x1, y1, x2, y2) {
 			character.y = self.cellList[0].y;
 
 			self.cellList.splice(0, 1);
-
 			if (self.cellList.length == 0) {
 				clearInterval(self.intervalId);
-
 				if (typeof callback == 'function') callback();
 			}
-		}, 40 * Cassidie.game.playerSpeed + 20);
+		}, 40 + Cassidie.game.playerSpeed);
 	};
 
 	this.stop = function() {

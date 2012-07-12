@@ -468,7 +468,7 @@ var ThreeEngine = Class.create({
     	entity.position.y = position.y-this.skinsCoordinates[id][1]+dy;
 
     	var z = this.levelData.dimensions.width - x + y;
-    	entity.position.z = z + 0.4;
+    	entity.position.z = z;
     },
 
     setCenter: function(x, y) {
