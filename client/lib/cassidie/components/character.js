@@ -33,6 +33,7 @@ var Character = Entity.extend({
 
     move: function(x, y, notiyOthers, noPath) {
     	if (this.isDead) return;
+    	if (Game.level == undefined) return;
 
     	this.moveCallback = function() {};
     	this.destinationX = x;

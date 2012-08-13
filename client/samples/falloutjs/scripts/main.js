@@ -5,9 +5,7 @@ Cassidie.observe(Events.NO_SERVER, function(data) {
 Cassidie.observe(Events.CONNECT, function(data) {
     $('#title').text(data.game.title);
     $('#menu').show();
-    $('#menu .main').show();
-	
-	Account.login('net@lionel.me', 'Lopi28fg42');
+    $('#menu .main').show();	
 });
 
 Cassidie.observe(Events.DISCONNECT, function(data) {
